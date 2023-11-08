@@ -1,9 +1,10 @@
 package main
 
 import (
+	"12factorapp/routes"
 	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -44,26 +45,24 @@ func main() {
 	}
 	defer client.Disconnect(context.Background())
 
-	// Create a new router
-	router := mux.NewRouter()
+	router := gin.New()
+	router.Use(gin.Logger())
 
-	// router.HandleFunc("/users")
-	getRouter := router.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/", usersHandler.GetUsers)
+	routes.UserRoutes(router)
 
-	getAllRouter := router.Methods(http.MethodGet).Subrouter()
-	getAllRouter.HandleFunc("/all", usersHandler.GetAllUsers)
+	// API-2
+	router.GET("/api-1", func(c *gin.Context) {
 
-	postRouter := router.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/", usersHandler.PostUsers)
-	postRouter.Use(usersHandler.MiddlewareUsersValidation)
+		c.JSON(200, gin.H{"success": "Access granted for api-1"})
 
-	putRouter := router.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/{id:[0-9]+}", usersHandler.PutUsers)
-	putRouter.Use(usersHandler.MiddlewareUsersValidation)
+	})
 
-	deleteHandler := router.Methods(http.MethodDelete).Subrouter()
-	deleteHandler.HandleFunc("/{id:[0-9]+}", usersHandler.DeleteUsers)
+	// API-1
+	router.GET("/api-2", func(c *gin.Context) {
+		c.JSON(200, gin.H{"success": "Access granted for api-2"})
+	})
+
+	router.Run(":" + port)
 
 	// CORS settings
 	cors := handlers.CORS(
