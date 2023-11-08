@@ -5,19 +5,20 @@ import (
 	"github.com/go-playground/validator/v10"
 	"io"
 	"regexp"
+	"time"
 )
 
 // Defining the main struct for our API
 type User struct {
-	ID         int     `json:"id"`                       //specifies that in the incoming Body the field to map to this will be called "id"
-	First_Name *string `json:"name" validate:"required"` //there are some integrated validation, for eg. this specifies that a value for name must be provided, otherwise it will not be valid
-	Last_Name  *string `json:"description"`
-	email      *string `json:"price" validate:"gt=0"`
-	address    *string `json:"address"`
-	SKU        string  `json:"sku" validate:"required,sku"` //the tag "sku" is there so we can add custom validation
-	Created_On string  `json:"created_On"`
-	Updated_On string  `json:"updated_On"`
-	Deleted_On string  `json:"deleted_On"`
+	ID         int       `json:"id"`                       //specifies that in the incoming Body the field to map to this will be called "id"
+	First_Name *string   `json:"name" validate:"required"` //there are some integrated validation, for eg. this specifies that a value for name must be provided, otherwise it will not be valid
+	Last_Name  *string   `json:"description"`
+	Email      *string   `json:"price" validate:"gt=0"`
+	Address    *string   `json:"address"`
+	SKU        string    `json:"sku" validate:"required,sku"` //the tag "sku" is there so we can add custom validation
+	Created_On time.Time `json:"created_On"`
+	Updated_On time.Time `json:"updated_On"`
+	Deleted_On time.Time `json:"deleted_On"`
 }
 
 type Users []*User

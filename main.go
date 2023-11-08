@@ -48,6 +48,22 @@ func main() {
 	router := mux.NewRouter()
 
 	// router.HandleFunc("/users")
+	getRouter := router.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/", usersHandler.GetUsers)
+
+	getAllRouter := router.Methods(http.MethodGet).Subrouter()
+	getAllRouter.HandleFunc("/all", usersHandler.GetAllUsers)
+
+	postRouter := router.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", usersHandler.PostUsers)
+	postRouter.Use(usersHandler.MiddlewareUsersValidation)
+
+	putRouter := router.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/{id:[0-9]+}", usersHandler.PutUsers)
+	putRouter.Use(usersHandler.MiddlewareUsersValidation)
+
+	deleteHandler := router.Methods(http.MethodDelete).Subrouter()
+	deleteHandler.HandleFunc("/{id:[0-9]+}", usersHandler.DeleteUsers)
 
 	// CORS settings
 	cors := handlers.CORS(

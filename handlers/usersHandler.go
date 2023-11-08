@@ -4,11 +4,10 @@ import (
 	"12factorapp/data"
 	"context"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
 type KeyUser struct{}
