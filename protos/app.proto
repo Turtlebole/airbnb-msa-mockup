@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "../main";
+service accommodation {
+  rpc GetAccommodation(AccommodationRequest) returns (DummyList);
+  rpc SetAccommodation(AccommodationResponse) returns (Emptya);
+  rpc UpdateAccommodation(AccommodationResponse) returns (Emptya);
+}
+message DummyList {
+  repeated AccommodationResponse dummy = 1;
+}
+
+message  AccommodationRequest {
+  string email = 1;
+}
+message  AccommodationResponse {
+  string name = 1;
+  string price = 2;
+  string location = 3;
+  string adress = 4;
+  string email = 5;
+
+}
+message  Emptya {
+}
