@@ -16,12 +16,14 @@ import (
 
 // NoSQL: AccommodationRepo enkapsulira mongo api klijenta
 type AccommodationRepo struct {
-	cli    *mongo.Client
-	logger *log.Logger
+	cli            *mongo.Client
+	logger         *log.Logger
+	databaseName   string
+	collectionName string
 }
 
 // NoSQL: Konstrukto za citanje konfiguracije baze
-func New(ctx context.Context, logger *log.Logger) (*AccommodationRepo, error) {
+func New(ctx context.Context, logger *log.Logger, mongoClient *mongo.Client, dbName, collectionName string) (*AccommodationRepo, error) {
 	dburi := os.Getenv("MONGO_DB_URI")
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(dburi))
@@ -35,8 +37,10 @@ func New(ctx context.Context, logger *log.Logger) (*AccommodationRepo, error) {
 	}
 
 	return &AccommodationRepo{
-		cli:    client,
-		logger: logger,
+		cli:            mongoClient,
+		logger:         logger,
+		databaseName:   dbName,
+		collectionName: collectionName,
 	}, nil
 }
 
