@@ -4,36 +4,32 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// DBinstance func
+// DBInstance func
 func db() *mongo.Client {
-	err := godotenv.Load(".env")
+	// Replace the following line with your MongoDB connection string
+	mongoURI := "mongodb://localhost:27017"
 
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	clientOptions := options.Client().ApplyURI(mongoURI)
 
-	MongoDb := os.Getenv("MONGODB_URL")
-
-	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb))
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-
 	defer cancel()
-	err = client.Connect(ctx)
+
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Println("Connected to MongoDB!")
 
 	return client
@@ -43,6 +39,6 @@ func db() *mongo.Client {
 var Client *mongo.Client = db()
 
 // Function that makes a connection with a collection in the database
-func DbConnection(client *mongo.Client, collectionName string) *mongo.Collection {
-	return client.Database("cluster0").Collection(collectionName)
+func DbConnection(client *mongo.Client, dbName, collectionName string) *mongo.Collection {
+	return client.Database(dbName).Collection(collectionName)
 }

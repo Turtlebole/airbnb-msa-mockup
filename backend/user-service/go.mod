@@ -1,5 +1,4 @@
-module 12factorapp
-
+module backend
 go 1.18
 
 require (
