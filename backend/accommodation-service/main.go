@@ -1,13 +1,13 @@
 package main
 
 import (
+	"accommodation-service/handlers"
+	"accommodation-service/repositories"
+	"accommodation-service/services"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yourusername/accommodation-service/handlers"
-	"github.com/yourusername/accommodation-service/repositories"
-	"github.com/yourusername/accommodation-service/services"
 )
 
 func main() {

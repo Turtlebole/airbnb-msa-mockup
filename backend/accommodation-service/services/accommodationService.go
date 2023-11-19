@@ -1,8 +1,8 @@
-// services/accommodation_service.go
 package services
 
 import (
-	"github.com/yourusername/accommodation-service/repositories"
+	"accommodation-service/models"
+	"accommodation-service/repositories"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -16,18 +16,18 @@ func NewAccommodationService(repo *repositories.AccommodationRepository) *Accomm
 	}
 }
 
-func (s *AccommodationService) GetAccommodation(id primitive.ObjectID) (*repositories.Accommodation, error) {
+func (s *AccommodationService) GetAccommodation(id primitive.ObjectID) (*models.Accommodation, error) {
 	return s.accommodationRepo.Get(id)
 }
 
-func (s *AccommodationService) GetAllAccommodations() []*repositories.Accommodation {
+func (s *AccommodationService) GetAllAccommodations() []*models.Accommodation {
 	return s.accommodationRepo.GetAll()
 }
 
-func (s *AccommodationService) CreateAccommodation(accommodation *repositories.Accommodation) (*repositories.Accommodation, error) {
+func (s *AccommodationService) CreateAccommodation(accommodation *models.Accommodation) (*models.Accommodation, error) {
 	return s.accommodationRepo.Create(accommodation)
 }
 
-func (s *AccommodationService) UpdateAccommodation(accommodation *repositories.Accommodation) error {
+func (s *AccommodationService) UpdateAccommodation(accommodation *models.Accommodation) error {
 	return s.accommodationRepo.Update(accommodation)
 }

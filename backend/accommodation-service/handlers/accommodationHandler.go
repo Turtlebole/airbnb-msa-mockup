@@ -1,12 +1,13 @@
-// handlers/accommodation_handler.go
 package handlers
 
 import (
+	"accommodation-service/models" // Import the models package
+	"accommodation-service/services"
 	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yourusername/accommodation-service/services"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -45,7 +46,7 @@ func (h *AccommodationHandler) GetAllAccommodations(w http.ResponseWriter, r *ht
 }
 
 func (h *AccommodationHandler) CreateAccommodation(w http.ResponseWriter, r *http.Request) {
-	var accommodation *repositories.Accommodation
+	var accommodation *models.Accommodation // Use the models package here
 	err := json.NewDecoder(r.Body).Decode(&accommodation)
 	if err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
@@ -63,7 +64,7 @@ func (h *AccommodationHandler) CreateAccommodation(w http.ResponseWriter, r *htt
 }
 
 func (h *AccommodationHandler) UpdateAccommodation(w http.ResponseWriter, r *http.Request) {
-	var accommodation *repositories.Accommodation
+	var accommodation *models.Accommodation // Use the models package here
 	err := json.NewDecoder(r.Body).Decode(&accommodation)
 	if err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
