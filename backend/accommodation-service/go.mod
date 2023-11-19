@@ -1,0 +1,1 @@
+module accommodation-service
