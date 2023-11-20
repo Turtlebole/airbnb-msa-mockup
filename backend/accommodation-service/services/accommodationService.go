@@ -1,33 +1,40 @@
 package services
 
 import (
-	"accommodation-service/models"
 	"accommodation-service/repositories"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type AccommodationService struct {
-	accommodationRepo *repositories.AccommodationRepository
+	accommodations repositories.AccommodationRepo
 }
 
-func NewAccommodationService(repo *repositories.AccommodationRepository) *AccommodationService {
-	return &AccommodationService{
-		accommodationRepo: repo,
-	}
+func NewAccommodationService(accommodations repositories.AccommodationRepo) (AccommodationService, error) {
+	return AccommodationService{
+		accommodations: accommodations,
+	}, nil
 }
 
-func (s *AccommodationService) GetAccommodation(id primitive.ObjectID) (*models.Accommodation, error) {
-	return s.accommodationRepo.Get(id)
-}
-
-func (s *AccommodationService) GetAllAccommodations() []*models.Accommodation {
-	return s.accommodationRepo.GetAll()
-}
-
-func (s *AccommodationService) CreateAccommodation(accommodation *models.Accommodation) (*models.Accommodation, error) {
-	return s.accommodationRepo.Create(accommodation)
-}
-
-func (s *AccommodationService) UpdateAccommodation(accommodation *models.Accommodation) error {
-	return s.accommodationRepo.Update(accommodation)
-}
+//func (s AccommodationService) Create(ctx context.Context, ownerId, content string) (repositories.Post, error) {
+//	authAny := ctx.Value("auth")
+//	if authAny == nil {
+//		return repositories.Post{}, repositories.ErrUnauthorized()
+//	}
+//	authenticated := authAny.(*repositories.User)
+//	if authenticated == nil {
+//		return repositories.Post{}, repositories.ErrUnauthorized()
+//	}
+//	ownerUuid, err := uuid.Parse(ownerId)
+//	if err != nil {
+//		return repositories.Post{}, repositories.ErrUnauthorized()
+//	}
+//	owner := repositories.User{Id: ownerUuid}
+//	if !owner.Equals(*authenticated) {
+//		return repositories.Post{}, repositories.ErrUnauthorized()
+//	}
+//	post := repositories.Post{
+//		Owner:   owner,
+//		Content: content,
+//		Likes:   make([]domain.User, 0),
+//	}
+//	return s.posts.Create(post)
+//}

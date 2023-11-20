@@ -1,81 +1,95 @@
 package handlers
 
 import (
-	"accommodation-service/models" // Import the models package
-	"accommodation-service/services"
-	"encoding/json"
-	"net/http"
-
+	"accommodation-service/repositories"
+	"context"
 	"github.com/gorilla/mux"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"log"
+	"net/http"
 )
 
-type AccommodationHandler struct {
-	accommodationService *services.AccommodationService
+type KeyProduct struct{}
+
+type AccommodationsHandler struct {
+	logger *log.Logger
+	// NoSQL: injecting accommodation repository
+	repo *repositories.AccommodationRepo
 }
 
-func NewAccommodationHandler(service *services.AccommodationService) *AccommodationHandler {
-	return &AccommodationHandler{
-		accommodationService: service,
+// NewAccommodationsHandler Injecting the logger makes this code much more testable.
+func NewAccommodationsHandler(l *log.Logger, r *repositories.AccommodationRepo) *AccommodationsHandler {
+	return &AccommodationsHandler{l, r}
+}
+
+func (a *AccommodationsHandler) GetAllAccommodations(rw http.ResponseWriter, h *http.Request) {
+	accommodations, err := a.repo.GetAll()
+	if err != nil {
+		a.logger.Print("Database exception: ", err)
+	}
+
+	if accommodations == nil {
+		return
+	}
+
+	err = accommodations.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		a.logger.Fatal("Unable to convert to json :", err)
+		return
 	}
 }
 
-func (h *AccommodationHandler) GetAccommodation(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	id, err := primitive.ObjectIDFromHex(params["id"])
+func (a *AccommodationsHandler) PostAccommodation(rw http.ResponseWriter, h *http.Request) {
+	accommodation := h.Context().Value(KeyProduct{}).(*repositories.Accommodation)
+	err := a.repo.Insert(accommodation)
 	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		http.Error(rw, "Unable to post accommodation", http.StatusBadRequest)
+		a.logger.Fatal(err)
 		return
 	}
-
-	accommodation, err := h.accommodationService.GetAccommodation(id)
-	if err != nil {
-		http.Error(w, "Accommodation not found", http.StatusNotFound)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(accommodation)
+	rw.WriteHeader(http.StatusCreated)
 }
 
-func (h *AccommodationHandler) GetAllAccommodations(w http.ResponseWriter, r *http.Request) {
-	accommodations := h.accommodationService.GetAllAccommodations()
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(accommodations)
+func (a *AccommodationsHandler) PatchAccommodation(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+	accommodation := h.Context().Value(KeyProduct{}).(*repositories.Accommodation)
+
+	a.repo.Update(id, accommodation)
+	rw.WriteHeader(http.StatusOK)
 }
 
-func (h *AccommodationHandler) CreateAccommodation(w http.ResponseWriter, r *http.Request) {
-	var accommodation *models.Accommodation // Use the models package here
-	err := json.NewDecoder(r.Body).Decode(&accommodation)
-	if err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
+func (a *AccommodationsHandler) DeleteAccommodation(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
 
-	createdAccommodation, err := h.accommodationService.CreateAccommodation(accommodation)
-	if err != nil {
-		http.Error(w, "Failed to create accommodation", http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(createdAccommodation)
+	a.repo.Delete(id)
+	rw.WriteHeader(http.StatusNoContent)
 }
 
-func (h *AccommodationHandler) UpdateAccommodation(w http.ResponseWriter, r *http.Request) {
-	var accommodation *models.Accommodation // Use the models package here
-	err := json.NewDecoder(r.Body).Decode(&accommodation)
-	if err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
+func (a *AccommodationsHandler) MiddlewareAccommodationDeserialization(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, h *http.Request) {
+		accommodation := &repositories.Accommodation{}
+		err := accommodation.FromJSON(h.Body)
+		if err != nil {
+			http.Error(rw, "Unable to decode json", http.StatusBadRequest)
+			a.logger.Fatal(err)
+			return
+		}
 
-	err = h.accommodationService.UpdateAccommodation(accommodation)
-	if err != nil {
-		http.Error(w, "Failed to update accommodation", http.StatusInternalServerError)
-		return
-	}
+		ctx := context.WithValue(h.Context(), KeyProduct{}, accommodation)
+		h = h.WithContext(ctx)
 
-	w.WriteHeader(http.StatusOK)
+		next.ServeHTTP(rw, h)
+	})
+}
+
+func (a *AccommodationsHandler) MiddlewareContentTypeSet(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, h *http.Request) {
+		a.logger.Println("Method [", h.Method, "] - Hit path :", h.URL.Path)
+
+		rw.Header().Add("Content-Type", "application/json")
+
+		next.ServeHTTP(rw, h)
+	})
 }
