@@ -13,6 +13,7 @@ type User struct {
 	Email         *string            `json:"email" validate:"email,required"`
 	Password      *string            `json:"Password" validate:"required,min=8""`
 	Phone         *string            `json:"phone" validate:"required"`
+	Address       *string            `json:"address" validate:"required"`
 	Token         *string            `json:"token"`
 	User_type     *string            `json:"user_type" validate:"required,oneof=GUEST HOST UUser"`
 	Refresh_token *string            `json:"refresh_token"`

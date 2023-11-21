@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
@@ -24,6 +27,7 @@ import (
 
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
 var validate = validator.New()
+var SECRET_KEY string = os.Getenv("SECRET_KEY")
 
 // HashPassword is used to encrypt the password before it is stored in the DB
 func HashPassword(password string) string {
@@ -50,7 +54,7 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 }
 
 // CreateUser is the api used to tget a single user
-func SignUp() gin.HandlerFunc {
+func Register() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		var user models.User
@@ -121,7 +125,7 @@ func Login() gin.HandlerFunc {
 
 		if err := c.BindJSON(&user); err != nil {
 			// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": ""})
 			fmt.Println("I am here")
 			return
 		}
@@ -130,7 +134,7 @@ func Login() gin.HandlerFunc {
 		defer cancel()
 		if err != nil {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": "login or passowrd is incorrect"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -138,7 +142,7 @@ func Login() gin.HandlerFunc {
 		defer cancel()
 		if passwordIsValid != true {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
 
 			return
 
@@ -146,7 +150,7 @@ func Login() gin.HandlerFunc {
 
 		if foundUser.Email == nil {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
 			return
 		}
 		token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
@@ -155,7 +159,7 @@ func Login() gin.HandlerFunc {
 		err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -163,6 +167,18 @@ func Login() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, foundUser)
 
+	}
+}
+
+func Logout() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Get the refresh token
+		refreshToken := helper.ExtractRefreshToken(c)
+		if refreshToken == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Refresh token not provided"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"message": "User logged out successfully"})
 	}
 }
 
@@ -189,4 +205,53 @@ func GetUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, user)
 
 	}
+
+}
+func GetUsers(c *gin.Context) {
+
+	// Retrieve the JWT token from the Authorization header
+	authHeader := c.GetHeader("Authorization")
+	tokenString := strings.Split(authHeader, "Bearer ")[1]
+
+	// Parse the JWT token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Verify the signing method
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("invalid signing method")
+		}
+		// Provide your JWT secret key for verification
+		return []byte(SECRET_KEY), nil
+	})
+
+	// Handle token parsing errors
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Extract the claims from the parsed token
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
+		return
+	}
+
+	// Retrieve the user ID from the token claims
+	userID := claims["user_id"].(string)
+
+	if err := helper.MatchUserTypeToUid(c, userID); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+
+	var user models.User
+
+	userCollection.FindOne(ctx, bson.M{"user_id": userID}).Decode(&user)
+	defer cancel()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"user_id": userID, "user": user})
 }
