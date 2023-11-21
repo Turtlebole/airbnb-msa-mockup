@@ -24,6 +24,7 @@ export class LoginPageComponent {
 
   });
   }
+  
   submit(): void {
     console.log(this.form.getRawValue());
 

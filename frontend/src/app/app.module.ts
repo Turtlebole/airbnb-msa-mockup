@@ -11,6 +11,7 @@ import{HttpClientModule } from '@angular/common/http';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,6 +20,7 @@ import { AccommodationsComponent } from './accommodations/accommodations.compone
     NavBarComponent,
     AccommodationsComponent
     
+
   ],
   imports: [
     BrowserModule,

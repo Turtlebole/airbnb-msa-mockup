@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Emitters } from './emitters/emitters';
 import { HttpHeaders } from '@angular/common/http';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +16,7 @@ export class AppComponent {
   }
   title = 'home';
   message='';
+
   token=localStorage.getItem('token')
 
   ngOnInit():void{
@@ -29,6 +31,7 @@ export class AppComponent {
       res=>{
         console.log(res);
         this.message='Welcome ${res.first_name}';
+
         Emitters.authEmitter.emit(true);
       },
       err=>{
