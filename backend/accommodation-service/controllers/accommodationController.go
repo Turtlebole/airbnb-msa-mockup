@@ -13,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var accommodationCollection *mongo.Collection = database.OpenCollection(database.Client, "accommodation")
+var accommodationCollection *mongo.Collection = database.OpenCollection(database.Client, "accommodations")
 
 func CreateAccommodation() gin.HandlerFunc {
 	return func(c *gin.Context) {
