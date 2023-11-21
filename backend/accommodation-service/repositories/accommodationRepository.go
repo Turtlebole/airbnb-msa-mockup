@@ -1,17 +1,17 @@
 package repositories
 
 import (
+	"accommodation-service/models"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"log"
 	"os"
 	"time"
-
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // NoSQL: AccommodationRepo struct encapsulating Mongo api client
@@ -68,27 +68,28 @@ func (ar *AccommodationRepo) Ping() {
 	fmt.Println(databases)
 }
 
-func (ar *AccommodationRepo) GetAll() (Accommodations, error) {
+func (ar *AccommodationRepo) GetAll() (*models.Accommodation, error) {
 	// Initialise context (after 5 seconds timeout, abort operation)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	accommodationsCollection := ar.getCollection()
 
-	var accommodations Accommodations
+	var accommodations models.Accommodation
 	accommodationsCursor, err := accommodationsCollection.Find(ctx, bson.M{})
 	if err != nil {
 		ar.logger.Println(err)
 		return nil, err
 	}
+
 	if err = accommodationsCursor.All(ctx, &accommodations); err != nil {
 		ar.logger.Println(err)
 		return nil, err
 	}
-	return accommodations, nil
+	return &accommodations, nil
 }
 
-func (ar *AccommodationRepo) Insert(accommodation *Accommodation) error {
+func (ar *AccommodationRepo) Insert(accommodation *models.Accommodation) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	accommodationsCollection := ar.getCollection()
@@ -102,7 +103,7 @@ func (ar *AccommodationRepo) Insert(accommodation *Accommodation) error {
 	return nil
 }
 
-func (ar *AccommodationRepo) Update(id string, accommodation *Accommodation) error {
+func (ar *AccommodationRepo) Update(id string, accommodation *models.Accommodation) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	accommodationsCollection := ar.getCollection()
