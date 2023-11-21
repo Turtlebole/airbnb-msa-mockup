@@ -4,13 +4,19 @@ import (
 	"context"
 	"fmt"
 	"log"
+<<<<<<< HEAD
+=======
 	"os"
 	"strings"
+>>>>>>> main
 
 	"net/http"
 	"time"
 
+<<<<<<< HEAD
+=======
 	"github.com/dgrijalva/jwt-go"
+>>>>>>> main
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
@@ -27,7 +33,10 @@ import (
 
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
 var validate = validator.New()
+<<<<<<< HEAD
+=======
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
+>>>>>>> main
 
 // HashPassword is used to encrypt the password before it is stored in the DB
 func HashPassword(password string) string {
@@ -54,7 +63,11 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 }
 
 // CreateUser is the api used to tget a single user
+<<<<<<< HEAD
+func SignUp() gin.HandlerFunc {
+=======
 func Register() gin.HandlerFunc {
+>>>>>>> main
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		var user models.User
@@ -125,7 +138,11 @@ func Login() gin.HandlerFunc {
 
 		if err := c.BindJSON(&user); err != nil {
 			// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+<<<<<<< HEAD
+			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+=======
 			c.JSON(http.StatusBadRequest, gin.H{"error": ""})
+>>>>>>> main
 			fmt.Println("I am here")
 			return
 		}
@@ -134,7 +151,11 @@ func Login() gin.HandlerFunc {
 		defer cancel()
 		if err != nil {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": "login or passowrd is incorrect"})
+<<<<<<< HEAD
+			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+=======
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+>>>>>>> main
 			return
 		}
 
@@ -142,7 +163,11 @@ func Login() gin.HandlerFunc {
 		defer cancel()
 		if passwordIsValid != true {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+<<<<<<< HEAD
+			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+=======
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
+>>>>>>> main
 
 			return
 
@@ -150,7 +175,11 @@ func Login() gin.HandlerFunc {
 
 		if foundUser.Email == nil {
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
+<<<<<<< HEAD
+			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+=======
 			c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+>>>>>>> main
 			return
 		}
 		token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
@@ -159,7 +188,11 @@ func Login() gin.HandlerFunc {
 		err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
 
 		if err != nil {
+<<<<<<< HEAD
+			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+=======
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+>>>>>>> main
 
 			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -170,6 +203,8 @@ func Login() gin.HandlerFunc {
 	}
 }
 
+<<<<<<< HEAD
+=======
 func Logout() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Get the refresh token
@@ -182,6 +217,7 @@ func Logout() gin.HandlerFunc {
 	}
 }
 
+>>>>>>> main
 // GetUser is the api used to tget a single user
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {

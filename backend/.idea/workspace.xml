@@ -338,7 +338,11 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "go.import.settings.migrated": "true",
+<<<<<<< HEAD
+    "last_opened_file_path": "C:/Users/babic/OneDrive/Desktop/airbnb-sit/airbnb-sit/backend",
+=======
     "last_opened_file_path": "C:/Users/babic/OneDrive/Desktop/aco sobe/airbnb-sit/backend/accommodation-service",
+>>>>>>> main
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)"
   }
