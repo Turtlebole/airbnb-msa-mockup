@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { CommonModule } from '@angular/common';
 import { RegisterPageComponent } from './register-page/register-page.component';
-
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},

@@ -6,308 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5fed0638-390b-4a51-94dd-e825f2054aa2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/controllers/userController.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/controllers/userController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/database/databaseConnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/database/databaseConnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/helpers/authHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/helpers/authHelper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/helpers/tokenHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/helpers/tokenHelper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/middleware/authMiddleware.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/models/userModel.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/new" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/routes/authRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/routes/authRouter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/routes/userRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/routes/userRouter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/angular-webpack/8e73b50795e978c2d0b57eff125b7b58963126d2/0.pack" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/angular-webpack/8e73b50795e978c2d0b57eff125b7b58963126d2/1.pack" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/angular-webpack/8e73b50795e978c2d0b57eff125b7b58963126d2/2.pack" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/angular-webpack/8e73b50795e978c2d0b57eff125b7b58963126d2/index.pack" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/angular-webpack/8e73b50795e978c2d0b57eff125b7b58963126d2/index.pack.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/007457b0b6096f802305aaf22de180ecb735245ef128fb5a12fe00e79c16fc5b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/01062bdeeb77f48a5a054ad7a9bc6a0da40a7d20bb2351fe916e5af206af918e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/01c70d4966ed0a4e2878f45cd3ade8f9aa34015b60adb8831badfe22d9dbc4e4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/02cf3281c9e259d520d902bce0039b65e0a087b0e56cc5e90e557679490d852c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/042149b98b552e6f6861595f61553f280c14a08d92d114b859f1c90b5e019db9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/04fe3862a19264a614582f318df1e2717300ce70b9dbc5c68ac5a27d2837949b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/063c803430a039571302e86c95f408f4414fdf65a3199bb8949fbbec550fd238.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0685978e87842798a1ace4922fe201e52e91b3eebf246b7ed0f0f9b5c404dc6e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/07b0eb1bc89f4a12a609f32d24a21e413e5d44eb079abc821a1ef96a9e5ab667.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0a59cb9148a5837fc64026adb46097fb65c6e3252b35e6b2fe884cd1167004a7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0a8b2c522512d7b8cfe760e4a9e556ee7611502366d4afd3ee192eb1675257a7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0b52a78abcc5c5c85ebd512e3d870b8979adffa453b70ed452ca15bca6bbaf96.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0bade47c36a377467ffac236c9a236599a133806b7d4475482effec050957bab.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0db2d6e2bba3fd3555538dbf2e3a298832ff001877d5f22bab3c1e23805bedb5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0df816c13f9983651e7106eb97587f34e5d92bf2c7ddf0983cc4f08199ba6904.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0e241becf20af5859de1d81cf9d8c3feef682ec47376c679981721098a55cad1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0e26bd897a71e380924f57828997eae4ae5da85160b48511f3dbe9b6816951db.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0e64723ca23e97440b8b9db442712565be1faa9b594e86cd38c2032842f2ff9f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0eda295be7f647ed0674a9ed32b498eddad3adcf93197eae74025fab2f17ac83.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/0f0532b79b16c70fdcd076eb3ab9bc88fa7279312bbd0335d5649cb4df454702.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/100b86096be046eb9a1968db3bcfcc1dfb757b0ebb21b1a86374f40a203fbecb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/103e9430b4215e2d1589f9cff14c336894782ed6d13e2b1b1cf782808024f2a2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/11e1bb056b981828837c53ec9057fddea52c1da167071c69817dfb5dc447db72.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/123598d454116a91ec502881f6881e0b870f1744b41cde35ef17731910a79c24.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1397570bfd0bba9e7a4bace537df739488183f842188e4307947a8a7c78d8759.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/141ad1dfbec96e85c9cd8ad745cb1ace7b7c1a2589a2050e30ed8c89d9634e87.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1455c33a70a019b42e2fb941afe983958e071deb1387ad9e5666f94d12d3a462.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/14a620e31b1bb8bee5b1135214f29606f6fcabda55a6d4a5bde7bc67f1fa2fd0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/165072b0dba24d401808bb71ef0c86a320a8c6e4b7502c8b2096fbdc2c84091c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1cb9d90769513fafd216be7b6d0bb69285ca38c9556e50586c5965c1b6e95e06.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1dcd77f67a0bc5fda4958d89262ec4da124b006335ca27cbb8f6aa4548ce219a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1ea22549fe9e3f0c231819b960af4b10c3c7c5fc288f0a72f5bbeb5ad5097067.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/1f776256185fc8d9d346a4db4e432fd38cca9a64fa8e1f2d3a783492bc7675c4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/218aeaf1f4cdfaebb7b68456fd7ea61b3320bd93fcfa305503647a6f0d3cf32b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/21bfdc23400e4a30aafde68edc163486d9af4da7e55161de53e24c9c9296f405.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/21cbefa11bb7eed8de49763b2c1eb45fe114af3ac5b086c65357feffc71ca4fc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/228a1665fd465c9a96181cc50cfd20bac77b25868c4c151a10cbcc85826d517d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/253832e00b3bbbbd132586904fb84a2fd99cc97ffe5f056426dccc5fcdf133d8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/25bd773c5b6eec9f08306ba1733ae15f35d748d1c5d259ad0690548c6996d115.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/25df86faf1e046145063842180248f6b40fe1c7a26add382d52c589cb55e2cc9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/276e19d1349b9ccf99f98cef4455be5e737a75fe8e36065253ba87cac6cb5409.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/27a737278f9a90f438cc2595ffef2ee0741898e63693c473b23d936dfe0ab6c0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2a701517dfb4e261d7eb962e8cf063781c00eed2a4027bcce70badc7181a41f1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2a9256af1c845845479a940b7c5313ad1801311f1c39fdbed60381cbc98cfeeb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2aca929156d43c750f147bf1dd59696daf046120614f1ff049af81d9db076dd1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2c32a8c96905b34164b3a010473f2929867102c601c8920b79b67051c0fa15f2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2ef08d6db049d1dcd4f7d2c4d19ff2f42814920e21c900d7bf384923b2ea6fbe.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/2f6b1250ba3afdf926668c9211899f31664b771bc60da1b05341fdff8408f4f4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/31f4e4c61edcecb0bde60ef00eaf7a550542b1ec8ce13671c1dc16234657652f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/326426c1f7ed5fb3ede45d38149684bef3208cc68a5d65b0493270e7f4d953b7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/32879da522c093e8a896fd074c9163273e01e3966e76fbd83b4b6269bc6c19fe.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/33df2be9d592562781e0ac2947e851e1b91710d7d3d611e46f1946b63558bef1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/340800c4cf7d880b32abf16bed35d3ba1316c0e762028f6b7c4c4f9e6c75ec4e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/34573c23ca94b1723094fed6351d5bcb63bae1bdd17c373ba9fcdb076ae06dda.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/34934202a4756656657909a134128addf96c52ac0e78964ffe3d57cfc2722459.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/34d86d65768fa67125885c4a7e84a225a96f14a0b7e3320441759045b70f8c10.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/370051cf083366917fda9f72f287fa063b96f6d4f37ba33b7051d4158b84a057.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/373f03e59d2698fcccd92d21e6559ae9e444836e66d7256a63a638ba6515a6ba.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/37d27cd6bbd536784a67c16d65b07c922f83839223479de8aadb18332330d044.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3a47cd7179fbedf073348d9d4b41ab282ef0475c719d29e7ddeb67f46b68753a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3af14d0fc6e2f99a3709b89e2b746f330b1ea6b9abcf024b81d70981697a1b26.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3d27cfff16bf425b09c0acf586dc823d47d00edb7ba5d812b2803a438eb7795c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3da22420febb9aba7344c0d69d1eeaffe35577a98851bcf490cb16655b99a0e1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3da499dede38a7d35e34613cd75a15a0b44559b70261e90c4a59f41f99ac5989.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3e3adb3a937c46a3f91f4ad3f29b28fb54437002fa75ceab978dd195b1a14090.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3eeb2db7cbd28a509dca576d4ed72e8e9b1ee0d2c579929af11a85455f6c9f69.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/3eefb1c04fee8634ac67916bfe6916a0a4dce40c4307c61f29446c85463d26ac.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/40c2d2b2827b0477f9961cf1a35b4f43401da6ae78652a5fa50c6bc10539f746.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/41b690c1b8aac8f9632107765736488ae2515bef1d6d755e57a22eb80833ace7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/43165f7f5ed8bdc6a2e468b5b904fdaeabd45f1ad4740f32d92adfa6734909d9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4461e4016d91334b86b16f55948c7a36fbdb7d0f6c3deb3d7938fad70b57cd43.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/44bda6704aa45c3194797f08293a001bd533e8a2ead7eafa4177443f5752bf7a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4702f1e0b92efdc780bb91849c69c94ce9623c3de1b8b9ae4e9fb605ee644c31.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/472e854a0afe77084555504dfad2884b43a16e11f0bc8d651b14a68bd07f4aec.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4a3c3b80694e41708326f242a7cfc56bd112d863d1d0a714d5806a72876746a1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4aaf8d2a87b37aa7be47294bf626af0be0843b670589bd4dc6aa3dece581e272.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4ae7acfc4ee800f469cdfa3d62caed0fe8716931194df73906926a25871b7ed7.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4bdf80325f01f159558926114daa7ae3dc7dce9850c539b8a9af88df971e6a5e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/4e9cb01fe80dd5ee2916cfdfe70f38c5c192ea462a49494403391f8cc59d9d3f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/50128c919ae8a0cf05c2b4a10a5738213b203b2c30a5783ddf3bb4e88e7a87b5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5332df1c146a25c5124fe73572bf22d835269c19b95f8cc67d8524af382f7d8d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/539813e935b5656699578b5492a98a12ec379bf00304569f52f4f5e8147ffcc8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/544b21ee50dde14395108ce8d94b1c9e047bdf695fbfc36df98cf8b8c06c4da0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/54a7685315a88ecc5c93040fa8e7a9fb8967f586ca4aacd41a545fe916a3b709.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/55b956a123d667d35bee7e175071594bfecbcff1207faaf41e0fa0cbeb1335ac.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5600f541355e41d4b46f195fa1dcd3151078fdccf0b3892bfa8250b5de40c74a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/58fa097aa8bd7b5b6f1832c6e5ca2371454d8b1a685accfe660077b506565027.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/593a042fdc14791425ed7d06597cbe52525693f3c6f4aaf62599cb659e9cca62.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5b0ae69c30c5eed459e82518382a2c1dde2c220863581f4d07afa4d339c12f4d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5b15906ed603c4942e5fbe188f659055d8c20c793fd6f54ea71f1599232ad629.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5c47e38faff4f670ab89001f0bea1ea40d4abcd378e0192267d4fbcf94263656.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5ca1844c08b66b3034eca0e34c6b3eb56a9fbc9a49443f8493a60d80a0dee00e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/5d865e173568dffd09f3d265ed7f15f91640c12b5edc7263afd3eb7b34b34e11.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/60760ea6b3831bcd60462147e6cba4c4ad53372297b2fde5d9db36e6ad2c7cf3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/60c1fa9e19036bd51d59d19d5789ae7f671c6d2ef061e93feb52087acf9acd65.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/619d6b62b1fb58b876c1b4afa26bedddf74efc5cd6ade032e885046376e588c9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/61a3ad635d275b5ddc111eaebfec26775722c5fb9db2ccc2e475a951c8833329.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/624e51aeab6cddf390a8b9730ab29e5af84815457d4cf0c6a0bae83ef2216b0e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6255ef21070249247ffccff53ca5d63a6ded09508b9422a80401286457b5394e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/62eee5b180bce46f13a82a443fd6a8da97d46387c9bda1c625673ae592bc853b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/63cffb8ca2ee48e49940e6f7813b38fb9005b6868bba119f1ba77cfbedd6871a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/64e2b76b3948b93cbdf580b1ddfa5f28fea6015e1cf58ae415ff4eab2080f5c4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/66e0f07b2d99982eb2834b96bb116e63f17fea4e0902df30e171394a7d36af0a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/66e2a01367c1bb116858aa3387a390051f465282e1180659b1a09a9aa7b0335f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/66fd2773907ae075affd2c9f2ac4847595e334622dccff11d0105f0afff4ee83.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/66fddf29c74290c3e17c0eef6586bced11ca5357a4e85b6583e486425dbe99b0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/679147baaec483b302e4ed673a1f623fb96cfb620d76115225ef655ceb85a3ee.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/680e3ce44ab5386a84efeb38a69130b0e16dda7894f238dbfcaac4edda88b08a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6938bc8d3dc462f66f01ad0f3ad8ffdb1733d5be80b05b91821a6107fc70be26.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/69a2497bc79d24782cbda8c01ea59d45bfb9e848a1f1f02ab0fc89277659720e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6a223d5f129d95f6aa25e4adfa287aef532fc47677429d4e59fb73f97110f49e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6b1e2542054288ab203fa62e681418534f7587345753b277929188ee088501dd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6d0142e61136c579ce6661076812201115777e1fae67e0ec6374e35d8c414636.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6d310e87199d46d84d11d43238a76b2562147437cb8b968e492804ff2cd661ae.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6f08cdb9c5efb8b8fb954ea1d1c8c34089fb7a4f391939c370e6e4c104a25ac4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6f61aa61bbc55d9438928a2ebec74f4338d73c181e7bf72856d095baa85b4d9a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/6fa255f3db078b48289238fc93bcc4f23f29cd352916e046321ce4288505e705.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7049c7b3efc9e2febd828e211e69e86e720010adf8c11381b8b1b5260811ef8c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7136a72d95a50f02909658f6ec50327ab398f458eff07633f8b45ca67204d3b9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/72ce9216be5339bf5c05867aed7b1308fe758e95a0904f219887acb0dc2e3f15.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/73b887b372f9078528d2c1b911cea182c6fd08434436d9221d48ac34c8e1128b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/73e06389db290ab2d844b51ffe330d323372586286b4a11378ac0d4ab02a28bd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7566e28f396ea866eb5750df25359f53dd7b4fdf7fd8d83b4a4842cef1d5a1bd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/75984a95cace366f85cd33578c21a25bee57b3734e7525b07200b3846e03e5f4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/76caca9738e19af51db7e288682dba7051a276d65e940cd61edee13983fa49c1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/776fdaea649f25c2b65bb28ce14215f3dca1582bf6657a1d6c829601b12ff47b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/777871aeaa86d72eac88756b9990dd864f999c4af1528a6bf3db6ca7aac5face.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7842172618266d3fbf2675295a5d88e62cf136d36a64a8590cfab6fd7d0a66d0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7913aaf804416b304fe7cf257ea78fc39c6b8e5e8f28f8081232529527e2829c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7b5c17c3ed917132850b790ceb0428ddba637b9dee442b7aecfee3fc75978717.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7c70dca9e4720ecc9f4f36b595a75a1babc931f563da6197c9e7580a8fce625c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/7cf4b08b748a32b8d932260e9691598e9ecb8e5f3c1836163e69196aae223a26.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/806b5be0ebe8f409a059d764577f3b7d09395ef6241fbc1e5542d727f9d74b5d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/80a55f8c3459089625ee77c99983d3479e7c2d1c1864dbdaa396c276d3a4aa67.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/81cc815c8dd2967433b5436e7ecd0c29fe703a4995e29184ad45029c0360f5d2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/81faadb84a7593c5eb7a4878a79160cad7a1410b9f3f969344d7ec219ed59895.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8272e8658f195efb5a019f801da928544aefa5755d3549ae9d4aa697929b53ca.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/83e9664590bce8dde86c8b38e0b6a996c7d6169a48f5b141c43757d29c737893.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/85856ff6732c180aac6b8e119b73cba5b4bc9ebc7de8ad20a8a393158993a55c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8722ebef915a877bcf85990316e87ef59e168a35bd1e4fea6ae4bc76638e4245.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/87ceff1f71c3ae87fdd49ef488be8cd52196227aadfbd4e9dcf4cadb2c469b83.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8aee7e8dd117a48f0e8224def97dc2f50fb077de199bda2d79698f3b64d57258.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8b73a25a34a7713de5a168dfbfdf7a5dd63fc434e06d4e2ef91d28e6c1d85ce0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8cbc2873b95488acb62ea6d7e13fc36593744b4334505ab1b214d33b8bbdeef8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8d6086127454c212507d6e8e80c8de73d0a91bda1c8e5a714609b20837e52a44.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/8e46912a73a8f6cebe788e0c087b70bae595d24d319de1ade6cd8b57a61f6a04.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9110e791fcb8db588c0ccd5e217da25069b041b07a2d523fdccfd67ea8656e41.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9321fe69228cb493c146eaf95304cf65913b01f899881a47280d0d9f085c6b03.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9354bbd244c90bd4f88068789bcbf12c2ae7f960e2e392ac3e86a2aed17da9cc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/93dde861d9d67b2e3b96becb9a75de96b40e05dcf7efe99c5c30e9281f195e1d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/94700a67f78a296cfbd9690a1980f3a7c327682806880b8c8fd74573ea745f2b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/96a6b12fd0af6b204ec2aba6048617877577e94e526e4d6877be25e48f509695.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/97029c45f1fdb7cb9565ba650e097104ee5fb59433d60a24e192ec2a0ba2ce4d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/97e2291568ae54d72b218726220e64b57735cc12daabab1afa750ad84aa0f1ab.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9818d1180222a3149dfa1516d35897ad300812d585b6359ce0a6e095c12952f6.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/98b758bdd83522c07abd77754359f0991a7d1d6cced88e3e90ea873931be7640.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/999bed848ed4f7c60d456ed0a28c93422263ef7f0421cecfd34ced1913d0ece5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9ad100782efe878c121caaba5569ef783c85c40bc1a74da9b52d2b9c0f96a807.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9c0705d48d2debc7996150a63b84c0c1ed7efb5c325295a6b0398326b88b0024.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9caf4f496baf5d4a4fb8300a22834f767d789dc69a49d709dacc91902f112611.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9cdeee57f693f582baf034cec08be5363e103306674d7b13004fb1926b7a2be5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9d6cee4ddb1ec83b6cd4aebd293ef94dcff65d76401839e2193704bf8e07d73d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/9f4f53d04d802586bd4d50c9c9b6c7f0c89cfe5127b909d67dd40507ca5e3397.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a00238930e4e35d634d35da62bb510843c90bf269f045a1494a505cc29ac6471.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a041f1229034c507de3c6a62b78b792fe2f922e98c9dde2c8f09d92827f25526.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a5a8c9d3efbe12f2fcb89a4500bf661d99a10c60f2b8a0f8d7b0cb1508a1c1f1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a7249f6af3d01e1c96fdfcbbb50e17483d06463119652a4584c8f7e8042f7438.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a7643fc5accd844d622250323c5c22b118981ef38c41213ce9d24f5fdb61c0e4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a939941442e146772ad0aef7b83530d7969ee88b619829676f3b83dd3e4a1c0c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/a9408057de4fac6c3689af192b6372e8fa40acb28d67e0b55832f05ea379c7a1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/aab7b961d0f65cc1855240be55f31167f8df3dc88a6164fc634c5ce7709bb0c8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ab0aaa38b6bc27e9ab6f93a884c14c8f70ce2ff80411665c6bcd45137ea3b815.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/abb33f573b92bbd6590e392bfb21c1efcfc79ba9ea81105466ea2448450d0323.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/abec27a73fe58f604260449dd6c6278464c48635b3996f47bac170b184f0ca69.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ad07c6499ea271e9bf86b9b8aaceb1d0af17c3509437f37b220fc4dd8e7112a3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/af684d11049e3c254009f2446abe488ec332cbcb3508fd16290e1fb7900d7c1e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/afb3d3cbaeb991b227e8b164e0dbc42d7aeee616688a3f34160749ff36765e2a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b13b3a8ce49039dd60fb3f2acbd037a2568052a35d828f53802e02159331963c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b33d3f6b1dafc090ea32979e51df6a8a04b9eed3838fe9daf9648ef2d2386086.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b423e24fddcc7ac5659ec9f383b9fb8dd160e5b762d591bc17d69f63af0a1814.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b42c0d5fa98c23623347c8cba2251b47ed3496bd0ad9fbd10d8bd2c54ad3dd81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b50b64ce05d6a527a4b8218176da85932a4dfc75435fc0cb0a117af5a6eb802f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b5a2daf4bce1e62271dd751da98becd183bb3fa7a8db98183e2e7d4864e8462f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b725ba34ac8249e25ee9a1986916134aa0b70168ff653c981bd30a9e3b51ba93.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b8515adf114f9cff09dbaa89c921c0825f323e84bea35872984bcee5e6a02a8f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b8fecc67321bc22261061f99301203289141a2ce9620daf9981f558701727c63.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b933346289b0d2300810b6ac661674312d1feeab3bd6ee9e371e2e14352f5a59.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b95d9f16d561add5997c2977e4dc33ab3291bcb4c7e90821b3a490c945b6efc2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b9aef512c7d6a301a401d9159dfa215a3076257fb80d25727c6dfb327d35132a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/b9cbc63e137780d25d70283cdc6f3ee6c239a0fd2916aff572bd71b7819a347d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/bb34e627c9c7766101bf7fb4b234a43545c4ce418b6b7b61ca1ab174452ce826.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/bdadf7914c3776d3978a8de156a8c2d562fb8ecf525dc6d279711fbf67ca2f14.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/be5e881fb033232094abaab7ce6da788b73b6c75b426e6da28df217407080218.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/bff221130bf5257495407557e8f7e5eda06dfa2f8c17996369e5b506625a48f5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/c0ec031dda4859ab62506efb450f01eb6566b25eb15c1d6b420311fbed12687d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/c1d5d974b953c1c4ffdd139d9561be55684f9e03e3be2559c82f4e1317a52bd4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/c3737afc2fc141c5ca267df151b6bcfd7d9ae54cdcbe3ac6b73674d946dc39f4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/c6e61d5bf51b1f9024223df6a3540b33d4a47c5dfe9d80fcb8fb60fd5e827698.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/c74b233a31eff1df200604ea149ab25ae9f7dcbfca87d653b9c851d4cff1d015.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ca4379882ae1ebae46aaf160c65ef83e63c1f666b46a4639885aa17dc7053b7b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ca7b4c37525a7106676002b62dca624184e5de95ce52d6d1af3098b85c108d06.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/cb98c301ee6f455718333d8b7b809b185a5a30b4658e1b86e382255931d9c971.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/cbf53884d35bad2318d74e5834b4e66f2c267f466d6d2c5b1eefc6cc344bb41d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/cc6aa245c41fbba0e55f5a1698cb6bebc92c92d5717dc7a21f630b51a07fb7d2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ccbe119eaa2360390636e27d80f83193af9a6857c5bebad2c2d5334ba76c0f56.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/cd4d48fd0fbbeae17477126a18f27107d744f53ee4bad26bf7ac7362a01a1ee1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ce78bede39165e07ab0495678d450759373c7ade7d8708a42ad8a7430c56ff3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/cfa84bba59cf13a0870579720a69240a02533a728381284aac3ca32c78cce02b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d0e77028cbc00f838759754d963c51f8f285aa883c141630ac3c27d7a2c42173.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d10302ef71186d808b274db76e74da0836e9e8aa78e2016e42f1e00956ec279f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d18b7d8b0ac52559ef5fa3ea585441c11e677dc667a889b1f874c11881fd162c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d3329e29c1f4ad2775b9385764e70337c3fb5e1fbb22f010e3924811203fcc1e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d372907824760edbfacfb24f1e9fe0defa34b16840c6eef5e27d598be3185d3b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d3f7227f93021596761641534743de7b37b5a5c28dc5589501fc53ba395f327a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d47f293ee477857b7c85c501bcaa641e6bb153d0d6da135688af2d480f4dfa68.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d50d8c5b694b28c1c9178f3327938ecd15c7bd795f285d6fe1f390257cef25bc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d5294f496203827a14a224d3069ae355218638fc6788220791292641847f302f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/d661f114d2eb810c13328facfa01609d27a98c9d2e0fefaeb304c6027461143b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/da23c47d84d99e881c7f8b7db3f6bbbdfe627c888b14766f2bba5f7bce6540f2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/dbc790cf3c98a176b47c9b673e44173e28c3f6f985fd142cab203ce3a31e1d73.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/dc4ca950b558e63e4a80a4764bc8302b9c96cc899f29cf7aa35c624fa20418ac.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/dce1f2e86356ed7db35b43a33db74865eab998f66a4cd96d791ebc33ecafa846.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/dddbafc10b11f5d90633b62474e5c7b334ab8d4f7f5db1184064c5c0f15b557c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/de81a70a9b3d3ee14ecc237bb3b1be5c9d193db9ef9f72ec45ef255d576ebf20.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/def8c36d069d1d747a5c914d96f85a307d0273e8240190bda8c05a5fb253e538.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/df3b959034aefa7122efc9e65a21c7479325f0cc361ee2ace420144ab2de6b35.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e0474fbd2d9b9d281a6c17b93dd7a2dac19b1fbd00ee18f2558bbb240a02bdd5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e061d9f73f64040a62e7f301146f74d3042081f393e8ad24ef17e61e9dcb7f1b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e081bb6e9dffdfa99b6190f8d6e77db9932e32994f105042b3b9e98f5ece185c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e0fcdd2324a4940c045463a733bcc538a3f54050c835131161e6794e72ae262e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e3d0a3993206e390485c5134f9f38c84dcc3b852b36194a9c1b8a25e02206975.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e53c303965603c66ac3847b586157070e1631c8d9cb16b26439e75bce054530c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e588a921fdb3211b77ac4840ca6dda0a46cae36451dd169d9738abcc3f74bd96.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e629865a216b4dbf8035b5f2094ffd7d31b8b41a80c23a64323cb7880934c41c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e713449b91a015879859aaa2a591b965bb354e5b853f5f16b1a780ef5349e85a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e90c77669554b97a39fff4dd61d66753e5dac85d81dfc7c579f15cc5965c2c3c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/e970d14b5ad3f71b1fe7a100efaac3947c91c522b15232c177ba5adf49a6e3c6.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ea2c52a37c879fa658a3c268576da9268d8181383881bc3ec901b38b9d79fa02.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/eaa3e43f62f68e188a568f39e16a53057aa8fada5807c5fcc181e8a1fc0e86a5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/eab349fc3e0a6fc67c1d53b64effd14ec3bc955fb7f925145cf9840659a176e2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/eabe802e382bcc84d66ffc610b2c9acb14ab7779e66cdb316cd6a5e95479edac.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/eafe88ed0a7a155637ab72078148fc83512056687e3ebf19aa4e593bd819b722.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ebd602a94b06cad26bccbbe82e7e3bf2748659c46b629d5c6839556a2df74933.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ec37498412ba996eb914c316f996f0bff8ec3e63999f2372b5d7f52946cc4960.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/eecf3d5a9cc8d1295a6029dad49bd51878c4404296ff4b2f079f2b60c2aaf764.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ef6e011e2d6f3ef583f44fc9e6cc99d5612ae5a3c4290187d07e6d3f14ccff2e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f102aa79680e54912509c316d970efb1cb59002d4b0b3a9ddc521781b110c476.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f232d47ba1e82080b7a153d4f66258829072cc65ac25e5237040ff5fbc9210db.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f235bf7bbcaccd9735d839558e8d587afbd776538e3e3259d5a3cf5c7a8f7622.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f40b5d71028e34b3066af5b4bbbbb7ca9018e55da8c4909fd9fb76f32b1233be.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f4ae6f15f74828790de4ca12f8eb2fd0ebbe5ac4cdaf74807d8b7a8de6742587.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f509ec898a79dd962768954b636b169ef5df56663f697663032148cd5ed83321.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f5778df07e8c257649b52d9bf8c69ca33587402e2fd15e5573ead702ac12a930.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f5a99eec7260b1ba0d4a496e8e6e788ef41d59da2b8595b8f6aa77d2cd74c1b4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f6fa5e46e60172c96e238bb45b84a663851c8c64e7322c8cb21cc3aa5ea6e9b9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f7bb479821cb3345b3ece09fb1b6f9e1b7e78e8ef47877011ba503b35b6b2182.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f827672efd0231468536230e6cde9a7cb855e6578771342c24187fb435073b26.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f8ef0ceac0bba10403c9046e79d082fbdac1d47ee51b48914a715abccbc8d535.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/f97060ce14565e15eda37a41bccd1609f6ceea3bec67cda42b236a9d8d907bcc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fa4435536ae3d955cad3c8222ed2115bb4b36ccba82ac1e8d7e1a768bb78db4e.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fab422fe84d8a012ed3b8864ed115c39d24a8940b64ccaebb102018850a66f00.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fb2f1d9a944f84ff1a0021b6f1f7bde8209cb3f2f50b6b11868b811d356ecb15.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fb40206d9fcfef7cbed5b5e6a34fea916af6bfe42f543e7a38dd78635d4a9f81.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fb4068797af61cb51b897299395e84c1a467269f97222cb46172de8287d310cb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fc4d4b6f66236bdbf8049f2a7ac26c78c4e7d07522ac78092d247768d9198354.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fcc4e0809beedcf13129cfeb82b892a90b4f75973c93fec87cf081f9d7686ac9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/fcf5b8a9c6a1215afba4a8852d19c38f3aaaa0cf5293f8085fcc1ccdada6d737.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/.angular/cache/16.2.9/babel-webpack/ffa8b6b3e62dda80b8c7fedeacfdc53698b6a314e077e96fdfe1d0e6a6557deb.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/caniuse-lite/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/caniuse-lite/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-chromium-versions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-chromium-versions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-chromium-versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-chromium-versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-versions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-versions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/full-versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/node_modules/electron-to-chromium/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,7 +14,7 @@
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/user-service" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -327,29 +25,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "go.import.settings.migrated": "true",
-<<<<<<< HEAD
-    "last_opened_file_path": "C:/Users/babic/OneDrive/Desktop/airbnb-sit/airbnb-sit/backend",
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/airbnb-sit/airbnb-sit/backend&quot;,
 =======
-    "last_opened_file_path": "C:/Users/babic/OneDrive/Desktop/aco sobe/airbnb-sit/backend/accommodation-service",
->>>>>>> main
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)"
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/aco sobe/airbnb-sit/backend/accommodation-service&quot;,
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; main
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

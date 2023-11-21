@@ -18,7 +18,7 @@ import { AccommodationsComponent } from './accommodations/accommodations.compone
     LoginPageComponent,
     RegisterPageComponent,
     NavBarComponent,
-    AccommodationsComponent
+    AccommodationsComponent,
     
 
   ],
