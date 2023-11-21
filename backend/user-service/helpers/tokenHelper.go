@@ -3,8 +3,15 @@ package helper
 import (
 	"context"
 	"fmt"
+<<<<<<< HEAD
 	"log"
 	"os"
+=======
+	"github.com/gin-gonic/gin"
+	"log"
+	"os"
+	"strings"
+>>>>>>> main
 	"time"
 
 	"backend/database"
@@ -126,3 +133,19 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 
 	return
 }
+<<<<<<< HEAD
+=======
+
+func ExtractRefreshToken(c *gin.Context) string {
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		return ""
+	}
+	tokenParts := strings.Split(authHeader, " ")
+	if len(tokenParts) != 2 || strings.ToLower(tokenParts[0]) != "bearer" {
+		return ""
+	}
+
+	return tokenParts[1]
+}
+>>>>>>> main

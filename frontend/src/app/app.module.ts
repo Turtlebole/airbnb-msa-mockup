@@ -3,22 +3,31 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import{FormsModule, ReactiveFormsModule} from '@angular/forms'
+import{HttpClientModule } from '@angular/common/http';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
-import { ProfileComponent } from './profile/profile.component';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    AccommodationsComponent,
-    ProfileComponent
+    LoginPageComponent,
+    RegisterPageComponent,
+    NavBarComponent,
+    AccommodationsComponent
+    
+
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
