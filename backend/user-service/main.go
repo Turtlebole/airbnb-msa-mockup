@@ -1,20 +1,12 @@
 package main
 
 import (
-	"os"
-<<<<<<< HEAD
-=======
-	"time"
->>>>>>> main
-
 	routes "backend/routes"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
-<<<<<<< HEAD
-=======
 	cors "github.com/itsjamie/gin-cors"
->>>>>>> main
+	"os"
+	"time"
 )
 
 func main() {
@@ -27,8 +19,6 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 
-<<<<<<< HEAD
-=======
 	// CORS
 	router.Use(cors.Middleware(cors.Config{
 		Origins:         "http://localhost:4200, *",
@@ -40,7 +30,6 @@ func main() {
 		ValidateHeaders: false,
 	}))
 
->>>>>>> main
 	routes.AuthRoutes(router)
 	routes.UserRoutes(router)
 
