@@ -33,11 +33,13 @@ export class AppComponent implements OnInit {
 
     this.http.get<any>('http://localhost:8000/users/get', httpOptions).subscribe(
       (res: any) => {
+
         console.log(res);
         this.message = `Welcome ${res.first_name}`;
         Emitters.authEmitter.emit(true);
       },
       (err) => {
+        console.log(httpOptions)
         console.log(err);
         this.message = 'You are not logged in';
         Emitters.authEmitter.emit(false);

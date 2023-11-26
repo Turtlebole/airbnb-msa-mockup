@@ -2,7 +2,9 @@ package middleware
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 
 	helper "backend/helpers"
 
@@ -12,15 +14,23 @@ import (
 // Validates token
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		l := log.New(gin.DefaultWriter, "Authenticator ", log.LstdFlags)
 		clientToken := c.Request.Header.Get("token")
 		if clientToken == "" {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("No Authorization header provided")})
-			c.Abort()
+			authHeader := c.GetHeader("Authorization")
+			clientToken = strings.Split(authHeader, "Bearer ")[1]
+			if clientToken == "" {
+				l.Println("No Authorization header provided")
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("No Authorization header provided")})
+				c.Abort()
+				return
+			}
 			return
 		}
 
 		claims, err := helper.ValidateToken(clientToken)
 		if err != "" {
+			l.Println("Validating token failed")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 			c.Abort()
 			return

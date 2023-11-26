@@ -216,19 +216,39 @@ func GetUser() gin.HandlerFunc {
 }
 func GetUsers(c *gin.Context) {
 
-	// Retrieve the JWT token from the Authorization header
-	authHeader := c.GetHeader("Authorization")
-	tokenString := strings.Split(authHeader, "Bearer ")[1]
+	//sluzi za logovanje u konzolu, korisno
+	l := log.New(gin.DefaultWriter, "User Controller ", log.LstdFlags)
 
-	// Parse the JWT token
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	// Retrieve the JWT token from the Authorization header
+	authHeader := c.Request.Header["Authorization"]
+	if len(authHeader) == 0 {
+		c.JSON(http.StatusUnauthorized, "No header")
+		return
+	}
+	authString := strings.Join(authHeader, "")
+	tokenString := strings.Split(authString, "Bearer ")[1]
+
+	// Check that the token string is not empty
+	if len(tokenString) == 0 {
+		c.JSON(http.StatusUnauthorized, "Token empty")
+		return
+	}
+	//ovo sam menjao iz jwt.Parse u ParseWithClaims, jer moze da radi sa jwt.StandardClaims i MapClaims,
+	//dok Parase samo radi sa MapClaims
+	token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		l.Println("Parsing token..", tokenString)
 		// Verify the signing method
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("invalid signing method")
 		}
-		// Provide your JWT secret key for verification
 		return []byte(SECRET_KEY), nil
 	})
+	// // Parse the JWT token
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
+		return
+	}
 
 	// Handle token parsing errors
 	if err != nil {
@@ -237,14 +257,22 @@ func GetUsers(c *gin.Context) {
 	}
 
 	// Extract the claims from the parsed token
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
+	l.Println("Extract the claims from the parsed token")
+	//////////////////////// ovde je problem
+	// treba da procita token ali nece, kad sam koristio mapClaims prolazilo je ali je sve bilo null
+	// mozda vredi probati sve sa mapclaims probati opet
+	claims, ok := token.Claims.(jwt.StandardClaims)
+	if !ok {
+		l.Println("Token invalid")
+
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "token invalid"})
 		return
+
 	}
 
 	// Retrieve the user ID from the token claims
-	userID := claims["user_id"].(string)
+	l.Println("Retriving user id..")
+	userID := claims.Subject
 
 	if err := helper.MatchUserTypeToUid(c, userID); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
