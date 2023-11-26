@@ -9,6 +9,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import{FormsModule, ReactiveFormsModule} from '@angular/forms'
 import{HttpClientModule } from '@angular/common/http';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
+import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
 
 
 
@@ -19,6 +20,7 @@ import { AccommodationsComponent } from './accommodations/accommodations.compone
     RegisterPageComponent,
     NavBarComponent,
     AccommodationsComponent,
+    AccommodationCreateComponent,
     
 
   ],

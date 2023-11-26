@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   getUserData(token: string): void {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
+        'Authorization': "Bearer " + token,
       }),
       withCredentials: true
     };
