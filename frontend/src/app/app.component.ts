@@ -1,44 +1,47 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Emitters } from './emitters/emitters';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
-export class AppComponent {
-  constructor(
-    private http:HttpClient
-  ){
-  }
+export class AppComponent implements OnInit {
   title = 'home';
-  message='';
+  message = '';
+  token: string | null = localStorage.getItem('token');
 
-  token=localStorage.getItem('token')
+  constructor(private http: HttpClient) {}
 
-  ngOnInit():void{
+  ngOnInit(): void {
+    if (this.token) {
+      this.getUserData(this.token);
+    } else {
+      this.message = 'No token found. Please log in.';
+      Emitters.authEmitter.emit(false);
+    }
+  }
+
+  getUserData(token: string): void {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer '+this.token
+        'Authorization': `Bearer ${token}`
       }),
-      withCredentials: true   // Assuming you need to send credentials along with the request
+      withCredentials: true
     };
 
-    this.http.get('http://localhost:8000/users/get',httpOptions).subscribe(
-      res=>{
+    this.http.get<any>('http://localhost:8000/users/get', httpOptions).subscribe(
+      (res: any) => {
         console.log(res);
-        this.message='Welcome ${res.first_name}';
-
+        this.message = `Welcome ${res.first_name}`;
         Emitters.authEmitter.emit(true);
       },
-      err=>{
+      (err) => {
         console.log(err);
-        this.message='You are not logged in'
-        Emitters.authEmitter.emit(true);
+        this.message = 'You are not logged in';
+        Emitters.authEmitter.emit(false);
       }
-    )
+    );
   }
 }

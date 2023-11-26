@@ -24,6 +24,7 @@ export class RegisterPageComponent implements OnInit {
         last_name:'',
         password:'',
         phone:'',
+        address:'',
         email:'',
         user_type:"UUser"
 
