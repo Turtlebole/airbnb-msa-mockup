@@ -6,13 +6,12 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import{FormsModule, ReactiveFormsModule} from '@angular/forms'
-import{HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
 import { ProfileComponent } from './profile/profile.component';
-
-
+import { UserService } from './user.service';
 
 @NgModule({
   declarations: [
@@ -23,17 +22,15 @@ import { ProfileComponent } from './profile/profile.component';
     AccommodationsComponent,
     AccommodationCreateComponent,
     ProfileComponent,
-    
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [UserService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

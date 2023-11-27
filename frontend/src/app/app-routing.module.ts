@@ -5,16 +5,16 @@ import { CommonModule } from '@angular/common';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
+import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
-  {path: 'login', component: LoginPageComponent},
-  {path: 'sign-up', component: RegisterPageComponent},
-  {path: 'accommodations', component:AccommodationsComponent},
-  {path: 'accommodationsCreate', component:AccommodationCreateComponent} 
-
-
+  { path: 'login', component: LoginPageComponent },
+  { path: 'sign-up', component: RegisterPageComponent },
+  { path: 'accommodations', component: AccommodationsComponent },
+  { path: 'accommodationsCreate', component: AccommodationCreateComponent },
+  { path: 'profile', component: ProfileComponent },
 ];
 @NgModule({
-  imports: [CommonModule,RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [CommonModule, RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

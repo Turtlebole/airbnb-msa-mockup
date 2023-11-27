@@ -1,15 +1,13 @@
 <div class="profile">
-  <div class="profile-info">
-    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-    <p>Email: {{ user.email }}</p>
-    <p>Phone: {{ user.phone }}</p>
-    <p>Address: {{ user.address }}</p>
-    <p>User Type: {{ user.user_type }}</p>
-    <p>Created At: {{ user.created_at | date }}</p>
-    <p>Updated At: {{ user.updated_at | date }}</p>
+  <div class="profile-info" *ngIf="user">
+    <h2>{{ user.user.first_name }} {{ user.user.last_name }}</h2>
+    <p>Email: {{ user.user.email }}</p>
+    <p>Phone: {{ user.user.phone }}</p>
+    <p>Address: {{ user.user.address }}</p>
+    <p>User Type: {{ user.user.user_type }}</p>
   </div>
 
-  <div *ngIf="user.user_type === 'UUser'">
+  <div *ngIf="user && user.user.user_type === 'UUser'">
     <button (click)="becomeHost()">Become Host</button>
   </div>
 </div>

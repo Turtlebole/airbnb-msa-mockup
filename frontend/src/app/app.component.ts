@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Emitters } from './emitters/emitters';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   message = '';
   token: string | null = localStorage.getItem('token');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   ngOnInit(): void {
     if (this.token) {
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
           console.log(res);
           this.message = `Welcome ${res.first_name}`;
           Emitters.authEmitter.emit(true);
+          this.userService.updateUser(res); // Notify other components about the user update
         },
         (err) => {
           console.log(err);
