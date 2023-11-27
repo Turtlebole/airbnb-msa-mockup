@@ -15,7 +15,7 @@ type User struct {
 	Phone         *string            `json:"phone" validate:"required"`
 	Address       *string            `json:"address" validate:"required"`
 	Token         *string            `json:"token"`
-	User_type     *string            `json:"user_type" validate:"required,oneof=GUEST HOST UUser"`
+	User_type     *string            `json:"user_type" validate:"required,oneof=Guest Host UUser"`
 	Refresh_token *string            `json:"refresh_token"`
 	Created_at    time.Time          `json:"created_at"`
 	Updated_at    time.Time          `json:"updated_at"`

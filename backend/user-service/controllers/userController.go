@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
@@ -27,6 +28,34 @@ import (
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
 var validate = validator.New()
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
+var blacklistedPasswords []string
+
+func init() {
+	// Read blacklisted passwords from the external file
+	file, err := os.Open("controllers/blacklistedPasswords.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		blacklistedPasswords = append(blacklistedPasswords, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func isBlacklistedPassword(password string) bool {
+	for _, blacklisted := range blacklistedPasswords {
+		if password == blacklisted {
+			return true
+		}
+	}
+	return false
+}
 
 // HashPassword is used to encrypt the password before it is stored in the DB
 func HashPassword(password string) string {
@@ -67,6 +96,10 @@ func Register() gin.HandlerFunc {
 		validationErr := validate.Struct(user)
 		if validationErr != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": validationErr.Error()})
+			return
+		}
+		if isBlacklistedPassword(*user.Password) {
+			c.JSON(http.StatusOK, gin.H{"message": "The chosen password is blacklisted"})
 			return
 		}
 
