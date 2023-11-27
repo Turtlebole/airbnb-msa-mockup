@@ -7,7 +7,7 @@ import { Emitters } from '../emitters/emitters';
 @Component({
   selector: 'app-accommodation-create',
   templateUrl: './accommodation-create.component.html',
-  styleUrls: ['./accommodation-create.component.css']
+  styleUrls: ['./accommodation-create.component.css'],
 })
 export class AccommodationCreateComponent implements OnInit {
   form: FormGroup = new FormGroup({});
@@ -28,13 +28,13 @@ export class AccommodationCreateComponent implements OnInit {
       min_guests: '',
       max_guests: '',
       availability: 'available',
-      price_per_night: ''
+      price_per_night: '',
     });
 
     if (this.token) {
       this.getUserData(this.token);
     } else {
-      console.log("No token found. Please log in.");
+      console.log('No token found. Please log in.');
       Emitters.authEmitter.emit(false);
     }
   }
@@ -42,29 +42,32 @@ export class AccommodationCreateComponent implements OnInit {
   getUserData(token: string): void {
     this.httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
+        Authorization: 'Bearer ' + token,
       }),
-      withCredentials: true
+      withCredentials: true,
     };
   }
 
   updateAmenities(event: any): void {
-    const amenitiesArray = event.target.value.split(',').map((item: string) => item.trim());
+    const amenitiesArray = event.target.value
+      .split(',')
+      .map((item: string) => item.trim());
     this.form.patchValue({ amenities: amenitiesArray });
   }
 
-
   submit(): void {
-  const requestData = this.form.getRawValue();
-  console.log('Request Data:', requestData);
+    const requestData = this.form.getRawValue();
+    console.log('Request Data:', requestData);
 
-  this.http.post('http://localhost:8000/accommodations/create', requestData, this.httpOptions)
-    .subscribe(
-      () => this.router.navigate(['/accommodationsCreate']),
-      (error) => console.error('Error:', error)
-    );
-}
-
-
-  
+    this.http
+      .post(
+        'http://localhost:8000/accommodations/create',
+        requestData,
+        this.httpOptions
+      )
+      .subscribe(
+        () => this.router.navigate(['/accommodationsCreate']),
+        (error) => console.error('Error:', error)
+      );
+  }
 }

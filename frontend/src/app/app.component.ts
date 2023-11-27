@@ -5,7 +5,7 @@ import { Emitters } from './emitters/emitters';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   title = 'home';
@@ -26,22 +26,24 @@ export class AppComponent implements OnInit {
   getUserData(token: string): void {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Authorization': "Bearer " + token,
+        Authorization: 'Bearer ' + token,
       }),
-      withCredentials: true
+      withCredentials: true,
     };
 
-    this.http.get<any>('http://localhost:8000/users/get', httpOptions).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.message = `Welcome ${res.first_name}`;
-        Emitters.authEmitter.emit(true);
-      },
-      (err) => {
-        console.log(err);
-        this.message = 'You are not logged in';
-        Emitters.authEmitter.emit(false);
-      }
-    );
+    this.http
+      .get<any>('http://localhost:8000/users/get', httpOptions)
+      .subscribe(
+        (res: any) => {
+          console.log(res);
+          this.message = `Welcome ${res.first_name}`;
+          Emitters.authEmitter.emit(true);
+        },
+        (err) => {
+          console.log(err);
+          this.message = 'You are not logged in';
+          Emitters.authEmitter.emit(false);
+        }
+      );
   }
 }

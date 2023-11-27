@@ -10,6 +10,7 @@ import{FormsModule, ReactiveFormsModule} from '@angular/forms'
 import{HttpClientModule } from '@angular/common/http';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -21,6 +22,7 @@ import { AccommodationCreateComponent } from './accommodation-create/accommodati
     NavBarComponent,
     AccommodationsComponent,
     AccommodationCreateComponent,
+    ProfileComponent,
     
 
   ],

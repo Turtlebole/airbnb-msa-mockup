@@ -14,4 +14,5 @@ func UserRoutes(routes *gin.Engine) {
 	routes.GET("/users/get", func(c *gin.Context) {
 		controller.GetUsers(c)
 	})
+	routes.POST("/users/become-host/:user_id", controller.BecomeHost())
 }

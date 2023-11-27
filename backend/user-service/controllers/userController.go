@@ -3,15 +3,12 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"log"
-
+	"net/http"
 	"os"
 	"strings"
-
-	"net/http"
 	"time"
-
-	"github.com/dgrijalva/jwt-go"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -121,6 +118,7 @@ func Register() gin.HandlerFunc {
 // Login is the api used to tget a single user
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		fmt.Println("Request headers:", c.Errors)
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 		var user models.User
 		var foundUser models.User
@@ -215,50 +213,110 @@ func GetUser() gin.HandlerFunc {
 
 }
 func GetUsers(c *gin.Context) {
-
+	//sluzi za logovanje u konzolu, korisno
+	l := log.New(gin.DefaultWriter, "User Controller ", log.LstdFlags)
 	// Retrieve the JWT token from the Authorization header
-	authHeader := c.GetHeader("Authorization")
-	tokenString := strings.Split(authHeader, "Bearer ")[1]
+	authHeader := c.Request.Header["Authorization"]
 
-	// Parse the JWT token
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	if len(authHeader) == 0 {
+		c.JSON(http.StatusUnauthorized, "No header")
+		return
+	}
+	authString := strings.Join(authHeader, "")
+	tokenString := strings.Split(authString, "Bearer ")[1]
+
+	// Check that the token string is not empty
+	if len(tokenString) == 0 {
+		c.JSON(http.StatusUnauthorized, "Token empty")
+		return
+	}
+
+	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
+		l.Println("Parsing token..", tokenString)
 		// Verify the signing method
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("invalid signing method")
 		}
-		// Provide your JWT secret key for verification
 		return []byte(SECRET_KEY), nil
 	})
 
 	// Handle token parsing errors
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Extract the claims from the parsed token
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || !token.Valid {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
 		return
 	}
 
-	// Retrieve the user ID from the token claims
-	userID := claims["user_id"].(string)
-
-	if err := helper.MatchUserTypeToUid(c, userID); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// Extract the claims from the parsed token
+	l.Println("Extract the claims from the parsed token")
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		l.Println("Token invalid")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "token invalid"})
 		return
 	}
+
+	// Decode the token without verifying the signature
+	parsedToken, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
+	if err != nil {
+		// Handle error
+		l.Println("Error decoding token without verification:", err)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "error decoding token"})
+		return
+	}
+
+	// Log the token claims
+	l.Println("Token claims:", parsedToken.Claims)
+
+	// Retrieve the user ID from the token claims
+	l.Println("Retrieving user id..")
+	userID, ok := claims["Uid"].(string) //Check which claims you're selecting
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "user ID not found in token"})
+		return
+	}
+
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	var user models.User
-
 	userCollection.FindOne(ctx, bson.M{"user_id": userID}).Decode(&user)
 	defer cancel()
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"user_id": userID, "user": user})
+}
+
+func BecomeHost() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+
+		// Get the user ID from the request parameters
+		userID := c.Param("user_id")
+
+		// Verify that the user making the request has the necessary permissions
+		if err := helper.MatchUserTypeToUid(c, userID); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			cancel()
+			return
+		}
+
+		// Update the user's user_type to "Host" in the database
+		update := bson.M{"$set": bson.M{"user_type": "Host"}}
+		result, err := userCollection.UpdateOne(ctx, bson.M{"user_id": userID}, update)
+		defer cancel()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user type"})
+			return
+		}
+
+		if result.ModifiedCount == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"success": "User became a host"})
+	}
 }
