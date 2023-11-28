@@ -37,11 +37,9 @@ func Rbac(c *gin.Context, address string) {
 		c.JSON(http.StatusUnauthorized, "Error")
 		c.Next()
 	}
-	// ovde trebad a bude user role (ur), permission koji se proverava
-	//i unutar funkcije valdja sta se desava ako je granted perm
-	if rbac.IsGranted(ur, address) {
+	// if rbac.IsGranted(ur, address) {
 
-	}
+	// }
 
 	c.Next()
 
