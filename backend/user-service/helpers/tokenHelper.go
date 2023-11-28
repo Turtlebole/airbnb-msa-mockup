@@ -3,11 +3,12 @@ package helper
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	"backend/database"
 
@@ -130,11 +131,13 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 }
 
 func ExtractRefreshToken(c *gin.Context) string {
+
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		return ""
 	}
 	tokenParts := strings.Split(authHeader, " ")
+
 	if len(tokenParts) != 2 || strings.ToLower(tokenParts[0]) != "bearer" {
 		return ""
 	}

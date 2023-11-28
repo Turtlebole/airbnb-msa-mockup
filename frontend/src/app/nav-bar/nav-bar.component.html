@@ -22,7 +22,7 @@
     <li><a routerLink="profile" class="nav-link px-2">Profile</a></li>
   </ul>
 
-  <div class="col-md-3 text-end" *ngIf="!authenticated">
+  <div class="col-md-3 text-end" *ngIf="!authed">
     <a routerLink="login">
       <button type="button" class="btn btn-outline-primary me-2">
         Login
@@ -33,15 +33,13 @@
     >
   </div>
 
-  <div class="col-md-3 text-end" *ngIf="authenticated">
+  <div class="col-md-3 text-end" *ngIf="authed">
     <a routerLink="">
       <button
         type="button"
         class="btn btn-outline-primary me-2"
         (click)="logout()"
-      >
-        Logout
-      </button></a
-    >
+      >Logout</button></a>
   </div>
 </header>
+{{message}}
