@@ -152,63 +152,61 @@ func Register() gin.HandlerFunc {
 }
 
 // Login is the api used to tget a single user
-func Login() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		fmt.Println("Request headers:", c.Errors)
-		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		var user models.User
-		var foundUser models.User
+func Login(c *gin.Context) {
 
-		if err := c.BindJSON(&user); err != nil {
-			// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": ""})
-			fmt.Println("I am here")
-			return
-		}
+	fmt.Println("Request headers:", c.Errors)
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	var user models.User
+	var foundUser models.User
 
-		err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
-		defer cancel()
-		if err != nil {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": "login or passowrd is incorrect"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
+	if err := c.BindJSON(&user); err != nil {
+		// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": ""})
+		fmt.Println("I am here")
+		return
+	}
 
-		passwordIsValid, _ := VerifyPassword(*user.Password, *foundUser.Password)
-		defer cancel()
-		if passwordIsValid != true {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
+	err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
+	defer cancel()
+	if err != nil {
+		// c.JSON(http.StatusInternalServerError, gin.H{"error": "login or passowrd is incorrect"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-			return
+	passwordIsValid, _ := VerifyPassword(*user.Password, *foundUser.Password)
+	defer cancel()
+	if passwordIsValid != true {
+		// c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
 
-		}
-
-		if foundUser.Email == nil {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
-			return
-		}
-		token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
-
-		helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
-		err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		c.JSON(http.StatusOK, foundUser)
+		return
 
 	}
+
+	if foundUser.Email == nil {
+		// c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
+		return
+	}
+	token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, foundUser.User_id)
+
+	helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
+	err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, foundUser)
 }
 
 func Logout() gin.HandlerFunc {

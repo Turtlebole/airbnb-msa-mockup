@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
       // Ensure user is defined before updating the property
+      console.log(user)
       if (user) {
         this.user = user;
         console.log(user.user.first_name);
