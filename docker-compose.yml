@@ -1,0 +1,25 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    depends_on:
+      - user-service
+      - accommodation-service
+
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+      
+  accommodation-service:
+    build:
+      context: ./backend/accommodation-service
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
