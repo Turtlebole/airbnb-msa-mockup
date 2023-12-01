@@ -11,10 +11,10 @@ COPY . .
 RUN go build -o main .
 
 # Set the environment variable for the port the microservice listens on
-ENV PORT=8000
+ENV PORT=8080
 
 # Expose the specified port
-EXPOSE 8000
+EXPOSE 8080
 
 # Specify the command to run the binary when the container starts
 CMD ["./main"]
