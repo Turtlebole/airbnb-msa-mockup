@@ -61,7 +61,7 @@ export class AccommodationCreateComponent implements OnInit {
 
     this.http
       .post(
-        'http://localhost:8000/accommodations/create',
+        'http://localhost:8001/accommodations/create',
         requestData,
         this.httpOptions
       )

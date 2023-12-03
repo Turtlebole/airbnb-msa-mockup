@@ -1,0 +1,19 @@
+http {
+    server {
+        listen 4200;
+        server_name localhost;  # Replace with your desired domain name or URL path
+
+        location /users {
+            proxy_pass http://localhost:8000;  # Replace with the URL/port of the users-service
+        }
+
+        location /accommodations {
+            proxy_pass http://localhost:8001;  # Replace with the URL/port of the accommodations-service
+        }
+
+        location / {
+            root /dist/frontend/;  # Replace with the path to your Angular app's build output
+            try_files $uri $uri/ /index.html =404;
+        }
+    }
+}
