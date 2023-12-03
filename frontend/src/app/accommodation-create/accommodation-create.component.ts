@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emitters } from '../emitters/emitters';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-accommodation-create',
@@ -13,14 +14,25 @@ export class AccommodationCreateComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   token: string | null = localStorage.getItem('token');
   httpOptions: any; // Declare httpOptions at the class level
+  sanitizedContent!: SafeHtml;
 
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
+  
+  sanitizeInput(input: any): any {
+    if (typeof input === 'string') {
+      const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
+      input = input.replace(blockedCharactersPattern, '');
+    }
+    return input;
+  }
 
   ngOnInit(): void {
+    
     this.form = this.formBuilder.group({
       name: '',
       location: '',
@@ -58,10 +70,16 @@ export class AccommodationCreateComponent implements OnInit {
   submit(): void {
     const requestData = this.form.getRawValue();
     console.log('Request Data:', requestData);
+    requestData.name = this.sanitizeInput(requestData.name);
+    requestData.location = this.sanitizeInput(requestData.location);
+    requestData.amenities = this.sanitizeInput(requestData.amenities);
+    requestData.max_guests = this.sanitizeInput(requestData.max_guests);
+    requestData.min_guests = this.sanitizeInput(requestData.min_guests);
+    requestData.price_per_night = this.sanitizeInput(requestData.price_per_night);
 
     this.http
       .post(
-        'http://localhost:8001/accommodations/create',
+        'http://localhost:8000/accommodations/create',
         requestData,
         this.httpOptions
       )
