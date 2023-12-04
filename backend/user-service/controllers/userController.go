@@ -3,14 +3,15 @@ package controllers
 import (
 	"bufio"
 	"context"
+	"crypto/rand"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
+	"net/smtp"
 	"os"
 	"strings"
 	"time"
-
-	"github.com/dgrijalva/jwt-go"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -30,6 +31,141 @@ var userCollection *mongo.Collection = database.OpenCollection(database.Client, 
 var validate = validator.New()
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
 var blacklistedPasswords []string
+
+// Function to generate a random token (used for password recovery)
+func generateRandomToken() string {
+	token := make([]byte, 32)
+	_, err := rand.Read(token)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fmt.Sprintf("%x", token)
+}
+
+// SendEmail sends an email with the given subject and body to the specified recipient
+func SendEmail(to, subject, body string) error {
+	// Set up authentication information
+	auth := smtp.PlainAuth("", "agustina21@ethereal.email", "JKfDUgkC9tNCUZSK9u", "smtp.ethereal.email")
+
+	// Compose the email message
+	msg := fmt.Sprintf("To: %s\r\nSubject: %s\r\n\r\n%s", to, subject, body)
+
+	// Connect to the server, authenticate, and send the email
+	err := smtp.SendMail("smtp.ethereal.email:587", auth, "your-email@example.com", []string{to}, []byte(msg))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Endpoint for initiating password reset (password recovery)
+func RequestPasswordReset() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Get user's email from the request
+		email := c.PostForm("email")
+
+		// Check if the email exists in the database
+		var user models.User
+		err := userCollection.FindOne(context.TODO(), bson.M{"email": email}).Decode(&user)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+
+		// Generate a unique token
+		token := generateRandomToken()
+
+		// Save the token and timestamp in the database
+		resetToken := models.PasswordResetToken{
+			Token:     token,
+			ExpiresAt: time.Now().Add(time.Hour * 2), // Token is valid for 2 hours (adjust as needed)
+		}
+
+		update := bson.M{
+			"$set": bson.M{"PasswordResetToken": resetToken},
+		}
+
+		_, err = userCollection.UpdateOne(
+			context.TODO(),
+			bson.M{"email": email},
+			update,
+		)
+
+		if err != nil {
+			log.Println("Error updating user with password reset token:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to initiate password reset"})
+			return
+		}
+
+		// Email to the user with a link containing the token
+		emailSubject := "Password Reset Instructions"
+		emailBody := fmt.Sprintf("Click the following link to reset your password: https://your-app.com/reset?token=%s", token)
+
+		err = SendEmail(email, emailSubject, emailBody)
+		if err != nil {
+			log.Println("Error sending email:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send email"})
+			return
+		}
+
+		// Return success response
+		c.JSON(http.StatusOK, gin.H{"message": "Password reset initiated. Check your email for instructions."})
+	}
+}
+
+// Endpoint for resetting the password
+func ResetPassword() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Get user's email, token, and new password from the request
+		email := c.PostForm("email")
+		token := c.PostForm("token")
+		newPassword := c.PostForm("newPassword")
+
+		// Retrieve the user from the database by email
+		var user models.User
+		err := userCollection.FindOne(context.TODO(), bson.M{"email": email}).Decode(&user)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+
+		// Check if the user has a valid password reset token
+		if user.PasswordResetToken == nil || user.PasswordResetToken.Token != token {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+			return
+		}
+
+		// Check if the token is still valid (not expired)
+		if time.Now().After(user.PasswordResetToken.ExpiresAt) {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token has expired"})
+			return
+		}
+
+		// Update the user's password in the database
+		hashedPassword := HashPassword(newPassword)
+		update := bson.M{
+			"$set": bson.M{
+				"password":             hashedPassword,
+				"password_reset_token": nil, // Clear the password reset token after use
+			},
+		}
+
+		_, err = userCollection.UpdateOne(
+			context.TODO(),
+			bson.M{"email": email},
+			update,
+		)
+
+		if err != nil {
+			log.Println("Error updating user password:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to reset password"})
+			return
+		}
+
+		// Return success response
+		c.JSON(http.StatusOK, gin.H{"message": "Password reset successful"})
+	}
+}
 
 func init() {
 	// Read blacklisted passwords from the external file
