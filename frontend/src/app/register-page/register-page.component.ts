@@ -32,7 +32,7 @@ export class RegisterPageComponent implements OnInit {
     this.form = this.formBuilder.group({
       first_name: '',
       last_name: '',
-      password: ['',[Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z0-9!@#$%^&*()_+]{11,}$/)]],
+      password: ['',[Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+,.])[a-zA-Z0-9!@#$%^&*()_+,.]{11,}$/)]],
       phone: ['',[Validators.pattern(/^(?:[0-9] ?){6,12}[0-9]$/)],],
       address: '',
       email: ['',[Validators.pattern(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)],],
@@ -63,7 +63,7 @@ export class RegisterPageComponent implements OnInit {
     requestData.phone = this.sanitizeInput(requestData.phone);
 
     this.http
-      .post('http://localhost:8000/api/user/users/register', this.form.getRawValue())
+      .post('/api/user/users/register', this.form.getRawValue())
       .subscribe(
         (response: any) => {
           if (

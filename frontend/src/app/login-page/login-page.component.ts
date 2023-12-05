@@ -17,7 +17,7 @@ export class LoginPageComponent {
     private formBuilder: FormBuilder,
     private http:HttpClient,
     private router:Router
-    
+
     ){
   }
 
@@ -43,17 +43,16 @@ export class LoginPageComponent {
     requestData.email = this.sanitizeInput(requestData.email);
     requestData.password = this.sanitizeInput(requestData.password);
 
-    
 
-    this.http.post<any>('http://localhost:8000/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
+
+    this.http.post<any>('/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
       .subscribe(
         (res: any) => {
           const token = res.token;
+
           localStorage.setItem('token', token);
+          console.log(res)
           this.router.navigate(['/']);
-        },
-        (error) => {
-          console.error(error);
         }
       );
   }
