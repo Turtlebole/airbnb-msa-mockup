@@ -30,7 +30,7 @@ import (
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
 var validate = validator.New()
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
-var blacklistedPasswords []string
+var blacklistedPasswords map[string]bool
 
 // Function to generate a random token (used for password recovery)
 func generateRandomToken() string {
@@ -174,10 +174,11 @@ func init() {
 		log.Fatal(err)
 	}
 	defer file.Close()
+	blacklistedPasswords = make(map[string]bool)
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		blacklistedPasswords = append(blacklistedPasswords, scanner.Text())
+		blacklistedPasswords[scanner.Text()] = true
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -186,12 +187,7 @@ func init() {
 }
 
 func isBlacklistedPassword(password string) bool {
-	for _, blacklisted := range blacklistedPasswords {
-		if password == blacklisted {
-			return true
-		}
-	}
-	return false
+	return blacklistedPasswords[password]
 }
 
 // HashPassword is used to encrypt the password before it is stored in the DB

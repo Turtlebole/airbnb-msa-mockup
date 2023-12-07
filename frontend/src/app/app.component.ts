@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     };
 
     this.http
-      .get<any>('http://localhost:8000/users/get', httpOptions)
+      .get<any>('https://localhost:8000/users/get', httpOptions)
       .subscribe(
         (res: any) => {
           console.log(res);
