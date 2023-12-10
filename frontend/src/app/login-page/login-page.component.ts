@@ -12,13 +12,15 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class LoginPageComponent {
   form: FormGroup = new FormGroup({});
-
+  token: string|undefined;
+  
   constructor(
     private formBuilder: FormBuilder,
     private http:HttpClient,
     private router:Router
     
     ){
+      this.token = undefined;
   }
 
   sanitizeInput(input: any): any {
@@ -57,4 +59,5 @@ export class LoginPageComponent {
         }
       );
   }
+  
 }
