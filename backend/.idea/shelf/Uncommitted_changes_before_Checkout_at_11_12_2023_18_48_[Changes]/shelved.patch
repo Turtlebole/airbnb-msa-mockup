@@ -1,0 +1,331 @@
+Index: ../frontend/src/app/accommodation-create/accommodation-create.component.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Component, OnInit } from '@angular/core';\r\nimport { HttpClient, HttpHeaders } from '@angular/common/http';\r\nimport { FormBuilder, FormGroup } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { Emitters } from '../emitters/emitters';\r\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\r\n\r\n@Component({\r\n  selector: 'app-accommodation-create',\r\n  templateUrl: './accommodation-create.component.html',\r\n  styleUrls: ['./accommodation-create.component.css'],\r\n})\r\nexport class AccommodationCreateComponent implements OnInit {\r\n  form: FormGroup = new FormGroup({});\r\n  token: string | null = localStorage.getItem('token');\r\n  httpOptions: any; // Declare httpOptions at the class level\r\n  sanitizedContent!: SafeHtml;\r\n\r\n  constructor(\r\n    private formBuilder: FormBuilder,\r\n    private http: HttpClient,\r\n    private router: Router,\r\n    private sanitizer: DomSanitizer\r\n  ) {}\r\n  \r\n  sanitizeInput(input: any): any {\r\n    if (typeof input === 'string') {\r\n      const blockedCharactersPattern = /[<>\"'`*/()\\[\\]?]/g;\r\n      input = input.replace(blockedCharactersPattern, '');\r\n    }\r\n    return input;\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    \r\n    this.form = this.formBuilder.group({\r\n      name: '',\r\n      location: '',\r\n      amenities: [],\r\n      min_guests: '',\r\n      max_guests: '',\r\n      availability: 'available',\r\n      price_per_night: '',\r\n    });\r\n\r\n    if (this.token) {\r\n      this.getUserData(this.token);\r\n    } else {\r\n      console.log('No token found. Please log in.');\r\n      Emitters.authEmitter.emit(false);\r\n    }\r\n  }\r\n\r\n  getUserData(token: string): void {\r\n    this.httpOptions = {\r\n      headers: new HttpHeaders({\r\n        Authorization: 'Bearer ' + token,\r\n      }),\r\n      withCredentials: true,\r\n    };\r\n  }\r\n\r\n  updateAmenities(event: any): void {\r\n    const amenitiesArray = event.target.value\r\n      .split(',')\r\n      .map((item: string) => item.trim());\r\n    this.form.patchValue({ amenities: amenitiesArray });\r\n  }\r\n\r\n  submit(): void {\r\n    const requestData = this.form.getRawValue();\r\n    console.log('Request Data:', requestData);\r\n    requestData.name = this.sanitizeInput(requestData.name);\r\n    requestData.location = this.sanitizeInput(requestData.location);\r\n    requestData.amenities = this.sanitizeInput(requestData.amenities);\r\n    requestData.max_guests = this.sanitizeInput(requestData.max_guests);\r\n    requestData.min_guests = this.sanitizeInput(requestData.min_guests);\r\n    requestData.price_per_night = this.sanitizeInput(requestData.price_per_night);\r\n\r\n    this.http\r\n      .post(\r\n        'http://localhost:8000/api/accommodations/accommodations/create',\r\n        requestData,\r\n        this.httpOptions\r\n      )\r\n      .subscribe(\r\n        () => this.router.navigate(['/accommodationsCreate']),\r\n        (error) => console.error('Error:', error)\r\n      );\r\n  }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/accommodation-create/accommodation-create.component.ts b/../frontend/src/app/accommodation-create/accommodation-create.component.ts
+--- a/../frontend/src/app/accommodation-create/accommodation-create.component.ts	
++++ b/../frontend/src/app/accommodation-create/accommodation-create.component.ts	
+@@ -14,32 +14,20 @@
+   form: FormGroup = new FormGroup({});
+   token: string | null = localStorage.getItem('token');
+   httpOptions: any; // Declare httpOptions at the class level
+-  sanitizedContent!: SafeHtml;
+ 
+   constructor(
+     private formBuilder: FormBuilder,
+     private http: HttpClient,
+-    private router: Router,
+-    private sanitizer: DomSanitizer
++    private router: Router
+   ) {}
+   
+-  sanitizeInput(input: any): any {
+-    if (typeof input === 'string') {
+-      const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
+-      input = input.replace(blockedCharactersPattern, '');
+-    }
+-    return input;
+-  }
+-
+   ngOnInit(): void {
+-    
+     this.form = this.formBuilder.group({
+       name: '',
+       location: '',
+-      amenities: [],
++      amenities: [], // Initialize amenities as an empty array
+       min_guests: '',
+       max_guests: '',
+-      availability: 'available',
+       price_per_night: '',
+     });
+ 
+@@ -60,22 +48,24 @@
+     };
+   }
+ 
+-  updateAmenities(event: any): void {
+-    const amenitiesArray = event.target.value
+-      .split(',')
+-      .map((item: string) => item.trim());
++  updateAmenities(event: any, amenity: string): void {
++    const amenitiesArray = this.form.get('amenities')?.value || [];
++
++    if (event.target.checked) {
++      amenitiesArray.push(amenity);
++    } else {
++      const index = amenitiesArray.indexOf(amenity);
++      if (index !== -1) {
++        amenitiesArray.splice(index, 1);
++      }
++    }
++
+     this.form.patchValue({ amenities: amenitiesArray });
+   }
+ 
+   submit(): void {
+     const requestData = this.form.getRawValue();
+     console.log('Request Data:', requestData);
+-    requestData.name = this.sanitizeInput(requestData.name);
+-    requestData.location = this.sanitizeInput(requestData.location);
+-    requestData.amenities = this.sanitizeInput(requestData.amenities);
+-    requestData.max_guests = this.sanitizeInput(requestData.max_guests);
+-    requestData.min_guests = this.sanitizeInput(requestData.min_guests);
+-    requestData.price_per_night = this.sanitizeInput(requestData.price_per_night);
+ 
+     this.http
+       .post(
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"ALL\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5fed0638-390b-4a51-94dd-e825f2054aa2\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"GOROOT\" url=\"file://$PROJECT_DIR$/../../../../../Program Files/Go\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 4\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2Y828n7QYvMuUWLIfUTdMUNWFt5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,\r\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/airbnb-sit/airbnb-sit/backend&quot;,\r\n=======\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/aco sobe/airbnb-sit/backend/accommodation-service&quot;,\r\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; main\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\" selected=\"Go Build.go build backend\">\r\n    <configuration name=\"go build backend (1)\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"backend\" />\r\n      <working_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <kind value=\"PACKAGE\" />\r\n      <package value=\"backend\" />\r\n      <directory value=\"$PROJECT_DIR$\" />\r\n      <filePath value=\"$PROJECT_DIR$/user-service/main.go\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"go build backend\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\">\r\n      <module name=\"backend\" />\r\n      <working_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <go_parameters value=\"-tags=debugger\" />\r\n      <useCustomBuildTags value=\"true\" />\r\n      <EXTENSION ID=\"net.ashald.envfile\">\r\n        <option name=\"IS_ENABLED\" value=\"true\" />\r\n        <option name=\"IS_SUBST\" value=\"false\" />\r\n        <option name=\"IS_PATH_MACRO_SUPPORTED\" value=\"false\" />\r\n        <option name=\"IS_IGNORE_MISSING_FILES\" value=\"false\" />\r\n        <option name=\"IS_ENABLE_EXPERIMENTAL_INTEGRATIONS\" value=\"false\" />\r\n        <ENTRIES>\r\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"runconfig\" IS_EXECUTABLE=\"false\" />\r\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"env\" IS_EXECUTABLE=\"false\" PATH=\"user-service/.env\" />\r\n        </ENTRIES>\r\n      </EXTENSION>\r\n      <kind value=\"DIRECTORY\" />\r\n      <package value=\"backend\" />\r\n      <directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <filePath value=\"$PROJECT_DIR$\" />\r\n      <output_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Go Build.go build backend\" />\r\n      <item itemvalue=\"Go Build.go build backend (1)\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Go Build.go build backend (1)\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VgoProject\">\r\n    <settings-migrated>true</settings-migrated>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -12,9 +12,23 @@
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../Program Files/Go" />
++  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
++  </component>
++  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
++  "lastFilter": {
++    "state": "OPEN",
++    "assignee": "Turtlebole"
++  }
++}]]></component>
++  <component name="GithubPullRequestsUISettings">
++    <option name="selectedUrlAndAccountId">
++      <UrlAndAccount>
++        <option name="accountId" value="1ddbaffa-7523-4abd-a8ad-7d6fc4859d6d" />
++        <option name="url" value="https://github.com/Turtlebole/airbnb-sit.git" />
++      </UrlAndAccount>
++    </option>
+   </component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
+Index: ../frontend/src/app/accommodation-create/accommodation-create.component.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><p>accommodation-create works!</p>\r\n<!doctype html>\r\n<html lang=\"en\">\r\n<head>\r\n  <meta charset=\"utf-8\">\r\n  <title>Create Accommodation</title>\r\n  <base href=\"/\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n  <link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\r\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN\" crossorigin=\"anonymous\">\r\n\r\n</head>\r\n<body>\r\n<form [formGroup]=\"form\" (submit)=\"submit()\">\r\n  <h1 class=\"h3 mb-3 fw-normal\">Creating accommodation</h1>\r\n\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"name\" type=\"text\" class=\"form-control\" id=\"floatingInput\" >\r\n    <label for=\"floatingInput\">Name</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"location\" type=\"text\" class=\"form-control\" id=\"floatingInput\" >\r\n    <label for=\"floatingInput\">Location</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <textarea formControlName=\"amenities\" class=\"form-control\" id=\"floatingInput\" (input)=\"updateAmenities($event)\"></textarea>\r\n    <label for=\"floatingInput\">Amenities</label>\r\n  </div>\r\n  \r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"min_guests\" type=\"number\" class=\"form-control\" id=\"floatingPassword\" >\r\n    <label for=\"floatingPassword\">Maximal Guests</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"max_guests\" type=\"number\" class=\"form-control\" id=\"floatingInput\" >\r\n    <label for=\"floatingInput\">Minimal Guests</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"price_per_night\" type=\"number\" class=\"form-control\" id=\"floatingInput\" placeholder=\"069696969\">\r\n    <label for=\"floatingInput\">Price Per Night</label>\r\n  </div>\r\n\r\n  <br>\r\n  <button class=\"btn btn-primary w-100 py-2\" type=\"submit\">Create</button>\r\n  <p class=\"mt-5 mb-3 text-body-secondary\">© 2017–2023</p>\r\n</form>\r\n\r\n</body>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/accommodation-create/accommodation-create.component.html b/../frontend/src/app/accommodation-create/accommodation-create.component.html
+--- a/../frontend/src/app/accommodation-create/accommodation-create.component.html	
++++ b/../frontend/src/app/accommodation-create/accommodation-create.component.html	
+@@ -12,7 +12,7 @@
+ </head>
+ <body>
+ <form [formGroup]="form" (submit)="submit()">
+-  <h1 class="h3 mb-3 fw-normal">Creating accommodation</h1>
++  <h1 class="h3 mb-3 fw-normal">Add your accommodation</h1>
+ 
+   <div class="form-floating">
+     <input formControlName="name" type="text" class="form-control" id="floatingInput" >
+@@ -21,12 +21,7 @@
+   <div class="form-floating">
+     <input formControlName="location" type="text" class="form-control" id="floatingInput" >
+     <label for="floatingInput">Location</label>
+-  </div>
+-  <div class="form-floating">
+-    <textarea formControlName="amenities" class="form-control" id="floatingInput" (input)="updateAmenities($event)"></textarea>
+-    <label for="floatingInput">Amenities</label>
+-  </div>
+-  
++  </div> 
+   <div class="form-floating">
+     <input formControlName="min_guests" type="number" class="form-control" id="floatingPassword" >
+     <label for="floatingPassword">Maximal Guests</label>
+@@ -39,7 +34,47 @@
+     <input formControlName="price_per_night" type="number" class="form-control" id="floatingInput" placeholder="069696969">
+     <label for="floatingInput">Price Per Night</label>
+   </div>
+-
++  <div class="form-group">
++    <label for="amenities">Amenities</label>
++    <div>
++      <div class="form-check">
++        <input formControlName="wifi" class="form-check-input" type="checkbox" id="wifi" value="wifi" (change)="updateAmenities($event, 'wifi')">
++        <label class="form-check-label" for="wifi">
++          Wi-Fi
++        </label>
++      </div>
++      <div class="form-check">
++        <input formControlName="pool" class="form-check-input" type="checkbox" id="pool" value="pool" (change)="updateAmenities($event, 'pool')">
++        <label class="form-check-label" for="pool">
++          Pool
++        </label>
++      </div>
++      <div class="form-check">
++        <input formControlName="gym" class="form-check-input" type="checkbox" id="gym" value="gym" (change)="updateAmenities($event, 'gym')">
++        <label class="form-check-label" for="gym">
++          Gym
++        </label>
++      </div>
++      <div class="form-check">
++        <input formControlName="wellness" class="form-check-input" type="checkbox" id="wellness" value="wellness" (change)="updateAmenities($event, 'wellness')">
++        <label class="form-check-label" for="wellness">
++          Wellness
++        </label>
++      </div>
++      <div class="form-check">
++        <input formControlName="restaurant" class="form-check-input" type="checkbox" id="restaurant" value="restaurant" (change)="updateAmenities($event, 'restaurant')">
++        <label class="form-check-label" for="restaurant">
++          Restaurant
++        </label>
++      </div>
++      <div class="form-check">
++        <input formControlName="allInclusive" class="form-check-input" type="checkbox" id="allInclusive" value="allInclusive" (change)="updateAmenities($event, 'allInclusive')">
++        <label class="form-check-label" for="allInclusive">
++          All Inclusive
++        </label>
++      </div>
++    </div>
++  </div>
+   <br>
+   <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
+   <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+Index: ../frontend/src/app/register-page/register-page.component.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!doctype html>\r\n<html lang=\"en\">\r\n<head>\r\n  <meta charset=\"utf-8\">\r\n  <title>Sign-up</title>\r\n  <base href=\"/\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n  <link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico\">\r\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN\" crossorigin=\"anonymous\">\r\n\r\n</head>\r\n<body>\r\n<form [formGroup]=\"form\" (submit)=\"submit()\">\r\n  <h1 class=\"h3 mb-3 fw-normal\">Please sign up</h1>\r\n\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"first_name\" type=\"text\" class=\"form-control\" id=\"floatingInput\" placeholder=\"Dragan\">\r\n    <label for=\"floatingInput\">First name</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"last_name\" type=\"text\" class=\"form-control\" id=\"floatingInput\" placeholder=\"Draganski\">\r\n    <label for=\"floatingInput\">Last name</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"email\" type=\"email\" class=\"form-control\" id=\"floatingInput\" placeholder=\"name@example.com\">\r\n    <label for=\"floatingInput\">Email address</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"password\" type=\"password\" class=\"form-control\" id=\"floatingPassword\" placeholder=\"Password\">\r\n    <label for=\"floatingPassword\">Password</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"address\" type=\"text\" class=\"form-control\" id=\"floatingInput\" placeholder=\"Becej lol\">\r\n    <label for=\"floatingInput\">Address</label>\r\n  </div>\r\n  <div class=\"form-floating\">\r\n    <input formControlName=\"phone\" type=\"text\" class=\"form-control\" id=\"floatingInput\" placeholder=\"069696969\">\r\n    <label for=\"floatingInput\">Phone</label>\r\n  </div>\r\n<!--\r\n  <div class=\"form-check text-start my-3\">\r\n    <input class=\"form-check-input\" type=\"checkbox\" value=\"remember-me\" id=\"flexCheckDefault\">\r\n    <label class=\"form-check-label\" for=\"flexCheckDefault\">\r\n      Remember me\r\n    </label>\r\n  </div>\r\n  -->\r\n  <br>\r\n  <button class=\"btn btn-primary w-100 py-2\" type=\"submit\">Sign in</button>\r\n  <p class=\"mt-5 mb-3 text-body-secondary\">© 2017–2023</p>\r\n</form>\r\n\r\n</body>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/register-page/register-page.component.html b/../frontend/src/app/register-page/register-page.component.html
+--- a/../frontend/src/app/register-page/register-page.component.html	
++++ b/../frontend/src/app/register-page/register-page.component.html	
+@@ -10,44 +10,62 @@
+ 
+ </head>
+ <body>
+-<form [formGroup]="form" (submit)="submit()">
+-  <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+-
+-  <div class="form-floating">
+-    <input formControlName="first_name" type="text" class="form-control" id="floatingInput" placeholder="Dragan">
+-    <label for="floatingInput">First name</label>
+-  </div>
+-  <div class="form-floating">
+-    <input formControlName="last_name" type="text" class="form-control" id="floatingInput" placeholder="Draganski">
+-    <label for="floatingInput">Last name</label>
+-  </div>
+-  <div class="form-floating">
+-    <input formControlName="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+-    <label for="floatingInput">Email address</label>
+-  </div>
+-  <div class="form-floating">
+-    <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+-    <label for="floatingPassword">Password</label>
+-  </div>
+-  <div class="form-floating">
+-    <input formControlName="address" type="text" class="form-control" id="floatingInput" placeholder="Becej lol">
+-    <label for="floatingInput">Address</label>
+-  </div>
+-  <div class="form-floating">
+-    <input formControlName="phone" type="text" class="form-control" id="floatingInput" placeholder="069696969">
+-    <label for="floatingInput">Phone</label>
+-  </div>
+-<!--
+-  <div class="form-check text-start my-3">
+-    <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+-    <label class="form-check-label" for="flexCheckDefault">
+-      Remember me
+-    </label>
+-  </div>
+-  -->
+-  <br>
+-  <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+-  <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+-</form>
+-
++  <div class="container-fluid ps-md-0">
++    <div class="row g-0">
++      <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
++      <div class="col-md-8 col-lg-6">
++        <div class="login d-flex align-items-center py-5">
++          <div class="container">
++            <div class="row">
++              <div class="col-md-9 col-lg-8 mx-auto">
++                <h3 class="login-heading mb-4">Welcome to Air-bnb, make an account</h3>
++  
++                <!-- Sign In Form -->
++                <form [formGroup]="form" (submit)="submit()">
++                  <div class="form-floating">
++                    <input formControlName="first_name" type="text" class="form-control" id="floatingInput" placeholder="Dragan">
++                    <label for="floatingInput">First name</label>
++                  </div>
++                  <div class="form-floating">
++                    <input formControlName="last_name" type="text" class="form-control" id="floatingInput" placeholder="Draganski">
++                    <label for="floatingInput">Last name</label>
++                  </div>
++                  <div class="form-floating">
++                    <input formControlName="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
++                    <label for="floatingInput">Email address</label>
++                  </div>
++                  <div class="form-floating">
++                    <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
++                    <label for="floatingPassword">Password</label>
++                  </div>
++                  <div class="form-floating">
++                    <input formControlName="address" type="text" class="form-control" id="floatingInput" placeholder="Becej lol">
++                    <label for="floatingInput">Address</label>
++                  </div>
++                  <div class="form-floating">
++                    <input formControlName="phone" type="text" class="form-control" id="floatingInput" placeholder="069696969">
++                    <label for="floatingInput">Phone</label>
++                  </div>
++                  <div class="form-check mb-3">
++                    <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
++                    <label class="form-check-label" for="rememberPasswordCheck">
++                      Remember password
++                    </label>
++                  </div>
++  
++                  <div class="d-grid">
++                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign in</button>
++                    <div class="text-center">
++                      <a class="small" href="#">Forgot password?</a>
++                    </div>
++                  </div>
++  
++                </form>
++              </div>
++            </div>
++          </div>
++        </div>
++      </div>
++    </div>
++  </div>
+ </body>
+Index: ../frontend/src/app/login-page/login-page.component.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { HttpClient } from '@angular/common/http';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormBuilder,FormGroup,Validators } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\r\n\r\n\r\n@Component({\r\n  selector: 'login-page',\r\n  templateUrl: './login-page.component.html',\r\n  styleUrls: ['./login-page.component.css']\r\n})\r\nexport class LoginPageComponent {\r\n  form: FormGroup = new FormGroup({});\r\n  token: string|undefined;\r\n  \r\n  constructor(\r\n    private formBuilder: FormBuilder,\r\n    private http:HttpClient,\r\n    private router:Router\r\n    \r\n    ){\r\n      this.token = undefined;\r\n  }\r\n\r\n  sanitizeInput(input: any): any {\r\n    if (typeof input === 'string') {\r\n      const blockedCharactersPattern = /[<>\"'`*/()\\[\\]?]/g;\r\n      input = input.replace(blockedCharactersPattern, '');\r\n    }\r\n    return input;\r\n  }\r\n\r\n\r\n  ngOnInit():void{\r\n    this.form = this.formBuilder.group({\r\n      email:'',\r\n      password:''\r\n\r\n  });\r\n  }\r\n\r\n  submit(): void {\r\n    const requestData = this.form.getRawValue();\r\n    requestData.email = this.sanitizeInput(requestData.email);\r\n    requestData.password = this.sanitizeInput(requestData.password);\r\n\r\n    \r\n\r\n    this.http.post<any>('https://localhost/api/user/users/login', this.form.getRawValue(), { withCredentials: true })\r\n      .subscribe(\r\n        (res: any) => {\r\n          const token = res.token;\r\n          localStorage.setItem('token', token);\r\n          this.router.navigate(['/']);\r\n        },\r\n        (error) => {\r\n          console.error(error);\r\n        }\r\n      );\r\n  }\r\n  \r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/login-page/login-page.component.ts b/../frontend/src/app/login-page/login-page.component.ts
+--- a/../frontend/src/app/login-page/login-page.component.ts	
++++ b/../frontend/src/app/login-page/login-page.component.ts	
+@@ -52,7 +52,9 @@
+         (res: any) => {
+           const token = res.token;
+           localStorage.setItem('token', token);
+-          this.router.navigate(['/']);
++          this.router.navigate(['/']).then(() => {
++            window.location.reload();
++          });
+         },
+         (error) => {
+           console.error(error);

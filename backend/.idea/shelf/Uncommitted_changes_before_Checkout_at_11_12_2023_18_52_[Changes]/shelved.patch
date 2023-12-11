@@ -1,0 +1,187 @@
+Index: ../frontend/src/app/register-page/register-page.component.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.login {\r\n    min-height: 70vh;\r\n  }\r\n  \r\n  .bg-image {\r\n    background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');\r\n    background-size: cover;\r\n    background-position: center;\r\n    min-height: 70vh;\r\n  }\r\n  \r\n  .login-heading {\r\n    font-weight: 300;\r\n  }\r\n  \r\n  .btn-login {\r\n    font-size: 0.9rem;\r\n    letter-spacing: 0.05rem;\r\n    padding: 0.75rem 1rem;\r\n    background-color: #98ddfd;\r\n  }\r\n  \r\n  @media (min-width: 992px) {\r\n    .bg-image {\r\n      width: 40%; /* Adjust the width for larger screens */\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/register-page/register-page.component.css b/../frontend/src/app/register-page/register-page.component.css
+--- a/../frontend/src/app/register-page/register-page.component.css	
++++ b/../frontend/src/app/register-page/register-page.component.css	
+@@ -1,27 +1,54 @@
+ .login {
+     min-height: 70vh;
+   }
+-  
++
+   .bg-image {
+     background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');
+     background-size: cover;
+     background-position: center;
+     min-height: 70vh;
+   }
+-  
++
+   .login-heading {
+     font-weight: 300;
+   }
+-  
++
+   .btn-login {
+     font-size: 0.9rem;
+     letter-spacing: 0.05rem;
+     padding: 0.75rem 1rem;
+     background-color: #98ddfd;
+   }
+-  
++
+   @media (min-width: 992px) {
+     .bg-image {
+       width: 40%; /* Adjust the width for larger screens */
+     }
+-}
+\ No newline at end of file
++}
++.login {
++    min-height: 70vh;
++  }
++
++  .bg-image {
++    background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');
++    background-size: cover;
++    background-position: center;
++    min-height: 70vh;
++  }
++
++  .login-heading {
++    font-weight: 300;
++  }
++
++  .btn-login {
++    font-size: 0.9rem;
++    letter-spacing: 0.05rem;
++    padding: 0.75rem 1rem;
++    background-color: #98ddfd;
++  }
++
++  @media (min-width: 992px) {
++    .bg-image {
++      width: 40%; /* Adjust the width for larger screens */
++    }
++}
+Index: ../frontend/src/app/login-page/login-page.component.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.login {\r\n    min-height: 70vh;\r\n  }\r\n  \r\n  .bg-image {\r\n    background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');\r\n    background-size: cover;\r\n    background-position: center;\r\n    min-height: 70vh;\r\n  }\r\n  \r\n  .login-heading {\r\n    font-weight: 300;\r\n  }\r\n  \r\n  .btn-login {\r\n    font-size: 0.9rem;\r\n    letter-spacing: 0.05rem;\r\n    padding: 0.75rem 1rem;\r\n    background-color: #98ddfd;\r\n  }\r\n  \r\n  @media (min-width: 992px) {\r\n    .bg-image {\r\n      width: 40%; /* Adjust the width for larger screens */\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/app/login-page/login-page.component.css b/../frontend/src/app/login-page/login-page.component.css
+--- a/../frontend/src/app/login-page/login-page.component.css	
++++ b/../frontend/src/app/login-page/login-page.component.css	
+@@ -1,27 +1,54 @@
+ .login {
+     min-height: 70vh;
+   }
+-  
++
+   .bg-image {
+     background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');
+     background-size: cover;
+     background-position: center;
+     min-height: 70vh;
+   }
+-  
++
+   .login-heading {
+     font-weight: 300;
+   }
+-  
++
+   .btn-login {
+     font-size: 0.9rem;
+     letter-spacing: 0.05rem;
+     padding: 0.75rem 1rem;
+     background-color: #98ddfd;
+   }
+-  
++
+   @media (min-width: 992px) {
+     .bg-image {
+       width: 40%; /* Adjust the width for larger screens */
+     }
+-}
+\ No newline at end of file
++}
++.login {
++    min-height: 70vh;
++  }
++
++  .bg-image {
++    background-image: url('https://i.pinimg.com/564x/e5/14/c2/e514c287d7377157cef50c46db09ab66.jpg');
++    background-size: cover;
++    background-position: center;
++    min-height: 70vh;
++  }
++
++  .login-heading {
++    font-weight: 300;
++  }
++
++  .btn-login {
++    font-size: 0.9rem;
++    letter-spacing: 0.05rem;
++    padding: 0.75rem 1rem;
++    background-color: #98ddfd;
++  }
++
++  @media (min-width: 992px) {
++    .bg-image {
++      width: 40%; /* Adjust the width for larger screens */
++    }
++}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"ALL\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5fed0638-390b-4a51-94dd-e825f2054aa2\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"GOROOT\" url=\"file://$PROJECT_DIR$/../../../../../../../Program Files/Go\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\r\n  \"lastFilter\": {\r\n    \"state\": \"OPEN\",\r\n    \"assignee\": \"Turtlebole\"\r\n  }\r\n}]]></component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"1ddbaffa-7523-4abd-a8ad-7d6fc4859d6d\" />\r\n        <option name=\"url\" value=\"https://github.com/Turtlebole/airbnb-sit.git\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 4\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2Y828n7QYvMuUWLIfUTdMUNWFt5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,\r\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/airbnb-sit/airbnb-sit/backend&quot;,\r\n=======\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/babic/OneDrive/Desktop/aco sobe/airbnb-sit/backend/accommodation-service&quot;,\r\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; main\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\" selected=\"Go Build.go build backend\">\r\n    <configuration name=\"go build backend (1)\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"backend\" />\r\n      <working_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <kind value=\"PACKAGE\" />\r\n      <package value=\"backend\" />\r\n      <directory value=\"$PROJECT_DIR$\" />\r\n      <filePath value=\"$PROJECT_DIR$/user-service/main.go\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"go build backend\" type=\"GoApplicationRunConfiguration\" factoryName=\"Go Application\">\r\n      <module name=\"backend\" />\r\n      <working_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <go_parameters value=\"-tags=debugger\" />\r\n      <useCustomBuildTags value=\"true\" />\r\n      <EXTENSION ID=\"net.ashald.envfile\">\r\n        <option name=\"IS_ENABLED\" value=\"true\" />\r\n        <option name=\"IS_SUBST\" value=\"false\" />\r\n        <option name=\"IS_PATH_MACRO_SUPPORTED\" value=\"false\" />\r\n        <option name=\"IS_IGNORE_MISSING_FILES\" value=\"false\" />\r\n        <option name=\"IS_ENABLE_EXPERIMENTAL_INTEGRATIONS\" value=\"false\" />\r\n        <ENTRIES>\r\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"runconfig\" IS_EXECUTABLE=\"false\" />\r\n          <ENTRY IS_ENABLED=\"true\" PARSER=\"env\" IS_EXECUTABLE=\"false\" PATH=\"user-service/.env\" />\r\n        </ENTRIES>\r\n      </EXTENSION>\r\n      <kind value=\"DIRECTORY\" />\r\n      <package value=\"backend\" />\r\n      <directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <filePath value=\"$PROJECT_DIR$\" />\r\n      <output_directory value=\"$PROJECT_DIR$/user-service\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Go Build.go build backend\" />\r\n      <item itemvalue=\"Go Build.go build backend (1)\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Go Build.go build backend (1)\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VgoProject\">\r\n    <settings-migrated>true</settings-migrated>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -5,7 +5,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="5fed0638-390b-4a51-94dd-e825f2054aa2" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/../frontend/src/app/login-page/login-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/login-page/login-page.component.css" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/../frontend/src/app/register-page/register-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/register-page/register-page.component.css" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -14,14 +15,19 @@
+   </component>
+   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$/.." value="frontendCaptchaAndHttps" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "Turtlebole"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;Turtlebole&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="GithubPullRequestsUISettings">
+     <option name="selectedUrlAndAccountId">
+       <UrlAndAccount>
