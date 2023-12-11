@@ -5,13 +5,15 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"net/http"
 	"net/smtp"
 	"os"
+	"regexp"
 	"strings"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -24,6 +26,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -99,7 +102,7 @@ func RequestPasswordReset() gin.HandlerFunc {
 
 		// Email to the user with a link containing the token
 		emailSubject := "Password Reset Instructions"
-		emailBody := fmt.Sprintf("Click the following link to reset your password: https://your-app.com/reset?token=%s", token)
+		emailBody := fmt.Sprintf("Click the following link to reset your password: https://localhost:4200/reset-password?token=%s", token)
 
 		err = SendEmail(email, emailSubject, emailBody)
 		if err != nil {
@@ -489,5 +492,171 @@ func BecomeHost() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"success": "User became a host"})
+	}
+}
+func EditProfile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type EditUser struct {
+			First_name *string   `json:"first_name" validate:min=2,max=100"`
+			Last_name  *string   `json:"last_name" validate:"min=2,max=100"`
+			Email      *string   `json:"email" validate:"email"`
+			Phone      *string   `json:"phone" validate:"min=6"`
+			Address    *string   `json:"address" validate:"min=3"`
+			Token      *string   `json:"token"`
+			User_type  *string   `json:"user_type" validate:"oneof=Guest Host UUser"`
+			Updated_at time.Time `json:"updated_at"`
+		}
+		//	recieves user data and a token
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		var user EditUser
+		var foundUser models.User
+		tokenEmail := c.MustGet("email").(string)
+
+		if err := c.BindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"bind error": err.Error()})
+			defer cancel()
+			return
+		}
+		err := userCollection.FindOne(ctx, bson.M{"email": tokenEmail}).Decode(&foundUser)
+		defer cancel()
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"not found error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		validationErr := validate.Struct(user)
+		if validationErr != nil {
+			defer cancel()
+			c.JSON(http.StatusBadRequest, gin.H{"struct validation error": validationErr.Error()})
+			return
+		}
+
+		if *foundUser.Email != *user.Email {
+			count, err := userCollection.CountDocuments(ctx, bson.M{"email": user.Email})
+			defer cancel()
+			if err != nil {
+				log.Panic(err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for the email"})
+				return
+			}
+			if count > 0 {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "this email already exists"})
+				return
+			}
+		}
+
+		if foundUser.Phone != user.Phone {
+
+			count, err := userCollection.CountDocuments(ctx, bson.M{"phone": user.Phone})
+			defer cancel()
+			if err != nil {
+				log.Panic(err)
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for the phone number"})
+				return
+			}
+
+			if count > 0 {
+				defer cancel()
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "this phone number already exists"})
+				return
+			}
+		}
+		user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+
+		filter := bson.M{"user_id": foundUser.User_id}
+
+		update := bson.M{
+			"$set": bson.M{
+				"first_name": user.First_name,
+				"last_name":  user.Last_name,
+				"email":      user.Email,
+				"phone":      user.Phone,
+				"address":    user.Address,
+				"user_type":  user.User_type,
+				"updated_at": user.Updated_at,
+			},
+		}
+		updateOptions := options.Update().SetUpsert(false)
+		_, err = userCollection.UpdateOne(context.TODO(), filter, update, updateOptions)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+
+		defer cancel()
+		c.JSON(http.StatusOK, "Profile updated successfully")
+
+	}
+}
+func ChangePassword() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type Passwords struct {
+			Old_password *string `json:"old_password"`
+			New_password *string `json:"new_password" validate:"min=12"`
+		}
+		l := log.New(gin.DefaultWriter, "User controller ChangePassword() : ", log.LstdFlags)
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		tokenEmail := c.MustGet("email").(string)
+
+		var passwords Passwords
+		var foundUser models.User
+
+		if err := c.BindJSON(&passwords); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			defer cancel()
+			return
+		}
+		hashedOldPassword := ""
+		hashedNewPassword := ""
+		if passwords.Old_password != nil && passwords.New_password != nil {
+			hashedOldPassword = HashPassword(*passwords.Old_password)
+			hashedNewPassword = HashPassword(*passwords.New_password)
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Password cannot be empty"})
+		}
+
+		err := userCollection.FindOne(ctx, bson.M{"email": tokenEmail}).Decode(&foundUser)
+		defer cancel()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		l.Println("unhashed OldPassword: ", *passwords.Old_password)
+		l.Println("comparing passwords, founduser: ", *foundUser.Password)
+		l.Println("comparing passwords, hashedOldPassword ", hashedOldPassword)
+		passwordIsValid, _ := VerifyPassword(*passwords.Old_password, *foundUser.Password)
+		defer cancel()
+		if !passwordIsValid {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
+
+			return
+		}
+
+		if !strings.ContainsAny(*passwords.New_password, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+			defer cancel()
+			c.JSON(http.StatusBadRequest, gin.H{"password validation error": "Password needs to contain at least one Capital letter"})
+			return
+		}
+		specialCharRegex := regexp.MustCompile(`[!@#$%^&*()-_=+{};:'",.<>?/\\|[\]~]`)
+		if !specialCharRegex.MatchString(*passwords.New_password) {
+			defer cancel()
+			c.JSON(http.StatusBadRequest, gin.H{"password validation error": "Password needs to contain at least one special character"})
+			return
+		}
+		update := bson.M{
+			"$set": bson.M{
+				"password": hashedNewPassword,
+			},
+		}
+
+		_, err = userCollection.UpdateOne(
+			context.TODO(),
+			bson.M{"email": tokenEmail},
+			update,
+		)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		defer cancel()
+		c.JSON(http.StatusOK, "Password changed successfully")
 	}
 }
