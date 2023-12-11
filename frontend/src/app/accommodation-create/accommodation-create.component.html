@@ -12,7 +12,7 @@
 </head>
 <body>
 <form [formGroup]="form" (submit)="submit()">
-  <h1 class="h3 mb-3 fw-normal">Creating accommodation</h1>
+  <h1 class="h3 mb-3 fw-normal">Add your accommodation</h1>
 
   <div class="form-floating">
     <input formControlName="name" type="text" class="form-control" id="floatingInput" >
@@ -21,12 +21,7 @@
   <div class="form-floating">
     <input formControlName="location" type="text" class="form-control" id="floatingInput" >
     <label for="floatingInput">Location</label>
-  </div>
-  <div class="form-floating">
-    <textarea formControlName="amenities" class="form-control" id="floatingInput" (input)="updateAmenities($event)"></textarea>
-    <label for="floatingInput">Amenities</label>
-  </div>
-  
+  </div> 
   <div class="form-floating">
     <input formControlName="min_guests" type="number" class="form-control" id="floatingPassword" >
     <label for="floatingPassword">Maximal Guests</label>
@@ -39,7 +34,47 @@
     <input formControlName="price_per_night" type="number" class="form-control" id="floatingInput" placeholder="069696969">
     <label for="floatingInput">Price Per Night</label>
   </div>
-
+  <div class="form-group">
+    <label for="amenities">Amenities</label>
+    <div>
+      <div class="form-check">
+        <input formControlName="wifi" class="form-check-input" type="checkbox" id="wifi" value="wifi" (change)="updateAmenities($event, 'wifi')">
+        <label class="form-check-label" for="wifi">
+          Wi-Fi
+        </label>
+      </div>
+      <div class="form-check">
+        <input formControlName="pool" class="form-check-input" type="checkbox" id="pool" value="pool" (change)="updateAmenities($event, 'pool')">
+        <label class="form-check-label" for="pool">
+          Pool
+        </label>
+      </div>
+      <div class="form-check">
+        <input formControlName="gym" class="form-check-input" type="checkbox" id="gym" value="gym" (change)="updateAmenities($event, 'gym')">
+        <label class="form-check-label" for="gym">
+          Gym
+        </label>
+      </div>
+      <div class="form-check">
+        <input formControlName="wellness" class="form-check-input" type="checkbox" id="wellness" value="wellness" (change)="updateAmenities($event, 'wellness')">
+        <label class="form-check-label" for="wellness">
+          Wellness
+        </label>
+      </div>
+      <div class="form-check">
+        <input formControlName="restaurant" class="form-check-input" type="checkbox" id="restaurant" value="restaurant" (change)="updateAmenities($event, 'restaurant')">
+        <label class="form-check-label" for="restaurant">
+          Restaurant
+        </label>
+      </div>
+      <div class="form-check">
+        <input formControlName="allInclusive" class="form-check-input" type="checkbox" id="allInclusive" value="allInclusive" (change)="updateAmenities($event, 'allInclusive')">
+        <label class="form-check-label" for="allInclusive">
+          All Inclusive
+        </label>
+      </div>
+    </div>
+  </div>
   <br>
   <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
   <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>

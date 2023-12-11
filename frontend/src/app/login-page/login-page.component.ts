@@ -52,7 +52,9 @@ export class LoginPageComponent {
         (res: any) => {
           const token = res.token;
           localStorage.setItem('token', token);
-          this.router.navigate(['/']);
+          this.router.navigate(['/']).then(() => {
+            window.location.reload();
+          });
         },
         (error) => {
           console.error(error);
