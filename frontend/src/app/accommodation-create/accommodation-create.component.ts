@@ -22,7 +22,7 @@ export class AccommodationCreateComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-
+  
   sanitizeInput(input: any): any {
     if (typeof input === 'string') {
       const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
@@ -32,7 +32,7 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     this.form = this.formBuilder.group({
       name: '',
       location: '',
@@ -60,10 +60,18 @@ export class AccommodationCreateComponent implements OnInit {
     };
   }
 
-  updateAmenities(event: any): void {
-    const amenitiesArray = event.target.value
-      .split(',')
-      .map((item: string) => item.trim());
+  updateAmenities(event: any, amenity: string): void {
+    const amenitiesArray = this.form.get('amenities')?.value || [];
+
+    if (event.target.checked) {
+      amenitiesArray.push(amenity);
+    } else {
+      const index = amenitiesArray.indexOf(amenity);
+      if (index !== -1) {
+        amenitiesArray.splice(index, 1);
+      }
+    }
+
     this.form.patchValue({ amenities: amenitiesArray });
   }
 
@@ -79,7 +87,7 @@ export class AccommodationCreateComponent implements OnInit {
 
     this.http
       .post(
-        '/api/accommodations/accommodations/create',
+        'http://localhost:8000/api/accommodations/accommodations/create',
         requestData,
         this.httpOptions
       )

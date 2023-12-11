@@ -4,9 +4,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    networks:
-      - network
-      
+    ports:
+      - 4200:4200
+    depends_on:
+      - user-service
+      - accommodation-service
+
   api_gateway:
     container_name: api_gateway
     hostname: api_gateway
@@ -15,12 +18,8 @@ services:
       dockerfile: Dockerfile
     restart: on-failure
     ports:
-      - "4200:443"
+      - "443:443"
       - "8000:8000"
-    depends_on:
-      - user-service
-      - accommodation-service
-      - frontend
     networks:
       - network
 

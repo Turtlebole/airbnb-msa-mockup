@@ -18,7 +18,7 @@ export class LoginPageComponent {
     private formBuilder: FormBuilder,
     private http:HttpClient,
     private router:Router
-
+    
     ){
       this.token = undefined;
   }
@@ -45,15 +45,21 @@ export class LoginPageComponent {
     requestData.email = this.sanitizeInput(requestData.email);
     requestData.password = this.sanitizeInput(requestData.password);
 
+    
 
     this.http.post<any>('https://localhost/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
-        (res: any) => {
-          const token = res.token;
-
-          localStorage.setItem('token', token);
-          console.log(res)
-          this.router.navigate(['/']);
-        }
-      );
+    .subscribe(
+      (res: any) => {
+        const token = res.token;
+        localStorage.setItem('token', token);
+        this.router.navigate(['/']).then(() => {
+          window.location.reload();
+        });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
+  
 }

@@ -28,7 +28,7 @@ export class AccommodationsComponent implements OnInit {
   }
 
   fetchAccommodations(): void {
-    this.http.get<Accommodation[]>('api/accommodations/accommodations')
+    this.http.get<Accommodation[]>('http://localhost:8001/accommodations')
       .subscribe(
         (data: Accommodation[]) => {
           this.accommodations = data;
