@@ -60,10 +60,18 @@ export class AccommodationCreateComponent implements OnInit {
     };
   }
 
-  updateAmenities(event: any): void {
-    const amenitiesArray = event.target.value
-      .split(',')
-      .map((item: string) => item.trim());
+  updateAmenities(event: any, amenity: string): void {
+    const amenitiesArray = this.form.get('amenities')?.value || [];
+
+    if (event.target.checked) {
+      amenitiesArray.push(amenity);
+    } else {
+      const index = amenitiesArray.indexOf(amenity);
+      if (index !== -1) {
+        amenitiesArray.splice(index, 1);
+      }
+    }
+
     this.form.patchValue({ amenities: amenitiesArray });
   }
 

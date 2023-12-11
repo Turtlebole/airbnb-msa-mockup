@@ -48,16 +48,18 @@ export class LoginPageComponent {
     
 
     this.http.post<any>('https://localhost/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
-      .subscribe(
-        (res: any) => {
-          const token = res.token;
-          localStorage.setItem('token', token);
-          this.router.navigate(['/']);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+    .subscribe(
+      (res: any) => {
+        const token = res.token;
+        localStorage.setItem('token', token);
+        this.router.navigate(['/']).then(() => {
+          window.location.reload();
+        });
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
   
 }
