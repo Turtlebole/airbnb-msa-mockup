@@ -22,7 +22,7 @@ export class AccommodationCreateComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-  
+
   sanitizeInput(input: any): any {
     if (typeof input === 'string') {
       const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
@@ -32,7 +32,7 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this.form = this.formBuilder.group({
       name: '',
       location: '',
@@ -87,7 +87,7 @@ export class AccommodationCreateComponent implements OnInit {
 
     this.http
       .post(
-        'http://localhost:8000/api/accommodations/accommodations/create',
+        '/api/accommodations/accommodations/create',
         requestData,
         this.httpOptions
       )
