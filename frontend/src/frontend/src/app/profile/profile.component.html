@@ -1,0 +1,13 @@
+<div class="profile">
+  <div class="profile-info" *ngIf="user">
+    <h2>{{ user.user.first_name }} {{ user.user.last_name }}</h2>
+    <p>Email: {{ user.user.email }}</p>
+    <p>Phone: {{ user.user.phone }}</p>
+    <p>Address: {{ user.user.address }}</p>
+    <p>User Type: {{ user.user.user_type }}</p>
+  </div>
+
+  <div *ngIf="user && user.user.user_type === 'UUser'">
+    <button (click)="becomeHost()">Become Host</button>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    depends_on:
+      - user-service
+      - accommodation-service
+
+  api_gateway:
+    container_name: api_gateway
+    hostname: api_gateway
+    build:
+      context: ./backend/api_gateway
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "443:443"
+      - "8000:8000"
+    networks:
+      - network
+
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: dockerfile
+    container_name: "user-service"
+    hostname: "user-service"
+    ports:
+      - 8080:8080
+    networks:
+      - network
+
+  accommodation-service:
+    build:
+      context: ./backend/accommodation-service
+      dockerfile: dockerfile
+    container_name: "accommodation-service"
+    hostname: "accommodation-service"
+    ports:
+      - 8001:8001
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
