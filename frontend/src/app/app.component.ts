@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Emitters } from './emitters/emitters';
 import { UserService } from './user.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +12,13 @@ import { UserService } from './user.service';
 export class AppComponent implements OnInit {
   title = 'home';
   message = '';
-  token: string | null = localStorage.getItem('token');
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(private http: HttpClient, private userService: UserService) {
+    
+  }
 
   ngOnInit(): void {
-    if (this.token) {
-      this.getUserData(this.token);
-    } else {
-      this.message = 'No token found. Please log in.';
-      Emitters.authEmitter.emit(false);
-    }
+   
   }
 
   getUserData(token: string): void {
@@ -33,7 +30,7 @@ export class AppComponent implements OnInit {
     };
 
     this.http
-      .get<any>('/api/user/users/get', httpOptions)
+      .get<any>('https://localhost/api/user/users/get', httpOptions)
       .subscribe(
         (res: any) => {
           console.log(res);
@@ -48,4 +45,6 @@ export class AppComponent implements OnInit {
         }
       );
   }
+
+  
 }

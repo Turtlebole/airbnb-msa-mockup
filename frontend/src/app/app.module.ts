@@ -13,6 +13,10 @@ import { AccommodationCreateComponent } from './accommodation-create/accommodati
 import { ProfileComponent } from './profile/profile.component';
 import { UserService } from './user.service';
 
+import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+
+import { environment } from 'src/enviroments/enviroment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,8 +33,15 @@ import { UserService } from './user.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
-  providers: [UserService],
+  providers: [UserService,  {
+    provide: RECAPTCHA_SETTINGS,
+    useValue: {
+      siteKey: environment.recaptcha.siteKey,
+    } as RecaptchaSettings,
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

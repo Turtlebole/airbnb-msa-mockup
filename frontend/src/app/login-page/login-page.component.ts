@@ -12,13 +12,15 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class LoginPageComponent {
   form: FormGroup = new FormGroup({});
-
+  token: string|undefined;
+  
   constructor(
     private formBuilder: FormBuilder,
     private http:HttpClient,
     private router:Router
 
     ){
+      this.token = undefined;
   }
 
   sanitizeInput(input: any): any {
@@ -44,9 +46,7 @@ export class LoginPageComponent {
     requestData.password = this.sanitizeInput(requestData.password);
 
 
-
-    this.http.post<any>('/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
-      .subscribe(
+    this.http.post<any>('https://localhost/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
         (res: any) => {
           const token = res.token;
 

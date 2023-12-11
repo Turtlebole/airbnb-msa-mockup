@@ -45,7 +45,7 @@ const httpOptions = {
 };
 
 this.http
-  .get<any>('api/user/users/get', httpOptions)
+  .get<any>('https://localhost/api/user/users/get', httpOptions)
   .subscribe(
     (res: any) => {
     //  console.log(res);

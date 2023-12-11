@@ -57,6 +57,11 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "ssl": true,
+            "sslCert": "../backend/api_gateway/domain.crt",
+            "sslKey": "../backend/api_gateway/certificate.key"
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
