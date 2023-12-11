@@ -14,20 +14,32 @@ export class AccommodationCreateComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   token: string | null = localStorage.getItem('token');
   httpOptions: any; // Declare httpOptions at the class level
+  sanitizedContent!: SafeHtml;
 
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
   
+  sanitizeInput(input: any): any {
+    if (typeof input === 'string') {
+      const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
+      input = input.replace(blockedCharactersPattern, '');
+    }
+    return input;
+  }
+
   ngOnInit(): void {
+    
     this.form = this.formBuilder.group({
       name: '',
       location: '',
-      amenities: [], // Initialize amenities as an empty array
+      amenities: [],
       min_guests: '',
       max_guests: '',
+      availability: 'available',
       price_per_night: '',
     });
 
@@ -48,24 +60,22 @@ export class AccommodationCreateComponent implements OnInit {
     };
   }
 
-  updateAmenities(event: any, amenity: string): void {
-    const amenitiesArray = this.form.get('amenities')?.value || [];
-
-    if (event.target.checked) {
-      amenitiesArray.push(amenity);
-    } else {
-      const index = amenitiesArray.indexOf(amenity);
-      if (index !== -1) {
-        amenitiesArray.splice(index, 1);
-      }
-    }
-
+  updateAmenities(event: any): void {
+    const amenitiesArray = event.target.value
+      .split(',')
+      .map((item: string) => item.trim());
     this.form.patchValue({ amenities: amenitiesArray });
   }
 
   submit(): void {
     const requestData = this.form.getRawValue();
     console.log('Request Data:', requestData);
+    requestData.name = this.sanitizeInput(requestData.name);
+    requestData.location = this.sanitizeInput(requestData.location);
+    requestData.amenities = this.sanitizeInput(requestData.amenities);
+    requestData.max_guests = this.sanitizeInput(requestData.max_guests);
+    requestData.min_guests = this.sanitizeInput(requestData.min_guests);
+    requestData.price_per_night = this.sanitizeInput(requestData.price_per_night);
 
     this.http
       .post(
