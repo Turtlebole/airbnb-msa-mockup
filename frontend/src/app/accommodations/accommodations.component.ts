@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccommodationService } from 'src/app/accommodation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accommodations',
@@ -9,7 +10,10 @@ import { AccommodationService } from 'src/app/accommodation.service';
 export class AccommodationsComponent implements OnInit {
   accommodations: any[] = [];
 
-  constructor(private accommodationService: AccommodationService) {}
+  constructor(
+    private accommodationService: AccommodationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadAccommodations();
@@ -24,5 +28,15 @@ export class AccommodationsComponent implements OnInit {
         console.error('Error fetching accommodations:', error);
       }
     );
+  }
+
+  viewAccommodation(accommodation: any): void {
+    console.log('Viewing accommodation:', accommodation);
+    const accommodationId = accommodation?.id;
+    if (accommodationId) {
+      this.router.navigate(['/accommodations', accommodationId]);
+    } else {
+      console.error('Invalid accommodationId:', accommodationId);
+    }
   }
 }
