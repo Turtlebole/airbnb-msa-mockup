@@ -9,6 +9,7 @@ import (
 
 func AccommodationRoutes(router *gin.Engine) {
 	router.POST("/accommodations/create", controllers.CreateAccommodation())
+	router.PUT("/accommodations/:accommodation_id", controllers.UpdateAccommodation())
 	router.GET("/accommodations/:accommodation_id", controllers.GetAccommodation())
 	// Add more routes as needed for updating, deleting accommodations, etc.
 } // ok? aj pa sta Bog da

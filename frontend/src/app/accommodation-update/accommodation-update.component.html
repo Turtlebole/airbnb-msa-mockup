@@ -1,0 +1,51 @@
+<p>accommodation-create works!</p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Create Accommodation</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+  <form [formGroup]="form" (submit)="submit()">
+    <h1 class="h3 mb-3 fw-normal">Add your accommodation</h1>
+  
+    <div class="form-floating">
+      <input formControlName="name" type="text" class="form-control" id="floatingInput" [value]="accommodation.name">
+      <label for="name">Name</label>
+      </div>
+    <div class="form-floating">
+      <input formControlName="location" type="text" class="form-control" id="floatingInput" [value]="accommodation.location">
+      <label for="location">Location</label>
+    </div>
+    <div class="form-floating">
+      <input formControlName="min_guests" type="number" class="form-control" id="floatingPassword" [value]="accommodation.min_guests">
+      <label for="floatingPassword">Maximal Guests</label>
+    </div>
+    <div class="form-floating">
+      <input formControlName="max_guests" type="number" class="form-control" id="floatingInput" [value]="accommodation.max_guests">
+      <label for="floatingInput">Minimal Guests</label>
+    </div>
+    <div class="form-floating">
+      <input formControlName="price_per_night" type="number" class="form-control" id="floatingInput" [value]="accommodation.price_per_night">
+      <label for="floatingInput">Price Per Night</label>
+    </div>
+    <div class="form-group">
+        <label for="amenities">Amenities</label>
+        <div>
+          <div class="form-check" *ngFor="let amenity of amenities">
+            <input [formControlName]="amenity.key" class="form-check-input" type="checkbox" [id]="amenity.key" [value]="amenity.key">
+            <label class="form-check-label" [for]="amenity.key">{{amenity.label}}</label>
+          </div>
+        </div>
+    </div>      
+    <br>
+    <button class="btn btn-primary w-100 py-2" type="submit">Update</button>
+    <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+  </form>
+
+</body>
