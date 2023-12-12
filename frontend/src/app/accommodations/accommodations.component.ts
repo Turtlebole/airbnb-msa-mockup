@@ -1,41 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-interface Accommodation {
-  id: string;
-  name: string;
-  location: string;
-  amenities: string[];
-  minGuests: number;
-  maxGuests: number;
-  images: string[];
-  availability: string;
-  pricePerNight: number;
-}
+import { AccommodationService } from 'src/app/accommodation.service';
 
 @Component({
   selector: 'app-accommodations',
   templateUrl: './accommodations.component.html',
-  styleUrls: ['./accommodations.component.css']
+  styleUrls: ['./accommodations.component.css'],
 })
 export class AccommodationsComponent implements OnInit {
-  accommodations: Accommodation[] = [];
+  accommodations: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private accommodationService: AccommodationService) {}
 
   ngOnInit(): void {
-    this.fetchAccommodations();
+    this.loadAccommodations();
   }
 
-  fetchAccommodations(): void {
-    this.http.get<Accommodation[]>('http://localhost:8001/accommodations')
-      .subscribe(
-        (data: Accommodation[]) => {
-          this.accommodations = data;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+  loadAccommodations(): void {
+    this.accommodationService.getAllAccommodations().subscribe(
+      (data) => {
+        this.accommodations = data;
+      },
+      (error) => {
+        console.error('Error fetching accommodations:', error);
+      }
+    );
   }
 }

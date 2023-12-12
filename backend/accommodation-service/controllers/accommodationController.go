@@ -52,3 +52,23 @@ func GetAccommodation() gin.HandlerFunc {
 		c.JSON(http.StatusOK, accommodation)
 	}
 }
+
+func GetAllAccommodations() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var accommodations []models.Accommodation
+
+		cursor, err := accommodationCollection.Find(context.Background(), bson.M{})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch accommodations"})
+			return
+		}
+		defer cursor.Close(context.Background())
+
+		if err = cursor.All(context.Background(), &accommodations); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode accommodations"})
+			return
+		}
+
+		c.JSON(http.StatusOK, accommodations)
+	}
+}

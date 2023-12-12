@@ -22,7 +22,7 @@ export class AccommodationCreateComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-  
+
   sanitizeInput(input: any): any {
     if (typeof input === 'string') {
       const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
@@ -32,7 +32,6 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     this.form = this.formBuilder.group({
       name: '',
       location: '',
@@ -83,11 +82,13 @@ export class AccommodationCreateComponent implements OnInit {
     requestData.amenities = this.sanitizeInput(requestData.amenities);
     requestData.max_guests = this.sanitizeInput(requestData.max_guests);
     requestData.min_guests = this.sanitizeInput(requestData.min_guests);
-    requestData.price_per_night = this.sanitizeInput(requestData.price_per_night);
+    requestData.price_per_night = this.sanitizeInput(
+      requestData.price_per_night
+    );
 
     this.http
       .post(
-        'http://localhost:8000/api/accommodations/accommodations/create',
+        'https://localhost:8000/api/accommodations/accommodations/create',
         requestData,
         this.httpOptions
       )
