@@ -6,11 +6,13 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { AccommodationsComponent } from './accommodations/accommodations.component';
 import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'sign-up', component: RegisterPageComponent },
   { path: 'accommodations', component: AccommodationsComponent },
   { path: 'accommodationsCreate', component: AccommodationCreateComponent },
+  { path: 'edit/:id', component: AccommodationUpdateComponent},
   { path: 'profile', component: ProfileComponent },
 ];
 @NgModule({

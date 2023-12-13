@@ -16,6 +16,7 @@ import { UserService } from './user.service';
 import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
 
 import { environment } from 'src/enviroments/enviroment';
+import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { environment } from 'src/enviroments/enviroment';
     AccommodationsComponent,
     AccommodationCreateComponent,
     ProfileComponent,
+    AccommodationUpdateComponent,
   ],
   imports: [
     BrowserModule,

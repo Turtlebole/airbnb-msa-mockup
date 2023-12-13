@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"accommodation-service/database"
 	"accommodation-service/models"
 	"context"
 	"fmt"
@@ -22,7 +23,7 @@ type AccommodationRepo struct {
 
 // NoSQL: Constructor which reads db configuration from environment
 func New(ctx context.Context, logger *log.Logger) (*AccommodationRepo, error) {
-	dburi := os.Getenv("MONGO_DB_URI")
+	dburi := os.Getenv("MONGODB_URL")
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(dburi))
 	if err != nil {
@@ -104,28 +105,41 @@ func (ar *AccommodationRepo) Insert(accommodation *models.Accommodation) error {
 }
 
 func (ar *AccommodationRepo) Update(id string, accommodation *models.Accommodation) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
 	defer cancel()
-	accommodationsCollection := ar.getCollection()
+	//accommodationsCollection := ar.getCollection()
 
-	objID, _ := primitive.ObjectIDFromHex(id)
-	filter := bson.M{"_id": objID}
-	update := bson.M{"$set": bson.M{
-		"name":            accommodation.Name,
-		"min_guests":      accommodation.MinGuests,
-		"max_guests":      accommodation.MaxGuests,
-		"location":        accommodation.Location,
-		"amenities":       accommodation.Amenities,
-		"price_per_night": accommodation.PricePerNight,
-	}}
-	result, err := accommodationsCollection.UpdateOne(ctx, filter, update)
-	ar.logger.Printf("Documents matched: %v\n", result.MatchedCount)
-	ar.logger.Printf("Documents updated: %v\n", result.ModifiedCount)
+	var accommodationsCollection *mongo.Collection = database.OpenCollection(database.Client, "accommodations")
 
+	// Convert string ID to ObjectID
+	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		ar.logger.Println(err)
 		return err
 	}
+
+	filter := bson.M{"_id": objID}
+	// filter := bson.M{"name": "sadradimozda"}
+	update := bson.M{
+		"$set": bson.M{
+			"name":            accommodation.Name,
+			"minguests":       accommodation.MinGuests,
+			"maxguests":       accommodation.MaxGuests,
+			"location":        accommodation.Location,
+			"amenities":       accommodation.Amenities,
+			"pricepernight": accommodation.PricePerNight,
+		},
+	}
+
+	result, err := accommodationsCollection.UpdateOne(ctx, filter, update)
+
+	if err != nil {
+		return err
+	}
+
+	if result.ModifiedCount == 0 {
+		return fmt.Errorf("no document found for update")
+	}
+
 	return nil
 }
 

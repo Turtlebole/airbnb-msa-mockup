@@ -4,13 +4,28 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fed0638-390b-4a51-94dd-e825f2054aa2" name="Changes" comment="" />
+    <list default="true" id="5fed0638-390b-4a51-94dd-e825f2054aa2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accommodation-service/.env" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accommodation-service/controllers/accommodationController.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/controllers/accommodationController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accommodation-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accommodation-service/repositories/accommodationRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/repositories/accommodationRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accommodation-service/routes/accommodationRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/routes/accommodationRouter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodation-create/accommodation-create.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodation-create/accommodation-create.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -46,7 +61,16 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;
   }
 }</component>
-  <component name="RunManager" selected="Go Build.go build backend">
+  <component name="RunManager" selected="Go Build.go build accommodation-service">
+    <configuration name="go build accommodation-service" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <working_directory value="$PROJECT_DIR$/accommodation-service" />
+      <kind value="PACKAGE" />
+      <package value="accommodation-service" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/accommodation-service/main.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build backend (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <working_directory value="$PROJECT_DIR$/user-service" />
@@ -81,13 +105,22 @@
     </configuration>
     <list>
       <item itemvalue="Go Build.go build backend" />
+      <item itemvalue="Go Build.go build accommodation-service" />
       <item itemvalue="Go Build.go build backend (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build accommodation-service" />
         <item itemvalue="Go Build.go build backend (1)" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-467a64f6063b-ee0e143f3e2b-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.11799.228" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

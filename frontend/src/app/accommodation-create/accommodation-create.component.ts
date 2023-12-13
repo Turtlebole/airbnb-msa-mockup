@@ -87,12 +87,12 @@ export class AccommodationCreateComponent implements OnInit {
 
     this.http
       .post(
-        'http://localhost:8000/api/accommodations/accommodations/create',
+        'https://localhost/api/accommodations/accommodations/create',
         requestData,
         this.httpOptions
       )
       .subscribe(
-        () => this.router.navigate(['/accommodationsCreate']),
+        () => this.router.navigate(['/accommodations']),
         (error) => console.error('Error:', error)
       );
   }
