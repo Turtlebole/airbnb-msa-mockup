@@ -17,6 +17,7 @@ import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSet
 
 import { environment } from 'src/enviroments/enviroment';
 import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
+import { AccommodationDetailsComponent } from './accommodation-details/accommodation-details.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AccommodationUpdateComponent } from './accommodation-update/accommodati
     AccommodationCreateComponent,
     ProfileComponent,
     AccommodationUpdateComponent,
+    AccommodationDetailsComponent,
   ],
   imports: [
     BrowserModule,

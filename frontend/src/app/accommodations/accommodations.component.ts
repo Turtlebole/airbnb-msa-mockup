@@ -35,32 +35,36 @@ export class AccommodationsComponent implements OnInit {
   }
 
   applyFilters(): void {
-    this.filteredAccommodations = this.accommodations.filter((accommodation) => {
-      let passLocationFilter = true;
-      let passGuestsFilter = true;
+    this.filteredAccommodations = this.accommodations.filter(
+      (accommodation) => {
+        let passLocationFilter = true;
+        let passGuestsFilter = true;
 
-      if (this.locationFilter) {
-        passLocationFilter = accommodation.location.toLowerCase().includes(this.locationFilter.toLowerCase());
-      }
+        if (this.locationFilter) {
+          passLocationFilter = accommodation.location
+            .toLowerCase()
+            .includes(this.locationFilter.toLowerCase());
+        }
 
-      if (this.guestsFilter !== null) {
-        passGuestsFilter =
-          accommodation.min_guests <= this.guestsFilter && accommodation.max_guests >= this.guestsFilter;
-      }
+        if (this.guestsFilter !== null) {
+          passGuestsFilter =
+            accommodation.min_guests <= this.guestsFilter &&
+            accommodation.max_guests >= this.guestsFilter;
+        }
 
-      return passLocationFilter && passGuestsFilter;
-    });
-  }
-
-  viewAccommodation(accommodationId: string): void {
-    this.accommodationService.deleteAccommodation(accommodationId).subscribe(
-      () => {
-        this.loadAccommodations();
-      },
-      (error) => {
-        console.error('Error deleting accommodation:', error);
+        return passLocationFilter && passGuestsFilter;
       }
     );
+  }
+
+  viewAccommodation(accommodation: any): void {
+    console.log('Viewing accommodation:', accommodation);
+    const accommodationId = accommodation?.id;
+    if (accommodationId) {
+      this.router.navigate(['/accommodations', accommodationId]);
+    } else {
+      console.error('Invalid accommodationId:', accommodationId);
+    }
   }
 
   editAccommodation(accommodationId: string): void {

@@ -17,7 +17,7 @@ export class AccommodationService {
 
   getAccommodationById(accommodationId: string): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/api/accommodations/${accommodationId}`
+      `${this.baseUrl}/api/accommodations/accommodations${accommodationId}`
     );
   }
 }
