@@ -69,7 +69,7 @@ func (ar *ProfileRepo) Ping() {
 }
 
 func CreateProfile(client *mongo.Client, profile *Profile) error {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+	profileCollection := client.Database("cluster0").Collection("user")
 
 	result, err := profileCollection.InsertOne(context.TODO(), profile)
 	if err != nil {
@@ -81,7 +81,7 @@ func CreateProfile(client *mongo.Client, profile *Profile) error {
 }
 
 func GetAllProfiles(client *mongo.Client) (Profiles, error) {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+	profileCollection := client.Database("cluster0").Collection("user")
 
 	cursor, err := profileCollection.Find(context.TODO(), bson.D{})
 	if err != nil {
@@ -101,11 +101,16 @@ func GetAllProfiles(client *mongo.Client) (Profiles, error) {
 	return profiles, nil
 }
 
-func GetProfileByID(client *mongo.Client, profileID primitive.ObjectID) (*Profile, error) {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+func GetProfileByID(client *mongo.Client, userID string) (*Profile, error) {
+	profileCollection := client.Database("cluster0").Collection("user")
+
+	objectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, err
+	}
 
 	var profile Profile
-	err := profileCollection.FindOne(context.TODO(), bson.M{"_id": profileID}).Decode(&profile)
+	err = profileCollection.FindOne(context.TODO(), bson.M{"_id": objectID}).Decode(&profile)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +119,7 @@ func GetProfileByID(client *mongo.Client, profileID primitive.ObjectID) (*Profil
 }
 
 func UpdateProfile(client *mongo.Client, profileID primitive.ObjectID, updatedProfile *Profile) error {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+	profileCollection := client.Database("cluster0").Collection("user")
 
 	//updatedProfile.Updated_On = time.Now().Format(time.RFC3339)
 
@@ -131,7 +136,7 @@ func UpdateProfile(client *mongo.Client, profileID primitive.ObjectID, updatedPr
 }
 
 func DeleteProfile(client *mongo.Client, profileID primitive.ObjectID) error {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+	profileCollection := client.Database("cluster0").Collection("user")
 
 	result, err := profileCollection.DeleteOne(context.TODO(), bson.M{"_id": profileID})
 	if err != nil {
@@ -146,7 +151,7 @@ func DeleteProfile(client *mongo.Client, profileID primitive.ObjectID) error {
 }
 
 func GetProfileByEmail(client *mongo.Client, email string) (*Profile, error) {
-	profileCollection := client.Database("profileDB").Collection("profiles")
+	profileCollection := client.Database("cluster0").Collection("user")
 
 	// Create a filter for the email
 	filter := bson.D{{"email", email}}
@@ -164,7 +169,7 @@ func GetProfileByEmail(client *mongo.Client, email string) (*Profile, error) {
 }
 
 func (ar *ProfileRepo) getCollection() *mongo.Collection {
-	accommodationDatabase := ar.cli.Database("profileDB")
-	accommodationsCollection := accommodationDatabase.Collection("profiles")
+	accommodationDatabase := ar.cli.Database("cluster0")
+	accommodationsCollection := accommodationDatabase.Collection("user")
 	return accommodationsCollection
 }

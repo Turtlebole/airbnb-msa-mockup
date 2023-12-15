@@ -13,5 +13,6 @@ func ProfileRoutes(router *gin.Engine) {
 	router.PUT("/profiles/:id", controllers.UpdateProfileHandler(database.Client))
 	router.DELETE("/profiles/:id", controllers.DeleteProfileHandler(database.Client))
 	router.GET("/profiles/by-email", controllers.GetProfileByEmailHandler(database.Client))
+	router.GET("/profiles/get-id", controllers.GetIdFromToken(database.Client))
 	// Add more routes as needed for updating, deleting accommodations, etc.
 } // ok? aj pa sta Bog da

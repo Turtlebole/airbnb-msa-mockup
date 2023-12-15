@@ -9,23 +9,22 @@
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accommodation-service/.env" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accommodation-service/controllers/accommodationController.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/controllers/accommodationController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accommodation-service/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accommodation-service/repositories/accommodationRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/repositories/accommodationRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accommodation-service/routes/accommodationRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/routes/accommodationRouter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodation-create/accommodation-create.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodation-create/accommodation-create.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/accommodations/accommodations.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/.env" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/controllers/profileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/controllers/profileController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/routes/profileRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/routes/profileRouter.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
