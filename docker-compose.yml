@@ -58,6 +58,9 @@ services:
     hostname: "profile-service"
     ports:
       - 8088:8088
+    environment:
+      - PORT=8088
+      - MONGO_DB_URI=mongodb://root:pass@profile_data_base:27017
     networks:
       - network
 
@@ -103,12 +106,33 @@ services:
     networks:
       - network
 
+  profile_data_base:
+    hostname: "profile_data_base"
+    container_name: "profile_data_base"
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: profileDB
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - profile_data_base:/data/db
+    networks:
+      - network
+
   mongo-express:
     image: mongo-express
     restart: always
     environment:
       # hostname of mongo databse
-      - ME_CONFIG_MONGODB_SERVER=accommodation_data_base, user_data_base
+      - ME_CONFIG_MONGODB_SERVER=accommodation_data_base, user_data_base, profile_data_base
       - ME_CONFIG_MONGODB_ADMINUSERNAME=root
       - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
       - ME_CONFIG_BASICAUTH_USERNAME=admin
@@ -116,6 +140,7 @@ services:
     depends_on:
       - accommodation_data_base
       - user_data_base
+      - profile_data_base
     ports:
       - "8083:8083"
     volumes:
@@ -126,6 +151,7 @@ services:
 volumes:
   accommodation_data_base:
   user_data_base:
+  profile_data_base:
   mong_express_data:
 
 

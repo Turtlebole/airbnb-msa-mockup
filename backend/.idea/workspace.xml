@@ -5,26 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fed0638-390b-4a51-94dd-e825f2054aa2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48_[Changes]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_48__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile-service/.env" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile-service/controllers/profileController.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/controllers/profileController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile-service/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile-service/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile-service/routes/profileRouter.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/routes/profileRouter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
