@@ -90,7 +90,6 @@ func (rr *ReservationRepo) CreateTables() {
 			guest_username text,
 			reservation_id UUID,
 			room_id text,
-			room_name text,
 			reservation_date date,
 			checkin_date date,
 			checkout_date date,
@@ -160,7 +159,7 @@ func (rr *ReservationRepo) GetReservationByIdAndRoom(resId string, roomId string
 func (rr *ReservationRepo) GetReservationsByGuest(id string) (ReservationsByGuest, error) {
 	scanner := rr.session.Query(`SELECT 
 	guest_id,guest_username,reservation_id,
-	room_id,room_name, 
+	room_id, 
 	reservation_date,checkin_date,
 	checkout_date 
 	FROM reservations_by_guest
@@ -171,7 +170,7 @@ func (rr *ReservationRepo) GetReservationsByGuest(id string) (ReservationsByGues
 		var reservation ReservationByGuest
 		err := scanner.Scan(
 			&reservation.GuestID, &reservation.GuestUsername, &reservation.ReservationId,
-			&reservation.RoomId, &reservation.RoomName,
+			&reservation.RoomId,
 			&reservation.ReservationDate,
 			&reservation.CheckInDate, &reservation.CheckOutDate)
 		if err != nil {
@@ -196,12 +195,11 @@ func (rr *ReservationRepo) InsertReservationByGuest(resRoom *ReservationByGuest)
 			guest_username, 
 			reservation_id, 
 			room_id, 
-			room_name, 
 			reservation_date, 
 			checkin_date, 
 			checkout_date) 
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-		resRoom.GuestID, resRoom.GuestUsername, res_id, resRoom.RoomId, resRoom.RoomName,
+		VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		resRoom.GuestID, resRoom.GuestUsername, res_id, resRoom.RoomId,
 		resRoom.ReservationDate, resRoom.CheckInDate, resRoom.CheckOutDate).Exec()
 	if err != nil {
 		rr.logger.Println(err)
@@ -288,7 +286,7 @@ func (rr *ReservationRepo) GetAllFromByGuest() (ReservationsByGuest, error) {
 	var reservations ReservationsByGuest
 	for scanner.Next() {
 		var reservation ReservationByGuest
-		err := scanner.Scan(&reservation.RoomId, &reservation.ReservationId, &reservation.GuestID, &reservation.RoomName, &reservation.ReservationDate, &reservation.CheckInDate, &reservation.CheckOutDate)
+		err := scanner.Scan(&reservation.RoomId, &reservation.ReservationId, &reservation.GuestID, &reservation.ReservationDate, &reservation.CheckInDate, &reservation.CheckOutDate)
 		if err != nil {
 			rr.logger.Println(err)
 			return nil, err

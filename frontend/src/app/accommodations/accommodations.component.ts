@@ -66,4 +66,9 @@ export class AccommodationsComponent implements OnInit {
   editAccommodation(accommodationId: string): void {
     this.router.navigate(['/edit', accommodationId]);
   }
+
+
+  makeReservation(accommodationId:string):void{
+    this.router.navigate(['/reservation',accommodationId])
+  }
 }

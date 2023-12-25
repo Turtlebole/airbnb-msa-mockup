@@ -7,6 +7,7 @@ import { AccommodationsComponent } from './accommodations/accommodations.compone
 import { AccommodationCreateComponent } from './accommodation-create/accommodation-create.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'sign-up', component: RegisterPageComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'accommodationsCreate', component: AccommodationCreateComponent },
   { path: 'edit/:id', component: AccommodationUpdateComponent},
   { path: 'profile', component: ProfileComponent },
+  {path: 'reservation/:id',component:ReservationsComponent}
 ];
 @NgModule({
   imports: [CommonModule, RouterModule.forRoot(routes)],

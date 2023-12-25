@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: dockerfile
-    ports:
-      - 4200:4200
-    depends_on:
-      - user-service
-      - accommodation-service
-      - profile_service
-
   api_gateway:
     container_name: api_gateway
     hostname: api_gateway
@@ -24,6 +13,11 @@ services:
       - "8000:8000"
     networks:
       - network
+    depends_on:
+      - user-service
+      - accommodation-service
+      - profile-service 
+      
 
   user-service:
     build:
@@ -47,7 +41,7 @@ services:
     networks:
       - network
 
-  profile_service:
+  profile-service:
     build:
       context: ./backend/profile-service
     restart: always

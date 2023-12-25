@@ -94,7 +94,6 @@ func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
 			RoomId         string `json:"room_id"`
 			GuestID        string `json:"guest_id"`
 			Guest_Username string `json:"guest_username"`
-			RoomName       string `json:"room_name"`
 			CheckInDate    string `json:"checkin_date"`
 			CheckOutDate   string `json:"checkout_date"`
 		}
@@ -129,7 +128,6 @@ func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
 
 		reservationBG.GuestID = fields.GuestID
 		reservationBG.RoomId = fields.RoomId
-		reservationBG.RoomName = fields.RoomName
 		reservationBG.GuestUsername = fields.Guest_Username
 		reservationBG.CheckInDate = fields.CheckInDate
 		reservationBG.CheckOutDate = fields.CheckOutDate

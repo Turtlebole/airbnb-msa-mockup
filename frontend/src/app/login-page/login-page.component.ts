@@ -13,6 +13,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class LoginPageComponent {
   form: FormGroup = new FormGroup({});
   token: string|undefined;
+  id: string|undefined;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -21,6 +22,7 @@ export class LoginPageComponent {
     
     ){
       this.token = undefined;
+      this.id=undefined;
   }
 
   sanitizeInput(input: any): any {
@@ -51,7 +53,11 @@ export class LoginPageComponent {
     .subscribe(
       (res: any) => {
         const token = res.token;
+        const id = res.ID
+        const first_name = res.first_name
         localStorage.setItem('token', token);
+        localStorage.setItem('user_id',id)
+        localStorage.setItem('user_first_name',first_name)
         this.router.navigate(['/']).then(() => {
           window.location.reload();
         });
