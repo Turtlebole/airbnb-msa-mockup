@@ -102,7 +102,7 @@ func RequestPasswordReset() gin.HandlerFunc {
 
 		// Email to the user with a link containing the token
 		emailSubject := "Password Reset Instructions"
-		emailBody := fmt.Sprintf("Click the following link to reset your password: https://localhost:4200/reset-password?token=%s", token)
+		emailBody := fmt.Sprintf("Click the following link to reset your password: https://your-app.com/reset?token=%s", token)
 
 		err = SendEmail(email, emailSubject, emailBody)
 		if err != nil {
