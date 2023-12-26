@@ -1,0 +1,9 @@
+.jumbotron {
+	color: #2e51a2;
+    
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}

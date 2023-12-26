@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .accommodation-image {
+    width: 100%;
+    height: 200px; 
+    background-image: url('https://i.pinimg.com/564x/3b/ff/cb/3bffcb878d7ae462602cefaa24e2518f.jpg'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .accommodation-details {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .accommodation-card {
+    border: 2px solid #2e51a2; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin-bottom: 20px; 
+  }
+
+  .card-title {
+    font-weight: bold;
+  }
+
+  .btn-group button {
+    margin-right: 10px; 
+    background-color: transparent; 
+  }
+  
+  .btn-outline-primary {
+    color: #2e51a2; 
+    border-color: #2e51a2; 
+  }
+
+  .btn-group {
+    margin-top: 10px;
+  }

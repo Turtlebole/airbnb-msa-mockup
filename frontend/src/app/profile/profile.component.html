@@ -1,37 +1,41 @@
 <div class="container mt-4" *ngIf="profiles">
   <div class="row">
-    <div class="col">
-      <div class="card">
+    <div class="col-md-4">
+      <div class="card custom-card">
+        <img src="https://i.pinimg.com/564x/be/0e/e9/be0ee9ef2ae82b8117fdcaae16aefad5.jpg" class="card-img-top profile-img" alt="Profile Image">
         <div class="card-body">
-          <h3>{{ profiles.name }} {{ profiles.last_name }}</h3>
+          <h3 class="card-title">{{ profiles.name }} {{ profiles.last_name }}</h3>
           <hr>
-          <p><strong>Email:</strong> {{ profiles.email }}</p>
-          <p><strong>Role:</strong> {{ profiles.user_type }}</p>
-          <p><strong>Address:</strong> {{ profiles.address }}</p>
-          <button type="button" class="btn btn-primary">Edit profile</button>
-          <br>
-          <br>
-          <button type="button" (click)="deleteProfile()"class="btn btn-danger">Delete your profile</button>
-        </div>
-        <!-- Display user's reservations -->
-        <div class="container mt-4">
-          <div class="row">
-            <h4 align="center">Your reservations</h4>
-            <div class="col" *ngFor="let reservation of reservations">
-              <div class="card">
-                <div class="card-body">
-                  <p><strong>Reservation ID: </strong> {{ reservation.reservation_id }}</p>
-                  <h6><strong>Check in: </strong> {{reservation.checkin_date}}</h6>
-                  <h6><strong>Check out: </strong> {{reservation.checkout_date}}</h6>
-                  <button class="btn btn-danger" (click)="cancelReservation(reservation.reservation_id, reservation.room_id)">
-                    Cancel Reservation
-                  </button>
-                </div>
-              </div>
+          <p class="card-text"><strong>Email:</strong> {{ profiles.email }}</p>
+          <p class="card-text"><strong>Role:</strong> {{ profiles.user_type }}</p>
+          <p class="card-text"><strong>Address:</strong> {{ profiles.address }}</p>
+          <div class="btn-group" role="group" aria-label="Profile actions">
+            <div class="mx-1">            
+              <button type="button" class="btn btn-primary">Edit profile</button>
+            </div>
+            <div class="mx-1">            
+              <button type="button" (click)="deleteProfile()" class="btn btn-danger">Delete your profile</button>
             </div>
           </div>
         </div>
-        <br>
+      </div>
+    </div>
+    <!-- Display user's reservations -->
+    <div class="col-md-8">
+      <h4 align="center">Your reservations</h4>
+      <div class="row">
+        <div class="col" *ngFor="let reservation of reservations">
+          <div class="card custom-card">
+            <div class="card-body">
+              <p><strong>Reservation ID:</strong> {{ reservation.reservation_id }}</p>
+              <h6><strong>Check in:</strong> {{reservation.checkin_date}}</h6>
+              <h6><strong>Check out:</strong> {{reservation.checkout_date}}</h6>
+              <button class="btn btn-danger" (click)="cancelReservation(reservation.reservation_id, reservation.room_id)">
+                Cancel Reservation
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

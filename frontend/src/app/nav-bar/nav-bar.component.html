@@ -1,45 +1,45 @@
-<header
-  class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
->
-  <div class="col-md-3 mb-2 mb-md-0">
-    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+<header class="navbar navbar-expand-md navbar-light bg-light border-bottom">
+  <div class="container">
+    <a href="/" class="navbar-brand">
       <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
         <use xlink:href="#bootstrap"></use>
       </svg>
     </a>
-  </div>
 
-  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-    <li><a href="#" class="nav-link px-2">Home</a></li>
-    <li>
-      <a routerLink="accommodations" class="nav-link px-2">Accommodations</a>
-    </li>
-    <li>
-      <a routerLink="accommodationsCreate" class="nav-link px-2"
-        >AccommodationsCo</a
-      >
-    </li>
-    <li><a routerLink="profile" class="nav-link px-2">Profile</a></li>
-  </ul>
-
-  <div class="col-md-3 text-end" *ngIf="!authed">
-    <a routerLink="login">
-      <button type="button" class="btn btn-outline-primary me-2">
-        Login
-      </button></a
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
-    <a routerLink="sign-up"
-      ><button type="button" class="btn btn-primary">Sign-up</button></a
-    >
-  </div>
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="col-md-3 text-end" *ngIf="authed">
-    <a routerLink="">
-      <button
-        type="button"
-        class="btn btn-outline-primary me-2"
-        (click)="logout()"
-      >Logout</button></a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+        <li class="nav-item"><a routerLink="accommodations" class="nav-link">Accommodations</a></li>
+        <li class="nav-item"><a routerLink="accommodationsCreate" class="nav-link">Create Accommodation</a></li>
+        <li class="nav-item"><a routerLink="profile" class="nav-link">Profile</a></li>
+      </ul>
+    </div>
+
+    <div class="navbar-collapse collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!authed">
+          <a routerLink="login" class="nav-link btn btn-outline-primary">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="!authed">
+          <a routerLink="sign-up" class="nav-link btn btn-primary">Sign-up</a>
+        </li>
+        <li class="nav-item" *ngIf="authed">
+          <button type="button" class="nav-link btn btn-outline-primary" (click)="logout()">Logout</button>
+        </li>
+      </ul>
+    </div>
   </div>
 </header>
 {{message}}

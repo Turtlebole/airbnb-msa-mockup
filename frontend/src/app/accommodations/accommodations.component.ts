@@ -53,14 +53,8 @@ export class AccommodationsComponent implements OnInit {
   }
 
   viewAccommodation(accommodationId: string): void {
-    this.accommodationService.deleteAccommodation(accommodationId).subscribe(
-      () => {
-        this.loadAccommodations();
-      },
-      (error) => {
-        console.error('Error deleting accommodation:', error);
-      }
-    );
+    this.router.navigate(['/accommodation', accommodationId]);
+
   }
 
   editAccommodation(accommodationId: string): void {
