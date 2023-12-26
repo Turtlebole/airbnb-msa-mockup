@@ -9,6 +9,9 @@
           <p><strong>Role:</strong> {{ profiles.user_type }}</p>
           <p><strong>Address:</strong> {{ profiles.address }}</p>
           <button type="button" class="btn btn-primary">Edit profile</button>
+          <br>
+          <br>
+          <button type="button" (click)="deleteProfile()"class="btn btn-danger">Delete your profile</button>
         </div>
         <!-- Display user's reservations -->
         <div class="container mt-4">

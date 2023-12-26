@@ -170,7 +170,7 @@ func (r ReservationController) CancelReservation() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		if resCheckInDate.Year() == now.Year() && resCheckInDate.Month() == now.Month() && resCheckInDate.Day() == now.Day() || resCheckInDate.After(now) {
+		if resCheckInDate.Year() == now.Year() && resCheckInDate.Month() == now.Month() && resCheckInDate.Day() == now.Day() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "You can only cancel before your reservation date"})
 			return
 		}

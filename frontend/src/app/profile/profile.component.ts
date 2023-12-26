@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,7 @@ export class ProfileComponent implements OnInit {
   token = localStorage.getItem('token');
   userID: string | undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient ,private router:Router) {}
 
   ngOnInit(): void {
     this.loadUserProfileAndReservations();
@@ -68,7 +69,7 @@ export class ProfileComponent implements OnInit {
       withCredentials: true,
       body: JSON.stringify({ reservation_id: reservationId, room_id: roomId }), // Prepare the JSON body
     };
-  
+
     this.http
       .request<any>('delete', `http://localhost:8002/reservations/cancel`, httpOptions)
       .subscribe(
@@ -83,5 +84,34 @@ export class ProfileComponent implements OnInit {
           // Handle error response if needed
         }
       );
+  }
+  deleteProfile():void{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + this.token,
+        'Content-Type': 'application/json', // Specify JSON content type
+      }),
+      withCredentials: true,
+    };
+if(this.reservations.length==0){
+    this.http
+    .request<any>('delete', `http://localhost:8080/users/delete/${this.userID}`, httpOptions)
+    .subscribe(
+      (response: any) => {
+        console.log(response)
+        localStorage.removeItem('token')
+        this.router.navigate(['/']).then(() => {
+          window.location.reload();
+        });
+
+      },
+      (error) => {
+        console.error('Account delete failed:', error);
+      }
+    );
+    }
+    else{
+      alert("You must cancel your reservations first")
+    }
   }
 }
