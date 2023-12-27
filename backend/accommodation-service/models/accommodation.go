@@ -14,4 +14,5 @@ type Accommodation struct {
 	Images        []string           `json:"images"`
 	Availability  string             `json:"availability"`
 	PricePerNight float64            `json:"price_per_night"`
+	HostID        primitive.ObjectID `bson:"host_id,omitempty" json:"host_id"`
 }

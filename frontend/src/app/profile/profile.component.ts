@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AccommodationService } from 'src/app/accommodation.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   profiles: any = {}; // Define the type of your profile data here
   reservations: any[] = []; // Array to hold reservations
   token = localStorage.getItem('token');
   userID: string | undefined;
+  reviews: any[] = []; // Array to hold reviews
+  updatedReview: any = {};
 
-  constructor(private http: HttpClient ,private router:Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private accommodationService: AccommodationService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserProfileAndReservations();
@@ -27,12 +34,17 @@ export class ProfileComponent implements OnInit {
       withCredentials: true,
     };
 
-    this.http.get<any>(`http://localhost:8088/profiles/get-id`, httpOptions)
+    this.http
+      .get<any>(`http://localhost:8088/profiles/get-id`, httpOptions)
       .subscribe(
         (res: any) => {
           this.userID = res.user_id;
           if (this.userID) {
-            this.http.get<any>(`http://localhost:8088/profiles/${this.userID}`, httpOptions)
+            this.http
+              .get<any>(
+                `http://localhost:8088/profiles/${this.userID}`,
+                httpOptions
+              )
               .subscribe(
                 (res1: any) => {
                   this.profiles = res1; // Assign retrieved profile data
@@ -43,7 +55,11 @@ export class ProfileComponent implements OnInit {
               );
 
             // Fetch reservations for this user
-            this.http.get<any>(`http://localhost:8002/reservations/by_guest/${this.userID}`, httpOptions)
+            this.http
+              .get<any>(
+                `http://localhost:8002/reservations/by_guest/${this.userID}`,
+                httpOptions
+              )
               .subscribe(
                 (reservations: any) => {
                   this.reservations = reservations; // Assign retrieved reservations
@@ -71,13 +87,19 @@ export class ProfileComponent implements OnInit {
     };
 
     this.http
-      .request<any>('delete', `http://localhost:8002/reservations/cancel`, httpOptions)
+      .request<any>(
+        'delete',
+        `http://localhost:8002/reservations/cancel`,
+        httpOptions
+      )
       .subscribe(
         (response: any) => {
           console.log('Reservation canceled:', response);
           // Update the UI or handle the canceled reservation response here
           // For example, remove the canceled reservation from the 'reservations' array
-          this.reservations = this.reservations.filter((res) => res.reservation_id !== reservationId);
+          this.reservations = this.reservations.filter(
+            (res) => res.reservation_id !== reservationId
+          );
         },
         (error) => {
           console.error('Cancellation failed:', error);
@@ -85,7 +107,7 @@ export class ProfileComponent implements OnInit {
         }
       );
   }
-  deleteProfile():void{
+  deleteProfile(): void {
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + this.token,
@@ -93,25 +115,51 @@ export class ProfileComponent implements OnInit {
       }),
       withCredentials: true,
     };
-if(this.reservations.length==0){
-    this.http
-    .request<any>('delete', `http://localhost:8080/users/delete/${this.userID}`, httpOptions)
-    .subscribe(
-      (response: any) => {
-        console.log(response)
-        localStorage.removeItem('token')
-        this.router.navigate(['/']).then(() => {
-          window.location.reload();
-        });
-
-      },
-      (error) => {
-        console.error('Account delete failed:', error);
-      }
-    );
-    }
-    else{
-      alert("You must cancel your reservations first")
+    if (this.reservations.length == 0) {
+      this.http
+        .request<any>(
+          'delete',
+          `http://localhost:8080/users/delete/${this.userID}`,
+          httpOptions
+        )
+        .subscribe(
+          (response: any) => {
+            console.log(response);
+            localStorage.removeItem('token');
+            this.router.navigate(['/']).then(() => {
+              window.location.reload();
+            });
+          },
+          (error) => {
+            console.error('Account delete failed:', error);
+          }
+        );
+    } else {
+      alert('You must cancel your reservations first');
     }
   }
+  //   updateReview(reviewId: string, updatedReview: any): void {
+  //     this.accommodationService.updateReview(reviewId, updatedReview).subscribe(
+  //       (response) => {
+  //         console.log('Review updated successfully:', response);
+  //         // You can update the UI or perform any other actions after a successful update
+  //       },
+  //       (error) => {
+  //         console.error('Error updating review:', error);
+  //       }
+  //     );
+  //   }
+
+  //   // New method to delete a review
+  //   deleteReview(reviewId: string): void {
+  //     this.accommodationService.deleteReview(reviewId).subscribe(
+  //       (response) => {
+  //         console.log('Review deleted successfully:', response);
+  //         // You can update the UI or perform any other actions after a successful delete
+  //       },
+  //       (error) => {
+  //         console.error('Error deleting review:', error);
+  //       }
+  //     );
+  //   }
 }

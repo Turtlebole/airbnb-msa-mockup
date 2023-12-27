@@ -1,65 +1,152 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <title>Accommodations</title>
-  <base href="/" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
- 
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <title>Accommodations</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
-  <div class="container mt-3">
-    <div class="row">
-      <div class="col-md-6">
-        <label for="locationFilter" class="form-label">Location:</label>
-        <input type="text" id="locationFilter" class="form-control" [(ngModel)]="locationFilter" (input)="applyFilters()" />
+  <body>
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="locationFilter" class="form-label">Location:</label>
+          <input
+            type="text"
+            id="locationFilter"
+            class="form-control"
+            [(ngModel)]="locationFilter"
+            (input)="applyFilters()"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="guestsFilter" class="form-label">Guests:</label>
+          <input
+            type="number"
+            id="guestsFilter"
+            class="form-control"
+            [(ngModel)]="guestsFilter"
+            (input)="applyFilters()"
+          />
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="guestsFilter" class="form-label">Guests:</label>
-        <input type="number" id="guestsFilter" class="form-control" [(ngModel)]="guestsFilter" (input)="applyFilters()" />
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="ratingFilter"
+              [(ngModel)]="ratingFilter"
+              (change)="applyFilters()"
+            />
+            <label class="form-check-label" for="ratingFilter">
+              Highlighted Accommodations
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="priceFilterFrom" class="form-label">Price Range:</label>
+          <input
+            type="number"
+            id="priceFilterFrom"
+            class="form-control"
+            placeholder="From"
+            [(ngModel)]="priceFilter.from"
+            (input)="applyFilters()"
+          />
+          <input
+            type="number"
+            id="priceFilterTo"
+            class="form-control mt-2"
+            placeholder="To"
+            [(ngModel)]="priceFilter.to"
+            (input)="applyFilters()"
+          />
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="amenitySearch" class="form-label"
+            >Search by Amenities:</label
+          >
+          <input
+            type="text"
+            id="amenitySearch"
+            class="form-control"
+            [(ngModel)]="amenitySearch"
+            (input)="applyFilters()"
+          />
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="container mt-3">
-    <div class="row">
-      <div class="col-md-4 mb-4" *ngFor="let accommodation of filteredAccommodations">
-        <div class="accommodation-card">
-          <div class="accommodation-wrapper">
-            <div class="accommodation-image"></div>
-            <div class="accommodation-details">
-              <h5 class="card-title">{{ accommodation.name }}</h5>
-              <p class="card-text">Location: {{ accommodation.location }}</p>
-              <p class="card-text">
-                Guests: {{ accommodation.min_guests }} - {{ accommodation.max_guests }}
-              </p>
-              <p class="card-text">
-                Amenities: {{ accommodation.amenities?.join(", ") }}
-              </p>
-              <p class="card-text">
-                Price/Night: ${{ accommodation.price_per_night }}
-              </p>
-              <div class="d-flex justify-content-between align-items-center btn-group">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="viewAccommodation(accommodation.id)">
-                    View
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="editAccommodation(accommodation.id)">
-                    Edit
-                  </button>              
-                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="makeReservation(accommodation.id)">
-                    Make reservation
-                  </button>              
+    <div class="container mt-3">
+      <div class="row">
+        <div
+          class="col-md-4 mb-4"
+          *ngFor="let accommodation of filteredAccommodations"
+        >
+          <div class="accommodation-card">
+            <div class="accommodation-wrapper">
+              <div class="accommodation-image"></div>
+              <div class="accommodation-details">
+                <h5 class="card-title">{{ accommodation.name }}</h5>
+                <p class="card-text">Location: {{ accommodation.location }}</p>
+                <p class="card-text">
+                  Guests: {{ accommodation.min_guests }} -
+                  {{ accommodation.max_guests }}
+                </p>
+                <p class="card-text">
+                  Amenities: {{ accommodation.amenities?.join(", ") }}
+                </p>
+                <p class="card-text">
+                  Price/Night: ${{ accommodation.price_per_night }}
+                </p>
+                <div
+                  class="d-flex justify-content-between align-items-center btn-group"
+                >
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="viewAccommodation(accommodation.id)"
+                    >
+                      View
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="editAccommodation(accommodation.id)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="makeReservation(accommodation.id)"
+                    >
+                      Make reservation
+                    </button>
+                  </div>
+                  <small class="text-body-secondary" style="margin-left: 30px">
+                    {{ averageRatings[accommodation.id] }} Stars
+                  </small>
                 </div>
-                <small class="text-body-secondary" style="margin-left: 30px;">0 Stars</small>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
