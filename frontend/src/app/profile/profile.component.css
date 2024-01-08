@@ -1,23 +1,30 @@
-.profile {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin: 10px;
-  border-radius: 5px;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
-.profile-info {
-  margin-bottom: 15px;
+.custom-card {
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px;
+.btn-primary {
+  background-color: #2e51a2;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
-button:hover {
-  background-color: #45a049;
+.btn-primary:hover {
+  background-color: #1f3a7e;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
 }

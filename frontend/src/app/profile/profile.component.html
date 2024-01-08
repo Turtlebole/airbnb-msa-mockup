@@ -1,11 +1,93 @@
-<div *ngIf="profiles.length > 0">
-  <h2>User Profiles</h2>
-  <ul>
-    <li *ngFor="let profile of profiles">
-      <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
-      <p>Email: {{ profile.email }}</p>
-      <p>User Type: {{ profile.user_type }}</p>
-      <!-- Add other profile fields as needed -->
-    </li>
-  </ul>
+<div class="container mt-4" *ngIf="profiles">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card custom-card">
+        <img
+          src="https://i.pinimg.com/564x/be/0e/e9/be0ee9ef2ae82b8117fdcaae16aefad5.jpg"
+          class="card-img-top profile-img"
+          alt="Profile Image"
+        />
+        <div class="card-body">
+          <h3 class="card-title">
+            {{ profiles.name }} {{ profiles.last_name }}
+          </h3>
+          <hr />
+          <p class="card-text"><strong>Email:</strong> {{ profiles.email }}</p>
+          <p class="card-text">
+            <strong>Role:</strong> {{ profiles.user_type }}
+          </p>
+          <p class="card-text">
+            <strong>Address:</strong> {{ profiles.address }}
+          </p>
+          <div class="btn-group" role="group" aria-label="Profile actions">
+            <div class="mx-1">
+              <button type="button" class="btn btn-primary">
+                Edit profile
+              </button>
+            </div>
+            <div class="mx-1">
+              <button
+                type="button"
+                (click)="deleteProfile()"
+                class="btn btn-danger"
+              >
+                Delete your profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Display user's reservations -->
+    <div class="col-md-8">
+      <h4 align="center">Your reservations</h4>
+      <div class="row">
+        <div class="col" *ngFor="let reservation of reservations">
+          <div class="card custom-card">
+            <div class="card-body">
+              <p>
+                <strong>Reservation ID:</strong>
+                {{ reservation.reservation_id }}
+              </p>
+              <h6><strong>Check in:</strong> {{ reservation.checkin_date }}</h6>
+              <h6>
+                <strong>Check out:</strong> {{ reservation.checkout_date }}
+              </h6>
+              <button
+                class="btn btn-danger"
+                (click)="
+                  cancelReservation(
+                    reservation.reservation_id,
+                    reservation.room_id
+                  )
+                "
+              >
+                Cancel Reservation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<!-- <div class="container mt-4">
+  <h4 align="center">Your Reviews</h4>
+  <div class="row">
+    <div class="col" *ngFor="let review of reviews">
+      <div class="card custom-card">
+        <div class="card-body">
+          <p><strong>Review ID:</strong> {{ review.review_id }}</p>
+          <h6><strong>Rating:</strong> {{ review.rating }}</h6>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+          <button class="btn btn-primary" (click)="updateReview(review.review_id, updatedReview)">
+            Update Review
+          </button>
+          <button class="btn btn-danger" (click)="deleteReview(review.review_id)">
+            Delete Review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

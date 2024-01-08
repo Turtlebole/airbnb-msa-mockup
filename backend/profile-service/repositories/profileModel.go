@@ -3,8 +3,9 @@ package repositories
 import (
 	"encoding/json"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"io"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Profile struct {
@@ -14,7 +15,7 @@ type Profile struct {
 	Username   *string            `bson:"username" json:"username" validate:"required"`
 	Email      string             `bson:"email" json:"email" validate:"required,email"`
 	Address    *string            `bson:"address" json:"address"`
-	Role       string             `bson:"role" json:"role"`
+	User_type  *string            `bson:"user_type" json:"user_type" validate:"required,oneof=Guest Host User"`
 }
 
 type Profiles []*Profile

@@ -1,0 +1,80 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous"
+  />
+  <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+  <div class="row flex">
+    <div class="col-lg-4 col-sm-6">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="thumbnail">
+            <img
+              src="https://i.pinimg.com/564x/3b/ff/cb/3bffcb878d7ae462602cefaa24e2518f.jpg"
+            />
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="thumbnail">
+            <img
+              src="https://i.pinimg.com/564x/3b/ff/cb/3bffcb878d7ae462602cefaa24e2518f.jpg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="thumbnail">
+            <img
+              src="https://i.pinimg.com/564x/3b/ff/cb/3bffcb878d7ae462602cefaa24e2518f.jpg"
+            />
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="thumbnail">
+            <img
+              src="https://i.pinimg.com/564x/3b/ff/cb/3bffcb878d7ae462602cefaa24e2518f.jpg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6">
+      <div class="thumbnail">
+        <img
+          src="https://i.pinimg.com/564x/4c/85/05/4c85050e696955d3e500cca64fef483a.jpg"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="jumbotron">
+    <h2 class="card-title"><strong>Name: </strong>{{ accommodation.name }}</h2>
+    <h4 class="card-text">Location: {{ accommodation.location }}</h4>
+    <h4 class="card-text">
+      Guests: {{ accommodation.min_guests }} - {{ accommodation.max_guests }}
+    </h4>
+    <h4 class="card-text">Price: ${{ accommodation.price_per_night }}</h4>
+    <hr />
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. A tempora
+      architecto sint earum recusandae ipsa! Laborum aperiam amet delectus
+      impedit?
+    </p>
+  </div>
+  <div *ngIf="reviews.length > 0">
+    <h3>Reviews</h3>
+    <ul>
+      <li *ngFor="let review of reviews">
+        <p>Rating: {{ review.rating }}</p>
+        <p>Comment: {{ review.comment }}</p>
+        <p>User: {{ review.user_name }}</p>
+      </li>
+    </ul>
+  </div>
+</body>

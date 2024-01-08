@@ -13,6 +13,11 @@ services:
       - "8000:8000"
     networks:
       - network
+    depends_on:
+      - user-service
+      - accommodation-service
+      - profile-service 
+      
 
   user-service:
     build:
@@ -50,7 +55,7 @@ services:
     networks:
       - network
 
-  profile_service:
+  profile-service:
     build:
       context: ./backend/profile-service
     restart: always

@@ -12,10 +12,10 @@ services:
     #Mapping ports
     ports:
       # <port_on_local>:<port_in_machine>
-      - 8080:8080
+      - 8002:8002
     #Will be accessible through os.Getenv("PORT")
     environment:
-      - PORT=8080
+      - PORT=8002
       # NoSQL: environment variable holding connection URI for Cassandra database
       - CASS_DB=cassandra:9042
     # NoSQL: Extremely important! Cassandra takes a lot of time to start!
