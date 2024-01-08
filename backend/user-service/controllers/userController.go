@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -273,16 +275,34 @@ func Register() gin.HandlerFunc {
 		user.Token = &token
 		user.Refresh_token = &refreshToken
 
-		resultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)
-		if insertErr != nil {
-			msg := fmt.Sprintf("User item was not created")
-			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+		// Convert the user data to a JSON payload
+		jsonData, err := json.Marshal(user)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal JSON data"})
 			return
 		}
-		defer cancel()
 
+		// Make a POST request to the profile service
+		resp, err := http.Post("http://profile-service:8088/profiles/create", "application/json", bytes.NewBuffer(jsonData))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to communicate with the profile service"})
+			l.Println(c.GetString(err.Error()))
+			return
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save profile data in the profile service"})
+			return
+		}
+		resultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)
+		if insertErr != nil {
+			l.Println(err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"error": insertErr.Error()})
+			return
+		}
 		c.JSON(http.StatusOK, resultInsertionNumber)
-
+		defer cancel()
 	}
 }
 

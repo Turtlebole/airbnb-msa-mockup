@@ -10,9 +10,9 @@ import (
 
 type Profile struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	First_Name *string            `bson:"first_name" json:"name" validate:"required"`
+	First_Name *string            `bson:"first_name" json:"first_name" validate:"required"`
 	Last_Name  *string            `bson:"last_name" json:"last_name"`
-	Username   *string            `bson:"username" json:"username" validate:"required"`
+	Username   *string            `bson:"username" json:"username"`
 	Email      string             `bson:"email" json:"email" validate:"required,email"`
 	Address    *string            `bson:"address" json:"address"`
 	User_type  *string            `bson:"user_type" json:"user_type" validate:"required,oneof=Guest Host User"`

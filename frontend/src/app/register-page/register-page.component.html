@@ -19,7 +19,7 @@
             <div class="row">
               <div class="col-md-9 col-lg-8 mx-auto">
                 <h3 class="login-heading mb-4">Welcome to Air-bnb, make an account</h3>
-  
+
                 <!-- Sign In Form -->
                 <form [formGroup]="form" (submit)="submit()">
                   <div class="form-floating">
@@ -39,6 +39,10 @@
                     <label for="floatingPassword">Password</label>
                   </div>
                   <div class="form-floating">
+                    <input formControlName="confirm_password" type="password" class="form-control" id="floatingPassword" placeholder="Confirm password">
+                    <label for="floatingPassword">Confirm password</label>
+                  </div>
+                  <div class="form-floating">
                     <input formControlName="address" type="text" class="form-control" id="floatingInput" placeholder="Becej lol">
                     <label for="floatingInput">Address</label>
                   </div>
@@ -52,14 +56,14 @@
                       Remember password
                     </label>
                   </div>
-  
+
                   <div class="d-grid">
                     <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign in</button>
                     <div class="text-center">
                       <a class="small" href="#">Forgot password?</a>
                     </div>
                   </div>
-  
+
                 </form>
               </div>
             </div>

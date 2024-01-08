@@ -22,7 +22,7 @@ export class AccommodationCreateComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {}
-  
+
   sanitizeInput(input: any): any {
     if (typeof input === 'string') {
       const blockedCharactersPattern = /[<>"'`*/()\[\]?]/g;
@@ -32,7 +32,7 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this.form = this.formBuilder.group({
       name: '',
       location: '',
@@ -56,7 +56,6 @@ export class AccommodationCreateComponent implements OnInit {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + token,
       }),
-      withCredentials: true,
     };
   }
 
@@ -89,7 +88,7 @@ export class AccommodationCreateComponent implements OnInit {
       .post(
         'https://localhost/api/accommodations/accommodations/create',
         requestData,
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe(
         () => this.router.navigate(['/accommodations']),

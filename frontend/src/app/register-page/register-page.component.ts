@@ -32,7 +32,8 @@ export class RegisterPageComponent implements OnInit {
     this.form = this.formBuilder.group({
       first_name: '',
       last_name: '',
-      password: ['',[Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[a-zA-Z0-9!@#$%^&*()_+]{11,}$/)]],
+      password: ['',[Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+.])[a-zA-Z0-9!@#$%^&*()_+.]{11,}$/)]],
+      confirm_password: '',
       phone: ['',[Validators.pattern(/^(?:[0-9] ?){6,12}[0-9]$/)],],
       address: '',
       email: ['',[Validators.pattern(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)],],
@@ -41,6 +42,10 @@ export class RegisterPageComponent implements OnInit {
   }
 
   submit(): void {
+    if(this.form.controls['password'].value != this.form.controls['confirm_password'].value){
+      alert('Passwords must match');
+      return
+    }
     if (this.form.invalid) {
       if (this.form.controls['password'].invalid) {
         alert('Password must be at least 11 characters, it needs to contain a capital letter and a special character.');
