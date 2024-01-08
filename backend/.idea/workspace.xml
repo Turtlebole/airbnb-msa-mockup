@@ -11,6 +11,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_12_2023_18_52__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accommodation-service/models/accommodation.go" beforeDir="false" afterPath="$PROJECT_DIR$/accommodation-service/models/accommodation.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/database/databaseConnection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/profile-service/repositories/profileRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

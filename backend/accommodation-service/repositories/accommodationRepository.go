@@ -23,7 +23,7 @@ type AccommodationRepo struct {
 
 // NoSQL: Constructor which reads db configuration from environment
 func New(ctx context.Context, logger *log.Logger) (*AccommodationRepo, error) {
-	dburi := os.Getenv("MONGODB_URL")
+	dburi := os.Getenv("MONGO_DB_URI")
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(dburi))
 	if err != nil {
@@ -121,11 +121,11 @@ func (ar *AccommodationRepo) Update(id string, accommodation *models.Accommodati
 	// filter := bson.M{"name": "sadradimozda"}
 	update := bson.M{
 		"$set": bson.M{
-			"name":            accommodation.Name,
-			"minguests":       accommodation.MinGuests,
-			"maxguests":       accommodation.MaxGuests,
-			"location":        accommodation.Location,
-			"amenities":       accommodation.Amenities,
+			"name":          accommodation.Name,
+			"minguests":     accommodation.MinGuests,
+			"maxguests":     accommodation.MaxGuests,
+			"location":      accommodation.Location,
+			"amenities":     accommodation.Amenities,
 			"pricepernight": accommodation.PricePerNight,
 		},
 	}
@@ -160,7 +160,7 @@ func (ar *AccommodationRepo) Delete(id string) error {
 }
 
 func (ar *AccommodationRepo) getCollection() *mongo.Collection {
-	accommodationDatabase := ar.cli.Database("accommodationServiceDB")
+	accommodationDatabase := ar.cli.Database("accommodationDB")
 	accommodationsCollection := accommodationDatabase.Collection("accommodations")
 	return accommodationsCollection
 }

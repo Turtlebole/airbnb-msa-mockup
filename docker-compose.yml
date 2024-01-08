@@ -23,10 +23,17 @@ services:
     build:
       context: ./backend/user-service
       dockerfile: dockerfile
+    restart: always
     container_name: "user-service"
     hostname: "user-service"
     ports:
       - 8080:8080
+    environment:
+      - PORT=8080
+      - MONGO_DB_URI=mongodb://root:pass@user_data_base:27017
+    depends_on:
+      user_data_base:
+        condition: service_healthy
     networks:
       - network
 
@@ -34,10 +41,17 @@ services:
     build:
       context: ./backend/accommodation-service
       dockerfile: dockerfile
+    restart: always
     container_name: "accommodation-service"
     hostname: "accommodation-service"
     ports:
       - 8001:8001
+    environment:
+      - PORT=8001
+      - MONGO_DB_URI=mongodb://root:pass@accommodation_data_base:27017
+    depends_on:
+      accommodation_data_base:
+        condition: service_healthy
     networks:
       - network
 
@@ -49,8 +63,102 @@ services:
     hostname: "profile-service"
     ports:
       - 8088:8088
+    environment:
+      - PORT=8088
+      - MONGO_DB_URI=mongodb://root:pass@profile_data_base:27017
     networks:
       - network
+
+  accommodation_data_base:
+    hostname: "accommodation_data_base"
+    container_name: "accommodation_data_base"
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: accommodationDB
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - accommodation_data_base:/data/db
+    networks:
+      - network
+
+  user_data_base:
+    hostname: "user_data_base"
+    container_name: "user_data_base"
+    image: mongo
+    restart: always
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: userDB
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - user_data_base:/data/db
+    networks:
+      - network
+
+  profile_data_base:
+    hostname: "profile_data_base"
+    container_name: "profile_data_base"
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: profileDB
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - profile_data_base:/data/db
+    networks:
+      - network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    environment:
+      # hostname of mongo databse
+      - ME_CONFIG_MONGODB_SERVER=accommodation_data_base, user_data_base, profile_data_base
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - accommodation_data_base
+      - user_data_base
+      - profile_data_base
+    ports:
+      - "8083:8083"
+    volumes:
+      - mong_express_data:/data/db
+    networks:
+      - network
+
+volumes:
+  accommodation_data_base:
+  user_data_base:
+  profile_data_base:
+  mong_express_data:
+
 
 networks:
   network:
