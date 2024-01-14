@@ -84,7 +84,8 @@ logout():void{
 //   console.log(res)
 
 // })
-
+localStorage.removeItem('user_id')
+localStorage.removeItem('user_first_name')
 localStorage.removeItem('token')
 location.reload();
 

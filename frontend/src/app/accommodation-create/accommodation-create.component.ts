@@ -15,13 +15,16 @@ export class AccommodationCreateComponent implements OnInit {
   token: string | null = localStorage.getItem('token');
   httpOptions: any; // Declare httpOptions at the class level
   sanitizedContent!: SafeHtml;
+  user_id: string|null
 
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.user_id=null;
+  }
 
   sanitizeInput(input: any): any {
     if (typeof input === 'string') {
@@ -32,6 +35,10 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user_id=localStorage.getItem('user_id')
+    if(this.user_id==null){
+      this.router.navigate(['/login']);
+    }
 
     this.form = this.formBuilder.group({
       name: '',
@@ -41,6 +48,7 @@ export class AccommodationCreateComponent implements OnInit {
       max_guests: '',
       availability: 'available',
       price_per_night: '',
+      host_id:this.user_id,
     });
 
     if (this.token) {

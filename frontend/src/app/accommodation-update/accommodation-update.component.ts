@@ -113,7 +113,7 @@ export class AccommodationUpdateComponent implements OnInit {
       .subscribe(
         () => {
           console.log('Accommodation updated');
-          this.router.navigate(['/']);
+          this.router.navigate(['/accommodations']);
         },
         (error) => {
           console.error('Error updating accommodation:', error);

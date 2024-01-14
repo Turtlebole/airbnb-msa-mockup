@@ -121,8 +121,12 @@ func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Checkout date must be after check-in date"})
 			return
 		}
+		if checkOutDate.Before(time.Now()) || checkInDate.Before(time.Now()) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "You cannot make a reservation in the past"})
+			return
+		}
 		if !r.IsRoomAvailableForDates(fields.RoomId, checkInDate, checkOutDate) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "there is a reservation already for the selected dates"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "There is a reservation already for the selected dates"})
 			return
 		}
 

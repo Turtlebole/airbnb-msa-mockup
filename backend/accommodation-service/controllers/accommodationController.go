@@ -5,13 +5,15 @@ package controllers
 import (
 	"accommodation-service/repositories"
 	"context"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"net/http"
 	"os"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"accommodation-service/database" // Import your database package
 	"accommodation-service/models"   // Import your models package
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -103,6 +105,38 @@ func GetAccommodation() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, accommodation)
+	}
+}
+
+func GetAllAccommodationsByHost() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		// Specify the host ID you want to query for
+		hostID := c.Param("host_id")
+
+		// Define the filter for the query
+		filter := bson.M{"host_id": hostID}
+
+		// Execute the query
+		cursor, err := accommodationCollection.Find(context.Background(), filter)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No accommodations found for host"})
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		}
+		defer cursor.Close(context.Background())
+
+		// Iterate over the results
+		var accommodations []models.Accommodation
+		for cursor.Next(c) {
+			var accommodation models.Accommodation
+			if err := cursor.Decode(&accommodation); err != nil {
+				c.JSON(http.StatusNotFound, gin.H{"error": "No accommodations found for host"})
+				c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			}
+			accommodations = append(accommodations, accommodation)
+		}
+
+		c.JSON(http.StatusOK, accommodations)
 	}
 }
 
