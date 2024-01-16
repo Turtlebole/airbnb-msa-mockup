@@ -275,14 +275,12 @@ func Register() gin.HandlerFunc {
 		user.Token = &token
 		user.Refresh_token = &refreshToken
 
-		// Convert the user data to a JSON payload
 		jsonData, err := json.Marshal(user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal JSON data"})
 			return
 		}
 
-		// Make a POST request to the profile service
 		resp, err := http.Post("http://profile-service:8088/profiles/create", "application/json", bytes.NewBuffer(jsonData))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to communicate with the profile service"})

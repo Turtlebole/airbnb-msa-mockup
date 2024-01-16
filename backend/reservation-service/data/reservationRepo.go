@@ -100,6 +100,23 @@ func (rr *ReservationRepo) CreateTables() {
 		rr.logger.Println(err)
 	}
 }
+
+func (rr *ReservationRepo) DeletePastReservations() {
+	err := rr.session.Query(
+		`DELETE FROM reservations_by_room WHERE checkout_date < todate(now());`,
+	).Exec()
+	if err != nil {
+		rr.logger.Printf("error deleting inactive reservations reservations_by_room: ", err)
+	}
+	err1 := rr.session.Query(
+		`DELETE FROM reservations_by_guest WHERE checkout_date < todate(now());`,
+	).Exec()
+	if err1 != nil {
+		rr.logger.Println("error deleting inactive reservations in reservations_by_guest: ", err)
+		rr.logger.Println("Past reservations have been deleted")
+	}
+}
+
 func (rr *ReservationRepo) GetReservationsByRoom(id string) (ReservationsByRoom, error) {
 	scanner := rr.session.Query(`SELECT 
 	room_id, reservation_id, 

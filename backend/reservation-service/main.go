@@ -29,7 +29,7 @@ func main() {
 	router.Use(cors.Middleware(cors.Config{
 		Origins:         "https://localhost:4200, *",
 		Methods:         "GET, PUT, POST, DELETE, OPTIONS",
-		RequestHeaders:  "Origin, Authorization, Content-Type",
+		RequestHeaders:  "Origin, Content-Type",
 		ExposedHeaders:  "",
 		MaxAge:          50 * time.Second,
 		Credentials:     true,
@@ -44,6 +44,7 @@ func main() {
 	}
 	defer store.CloseSession()
 	store.CreateTables()
+	store.DeletePastReservations()
 
 	reservationController := controllers.NewReservationController(logger, store)
 

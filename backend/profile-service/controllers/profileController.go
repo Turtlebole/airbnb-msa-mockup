@@ -1,17 +1,22 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"profile-service/database"
 	"profile-service/repositories"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var profileCollection *mongo.Collection = database.OpenCollection(database.Client, "profiles")
@@ -140,16 +145,93 @@ func UpdateProfileHandler(client *mongo.Client) gin.HandlerFunc {
 	}
 }
 
+type Accommodation struct {
+	Id            primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name          string             `json:"name"`
+	Location      string             `json:"location"`
+	Amenities     []string           `json:"amenities"`
+	MinGuests     int                `json:"min_guests"`
+	MaxGuests     int                `json:"max_guests"`
+	Images        []string           `json:"images"`
+	Availability  string             `json:"availability"`
+	PricePerNight float64            `json:"price_per_night"`
+	HostID        primitive.ObjectID `bson:"host_id,omitempty" json:"host_id"`
+}
+
 func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Extract profile ID from URL parameters
+		l := log.New(gin.DefaultWriter, "User controller: ", log.LstdFlags)
 		profileID, err := primitive.ObjectIDFromHex(c.Param("id"))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid profile ID"})
 			return
 		}
 
-		// Delete the profile
+		url := fmt.Sprintf("http://localhost:8001/accommodations/host/%s", profileID)
+
+		response, err := http.Get(url)
+		if err != nil {
+			fmt.Println("Error making GET request:", err)
+			return
+		}
+		defer response.Body.Close()
+
+		// Read the accommodations response body
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			fmt.Println("Error reading accommodations response body:", err)
+			return
+		}
+
+		// Parse the accs response body into a slice of Accommodation structs
+		accs := parseAccommodationsResponse(body)
+		var accsWithRes []Accommodation
+
+		for _, accommodation := range accs {
+			reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accommodation.Id.Hex())
+
+			reservationResponse, err := http.Get(reservationURL)
+			if err != nil {
+				l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accommodation.Id.Hex(), err)
+				continue
+			}
+			defer reservationResponse.Body.Close()
+
+			reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
+			if err != nil {
+				l.Printf("Error reading reservations response body for accommodation %s: %v\n", accommodation.Id.Hex(), err)
+				continue
+			}
+
+			l.Printf("Reservations for accommodation %s: %s\n", accommodation.Id.Hex(), string(reservationBody))
+			accsWithRes = append(accsWithRes, accommodation)
+		}
+
+		if len(accsWithRes) != 0 {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "You cannot delete your account, you still have active reservations on your accommodations "})
+			return
+		}
+
+		for _, accommodation := range accs {
+			reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accommodation.Id.Hex())
+
+			reservationResponse, err := http.Get(reservationURL)
+			if err != nil {
+				l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accommodation.Id.Hex(), err)
+				continue
+			}
+			defer reservationResponse.Body.Close()
+
+			reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
+			if err != nil {
+				l.Printf("Error reading reservations response body for accommodation %s: %v\n", accommodation.Id.Hex(), err)
+				continue
+			}
+
+			l.Printf("Reservations for accommodation %s: %s\n", accommodation.Id.Hex(), string(reservationBody))
+			accsWithRes = append(accsWithRes, accommodation)
+		}
+
 		if err := repositories.DeleteProfile(client, profileID); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -157,6 +239,15 @@ func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 
 		c.Status(http.StatusOK)
 	}
+}
+func parseAccommodationsResponse(body []byte) []Accommodation {
+	var accommodations []Accommodation
+	err := json.Unmarshal(body, &accommodations)
+	if err != nil {
+		fmt.Println("Error parsing accommodations response:", err)
+		return nil
+	}
+	return accommodations
 }
 
 func GetProfileByEmailHandler(client *mongo.Client) gin.HandlerFunc {

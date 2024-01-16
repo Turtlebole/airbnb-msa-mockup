@@ -14,6 +14,7 @@ func AccommodationRoutes(router *gin.Engine) {
 	router.GET("/accommodations/:_id", controllers.GetAccommodation())
 	router.GET("/accommodations", controllers.GetAllAccommodations())
 	router.GET("/accommodations/host/:host_id", controllers.GetAllAccommodationsByHost())
+	router.DELETE("/accommodations/delete/:_id", controllers.DeleteAccommodation())
 	// Add more routes as needed for updating, deleting accommodations, etc.
 } // ok? aj pa sta Bog da
 //ok? aj pa sta Allah da

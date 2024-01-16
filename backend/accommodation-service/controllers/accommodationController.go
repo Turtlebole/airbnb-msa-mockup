@@ -110,30 +110,33 @@ func GetAccommodation() gin.HandlerFunc {
 
 func GetAllAccommodationsByHost() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		hostID, err := primitive.ObjectIDFromHex(c.Param("host_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid host ID format"})
+			return
+		}
 
-		// Specify the host ID you want to query for
-		hostID := c.Param("host_id")
-
-		// Define the filter for the query
 		filter := bson.M{"host_id": hostID}
 
-		// Execute the query
 		cursor, err := accommodationCollection.Find(context.Background(), filter)
 		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "No accommodations found for host"})
-			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying accommodations"})
+			return
 		}
 		defer cursor.Close(context.Background())
 
-		// Iterate over the results
 		var accommodations []models.Accommodation
-		for cursor.Next(c) {
+		for cursor.Next(context.Background()) {
 			var accommodation models.Accommodation
 			if err := cursor.Decode(&accommodation); err != nil {
-				c.JSON(http.StatusNotFound, gin.H{"error": "No accommodations found for host"})
-				c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error decoding accommodations"})
+				return
 			}
 			accommodations = append(accommodations, accommodation)
+		}
+		if len(accommodations) == 0 {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No accommodations found for host"})
+			return
 		}
 
 		c.JSON(http.StatusOK, accommodations)
@@ -157,5 +160,11 @@ func GetAllAccommodations() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, accommodations)
+	}
+}
+
+func DeleteAccommodation() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
 	}
 }
