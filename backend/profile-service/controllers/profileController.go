@@ -167,11 +167,11 @@ func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		url := fmt.Sprintf("http://localhost:8001/accommodations/host/%s", profileID)
+		url := fmt.Sprintf("/accommodations/delete/host/%s", profileID)
 
-		response, err := http.Get(url)
+		response, err := http.NewRequest("DELETE", url, nil)
 		if err != nil {
-			fmt.Println("Error making GET request:", err)
+			fmt.Println("Error making DELETE request:", err)
 			return
 		}
 		defer response.Body.Close()
@@ -183,53 +183,8 @@ func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		// Parse the accs response body into a slice of Accommodation structs
-		accs := parseAccommodationsResponse(body)
-		var accsWithRes []Accommodation
-
-		for _, accommodation := range accs {
-			reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accommodation.Id.Hex())
-
-			reservationResponse, err := http.Get(reservationURL)
-			if err != nil {
-				l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accommodation.Id.Hex(), err)
-				continue
-			}
-			defer reservationResponse.Body.Close()
-
-			reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
-			if err != nil {
-				l.Printf("Error reading reservations response body for accommodation %s: %v\n", accommodation.Id.Hex(), err)
-				continue
-			}
-
-			l.Printf("Reservations for accommodation %s: %s\n", accommodation.Id.Hex(), string(reservationBody))
-			accsWithRes = append(accsWithRes, accommodation)
-		}
-
-		if len(accsWithRes) != 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "You cannot delete your account, you still have active reservations on your accommodations "})
-			return
-		}
-
-		for _, accommodation := range accs {
-			reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accommodation.Id.Hex())
-
-			reservationResponse, err := http.Get(reservationURL)
-			if err != nil {
-				l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accommodation.Id.Hex(), err)
-				continue
-			}
-			defer reservationResponse.Body.Close()
-
-			reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
-			if err != nil {
-				l.Printf("Error reading reservations response body for accommodation %s: %v\n", accommodation.Id.Hex(), err)
-				continue
-			}
-
-			l.Printf("Reservations for accommodation %s: %s\n", accommodation.Id.Hex(), string(reservationBody))
-			accsWithRes = append(accsWithRes, accommodation)
+		if response.Response.StatusCode != http.StatusOK {
+			c.JSON(http.StatusBadRequest, gin.H{"error": body})
 		}
 
 		if err := repositories.DeleteProfile(client, profileID); err != nil {
