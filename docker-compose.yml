@@ -31,6 +31,7 @@ services:
     environment:
       - PORT=8080
       - MONGO_DB_URI=mongodb://root:pass@user_data_base:27017
+      - PROFILE_SERVICE_URI=http://profile-service:8088
     depends_on:
       user_data_base:
         condition: service_healthy

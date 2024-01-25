@@ -1,12 +1,13 @@
 package controllers
 
 import (
+	"backend/client"
+	"backend/domain"
 	"bufio"
-	"bytes"
 	"context"
 	"crypto/rand"
-	"encoding/json"
 	"fmt"
+	"github.com/sony/gobreaker"
 	"log"
 	"net/http"
 	"net/smtp"
@@ -36,6 +37,12 @@ var userCollection *mongo.Collection = database.OpenCollection(database.Client, 
 var validate = validator.New()
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
 var blacklistedPasswords map[string]bool
+var profile client.ProfileClient
+
+// ovde pozivamo init funkciju za CB, nemojte brisati ljubim vam sve
+func init() {
+
+}
 
 // Function to generate a random token (used for password recovery)
 func generateRandomToken() string {
@@ -189,6 +196,36 @@ func init() {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
+
+	profileClient := &http.Client{
+		Transport: &http.Transport{
+			MaxIdleConns:        10,
+			MaxIdleConnsPerHost: 10,
+			MaxConnsPerHost:     10,
+		},
+	}
+	profileBreaker := gobreaker.NewCircuitBreaker(
+		gobreaker.Settings{
+			Name:        "profile",
+			MaxRequests: 1,
+			Timeout:     10 * time.Second,
+			Interval:    0,
+			ReadyToTrip: func(counts gobreaker.Counts) bool {
+				return counts.ConsecutiveFailures > 2
+			},
+			OnStateChange: func(name string, from, to gobreaker.State) {
+				//logger.Printf("CB '%s' changed from '%s' to '%s'\n", name, from, to)
+			},
+			IsSuccessful: func(err error) bool {
+				if err == nil {
+					return true
+				}
+				errResp, ok := err.(domain.ErrResp)
+				return ok && errResp.StatusCode >= 400 && errResp.StatusCode < 500
+			},
+		},
+	)
+	profile = client.NewProfileClient(profileClient, os.Getenv("PROFILE_SERVICE_URI"), profileBreaker)
 }
 
 func isBlacklistedPassword(password string) bool {
@@ -275,26 +312,22 @@ func Register() gin.HandlerFunc {
 		user.Token = &token
 		user.Refresh_token = &refreshToken
 
-		// Convert the user data to a JSON payload
-		jsonData, err := json.Marshal(user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal JSON data"})
-			return
-		}
-
+		//// Convert the user data to a JSON payload
+		//jsonData, err := json.Marshal(user)
+		//if err != nil {
+		//	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal JSON data"})
+		//	return
+		//}
+		// r je request
 		// Make a POST request to the profile service
-		resp, err := http.Post("http://profile-service:8088/profiles/create", "application/json", bytes.NewBuffer(jsonData))
+		ctx, cancel = context.WithTimeout(context.TODO(), 5000*time.Millisecond)
+		defer cancel()
+		_, err = profile.SendUserData(ctx, user)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to communicate with the profile service"})
-			l.Println(c.GetString(err.Error()))
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send data to profile service"})
 			return
 		}
-		defer resp.Body.Close()
 
-		if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save profile data in the profile service"})
-			return
-		}
 		resultInsertionNumber, insertErr := userCollection.InsertOne(ctx, user)
 		if insertErr != nil {
 			l.Println(err.Error())
