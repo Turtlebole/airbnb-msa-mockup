@@ -7,7 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -146,6 +146,31 @@ func GetAllAccommodationsByHost() gin.HandlerFunc {
 	}
 }
 
+func GetAllAccommodationsByHostLocal(hostID primitive.ObjectID) ([]models.Accommodation, error) {
+
+	filter := bson.M{"host_id": hostID}
+
+	cursor, err := accommodationCollection.Find(context.Background(), filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	var accommodations []models.Accommodation
+	for cursor.Next(context.Background()) {
+		var accommodation models.Accommodation
+		if err := cursor.Decode(&accommodation); err != nil {
+			return nil, err
+		}
+		accommodations = append(accommodations, accommodation)
+	}
+	if len(accommodations) == 0 {
+		return nil, fmt.Errorf("no accommodations found")
+	}
+
+	return accommodations, nil
+}
+
 func GetAllAccommodations() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var accommodations []models.Accommodation
@@ -168,34 +193,30 @@ func GetAllAccommodations() gin.HandlerFunc {
 
 func DeleteAccommodation() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		accID, err := primitive.ObjectIDFromHex(c.Param("id"))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid accommodation ID"})
-			return
-		}
+		accID := c.Param("_id")
 		l := log.New(gin.DefaultWriter, "Accommodation controller: ", log.LstdFlags)
-		reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accID.Hex())
+		reservationURL := fmt.Sprintf("http://reservation-service:8002/reservations/by_room/%s", accID)
 
 		reservationResponse, err := http.Get(reservationURL)
 		if err != nil {
-			l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accID.Hex(), err)
+			l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accID, err)
 			return
 		}
 		defer reservationResponse.Body.Close()
 
-		reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
+		reservationBody, err := io.ReadAll(reservationResponse.Body)
 		if err != nil {
-			l.Printf("Error reading reservations response body for accommodation %s: %v\n", accID.Hex(), err)
+			l.Printf("Error reading reservations response body for accommodation %s: %v\n", accID, err)
 			return
 		}
 		if reservationResponse.StatusCode == http.StatusOK {
-			l.Printf("Reservations for accommodation %s: %s\n", accID.Hex(), string(reservationBody))
+			l.Printf("Reservations for accommodation %s: %s\n", accID, string(reservationBody))
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot delete an accommodation that has active reservations"})
 			return
 		} else if reservationResponse.StatusCode == http.StatusNotFound {
-			l.Printf("No reservations for accommodation %s: %s\n", accID.Hex())
+			l.Printf("No reservations for accommodation %s\n", accID)
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": reservationBody})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": reservationResponse})
 		}
 
 		accommodationRepo, err := repositories.New(context.Background(), l)
@@ -204,81 +225,79 @@ func DeleteAccommodation() gin.HandlerFunc {
 			return
 		}
 
-		if err := accommodationRepo.Delete(accID.String()); err != nil {
+		if err := accommodationRepo.Delete(accID); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, "Accommodation deleted successfully")
 	}
 }
 
-func DeleteAccommodationLocal(accID primitive.ObjectID) (bool, error) {
+func DeleteAccommodationLocal(accid string) (bool, error) {
 	l := log.New(gin.DefaultWriter, "Accommodation controller: ", log.LstdFlags)
-	reservationURL := fmt.Sprintf("http://localhost:8080/reservations/by_room/%s", accID.Hex())
+	reservationURL := fmt.Sprintf("http://reservation-service:8002/reservations/by_room/%s", accid)
 
 	reservationResponse, err := http.Get(reservationURL)
 	if err != nil {
-		l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accID.Hex(), err)
+		l.Printf("Error making GET request for reservations of accommodation %s: %v\n", accid, err)
 		return false, err
 	}
 	defer reservationResponse.Body.Close()
 
-	reservationBody, err := ioutil.ReadAll(reservationResponse.Body)
+	reservationBody, err := io.ReadAll(reservationResponse.Body)
 	if err != nil {
-		l.Printf("Error reading reservations response body for accommodation %s: %v\n", accID.Hex(), err)
+		l.Printf("Error reading reservations response body for accommodation %s: %v\n", accid, err)
 		return false, err
 	}
 	if reservationResponse.StatusCode == http.StatusOK {
-		l.Printf("Reservations for accommodation %s: %s\n", accID.Hex(), string(reservationBody))
-		return true, err
+		l.Printf("Reservations for accommodation %s: %s\n", accid, string(reservationBody))
+		return true, fmt.Errorf("reservations have been found for accommodation: %s", accid)
 	} else if reservationResponse.StatusCode == http.StatusNotFound {
-		l.Printf("No reservations for accommodation %s: %s\n", accID.Hex())
+		l.Printf("No reservations for accommodation %s: %s\n", accid)
 	} else {
-		return false, err
+		return false, fmt.Errorf("error: %v", reservationResponse)
 	}
 	accommodationRepo, err := repositories.New(context.Background(), l)
 	if err != nil {
 		l.Printf("Failed to connect to database")
 		return false, err
 	}
-	if err := accommodationRepo.Delete(accID.String()); err != nil {
-		return false, nil
-	} else {
+
+	if err := accommodationRepo.Delete(accid); err != nil {
 		return false, err
+	} else {
+		return false, nil
 	}
 }
 
 func DeleteAccommodationsByHost() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		hostID, err := primitive.ObjectIDFromHex(c.Param("id"))
+		hostID, err := primitive.ObjectIDFromHex(c.Param("_id"))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid host ID"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		accsByHostUrl := fmt.Sprintf("http://localhost:8001/accommodations/host/%s", hostID)
-		accResponse, err := http.Get(accsByHostUrl)
+		accs, err := GetAllAccommodationsByHostLocal(hostID)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+			if err.Error() == "no accommodations found" {
+				c.JSON(http.StatusNotFound, gin.H{"error": "no accommodations found for host"})
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			}
 		}
-		defer accResponse.Body.Close()
 
-		accBody, err := ioutil.ReadAll(accResponse.Body)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		accs := parseAccommodationsResponse(accBody)
 		accsDeleted := 0
 		for _, accommodation := range accs {
-			hasActiveReservations, err := DeleteAccommodationLocal(accommodation.Id)
+			hasActiveReservations, err := DeleteAccommodationLocal(accommodation.Id.Hex())
+			if hasActiveReservations {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "cannot delete if there are active reservations present for one or more accommodations"})
+				return
+			}
 			if err != nil {
-				if hasActiveReservations {
-					c.JSON(http.StatusBadRequest, gin.H{"error": "There are active reservations present for one or more accommodations"})
-					return
-				}
 				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 			accsDeleted = accsDeleted + 1
 		}

@@ -58,7 +58,6 @@ export class ProfileComponent implements OnInit {
             this.http
               .get<any>(
                 `http://localhost:8002/reservations/by_guest/${this.userID}`,
-                httpOptions
               )
               .subscribe(
                 (reservations: any) => {
@@ -79,10 +78,8 @@ export class ProfileComponent implements OnInit {
   cancelReservation(reservationId: string, roomId: string): void {
     const httpOptions = {
       headers: new HttpHeaders({
-        Authorization: 'Bearer ' + this.token,
         'Content-Type': 'application/json', // Specify JSON content type
       }),
-      withCredentials: true,
       body: JSON.stringify({ reservation_id: reservationId, room_id: roomId }), // Prepare the JSON body
     };
 
@@ -113,7 +110,6 @@ export class ProfileComponent implements OnInit {
         Authorization: 'Bearer ' + this.token,
         'Content-Type': 'application/json', // Specify JSON content type
       }),
-      withCredentials: true,
     };
     if (this.reservations.length == 0) {
       this.http
@@ -132,6 +128,7 @@ export class ProfileComponent implements OnInit {
           },
           (error) => {
             console.error('Account delete failed:', error);
+            alert(error.error.error);
           }
         );
     } else {

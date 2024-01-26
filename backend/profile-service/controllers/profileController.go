@@ -1,10 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -160,33 +157,16 @@ type Accommodation struct {
 
 func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		l := log.New(gin.DefaultWriter, "User controller: ", log.LstdFlags)
 		profileID, err := primitive.ObjectIDFromHex(c.Param("id"))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid profile ID"})
-			return
+			if err.Error() == "profile not found" {
+				c.JSON(http.StatusNotFound, gin.H{"error": "profile not found"})
+				return
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid profile ID"})
+				return
+			}
 		}
-
-		url := fmt.Sprintf("/accommodations/delete/host/%s", profileID)
-
-		response, err := http.NewRequest("DELETE", url, nil)
-		if err != nil {
-			fmt.Println("Error making DELETE request:", err)
-			return
-		}
-		defer response.Body.Close()
-
-		// Read the accommodations response body
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			fmt.Println("Error reading accommodations response body:", err)
-			return
-		}
-
-		if response.Response.StatusCode != http.StatusOK {
-			c.JSON(http.StatusBadRequest, gin.H{"error": body})
-		}
-
 		if err := repositories.DeleteProfile(client, profileID); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -194,15 +174,6 @@ func DeleteProfileHandler(client *mongo.Client) gin.HandlerFunc {
 
 		c.Status(http.StatusOK)
 	}
-}
-func parseAccommodationsResponse(body []byte) []Accommodation {
-	var accommodations []Accommodation
-	err := json.Unmarshal(body, &accommodations)
-	if err != nil {
-		fmt.Println("Error parsing accommodations response:", err)
-		return nil
-	}
-	return accommodations
 }
 
 func GetProfileByEmailHandler(client *mongo.Client) gin.HandlerFunc {

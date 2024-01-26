@@ -14,12 +14,12 @@ export class LoginPageComponent {
   form: FormGroup = new FormGroup({});
   token: string|undefined;
   id: string|undefined;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private http:HttpClient,
     private router:Router
-    
+
     ){
       this.token = undefined;
       this.id=undefined;
@@ -47,7 +47,7 @@ export class LoginPageComponent {
     requestData.email = this.sanitizeInput(requestData.email);
     requestData.password = this.sanitizeInput(requestData.password);
 
-    
+
 
     this.http.post<any>('https://localhost/api/user/users/login', this.form.getRawValue(), { withCredentials: true })
     .subscribe(
@@ -67,5 +67,5 @@ export class LoginPageComponent {
       }
     );
   }
-  
+
 }

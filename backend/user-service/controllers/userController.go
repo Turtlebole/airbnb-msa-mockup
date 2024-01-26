@@ -7,6 +7,7 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/smtp"
@@ -682,8 +683,80 @@ func ChangePassword() gin.HandlerFunc {
 func DeleteUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+		httpClient := &http.Client{}
 		userID := c.Param("user_id")
+
+		// Delete accommodations for the user
+		url := fmt.Sprintf("http://accommodation-service:8001/accommodations/delete/host/%s", userID)
+		req, err := http.NewRequestWithContext(ctx, "DELETE", url, nil)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		res, err := httpClient.Do(req)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer res.Body.Close()
+
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if res.StatusCode != http.StatusOK {
+			if res.StatusCode == http.StatusNotFound {
+				fmt.Printf("no accommodations found for host")
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": string(body)})
+				return
+			}
+		}
+
+		// Delete user profile
+		url = fmt.Sprintf("http://profile-service:8088/profiles/%s", userID)
+		req, err = http.NewRequestWithContext(ctx, "DELETE", url, nil)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		res, err = httpClient.Do(req)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer res.Body.Close()
+
+		if res.StatusCode != http.StatusOK {
+			if res.StatusCode == http.StatusNotFound {
+				fmt.Println("Profile not found")
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": string(body)})
+				return
+			}
+		}
+
+		body, err = io.ReadAll(res.Body)
+		if err != nil {
+			fmt.Println("Error reading profile-service response body:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if res.StatusCode != http.StatusOK {
+			c.JSON(http.StatusBadRequest, gin.H{"error": string(body)})
+			return
+		}
+
 		result, err := userCollection.DeleteOne(ctx, bson.M{"user_id": userID})
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found"})
+		}
 		defer cancel()
 
 		if err != nil {

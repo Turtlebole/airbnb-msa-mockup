@@ -190,44 +190,44 @@ func (r ReservationController) CancelReservation() gin.HandlerFunc {
 }
 func (s *ReservationController) GetAllGuestIDs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		studentIds, err := s.repo.GetDistinctIds("guest_id", "reservations_by_guest")
+		guestIds, err := s.repo.GetDistinctIds("guest_id", "reservations_by_guest")
 		if err != nil {
 			s.logger.Print("Database exception: ", err)
 		}
 
-		if studentIds == nil {
+		if guestIds == nil {
 			return
 		}
 
-		s.logger.Println(studentIds)
+		s.logger.Println(guestIds)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			s.logger.Fatal("Unable to convert to json :", err)
 			return
 		}
-		c.JSON(http.StatusOK, studentIds)
+		c.JSON(http.StatusOK, guestIds)
 	}
 }
 func (s *ReservationController) GetAllReservationIDs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		studentIds, err := s.repo.GetDistinctIds("reservation_id", "reservations_by_guest")
+		resIds, err := s.repo.GetDistinctIds("reservation_id", "reservations_by_guest")
 		if err != nil {
 			s.logger.Print("Database exception: ", err)
 		}
 
-		if studentIds == nil {
+		if resIds == nil {
 			return
 		}
 
-		s.logger.Println(studentIds)
+		s.logger.Println(resIds)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err})
 			s.logger.Fatal("Unable to convert to json :", err)
 			return
 		}
-		c.JSON(http.StatusOK, studentIds)
+		c.JSON(http.StatusOK, resIds)
 	}
 }
 func (r ReservationController) GetAllFromByGuest() gin.HandlerFunc {

@@ -101,21 +101,21 @@ func (rr *ReservationRepo) CreateTables() {
 	}
 }
 
-func (rr *ReservationRepo) DeletePastReservations() {
-	err := rr.session.Query(
-		`DELETE FROM reservations_by_room WHERE checkout_date < todate(now());`,
-	).Exec()
-	if err != nil {
-		rr.logger.Printf("error deleting inactive reservations reservations_by_room: ", err)
-	}
-	err1 := rr.session.Query(
-		`DELETE FROM reservations_by_guest WHERE checkout_date < todate(now());`,
-	).Exec()
-	if err1 != nil {
-		rr.logger.Println("error deleting inactive reservations in reservations_by_guest: ", err)
-		rr.logger.Println("Past reservations have been deleted")
-	}
-}
+// func (rr *ReservationRepo) DeletePastReservations() {
+// 	err := rr.session.Query(
+// 		`DELETE FROM reservations_by_room WHERE checkout_date < todate(now());`,
+// 	).Exec()
+// 	if err != nil {
+// 		rr.logger.Printf("error deleting inactive reservations reservations_by_room: ", err)
+// 	}
+// 	err1 := rr.session.Query(
+// 		`DELETE FROM reservations_by_guest WHERE checkout_date < todate(now());`,
+// 	).Exec()
+// 	if err1 != nil {
+// 		rr.logger.Println("error deleting inactive reservations in reservations_by_guest: ", err)
+// 		rr.logger.Println("Past reservations have been deleted")
+// 	}
+// }
 
 func (rr *ReservationRepo) GetReservationsByRoom(id string) (ReservationsByRoom, error) {
 	scanner := rr.session.Query(`SELECT 
@@ -123,7 +123,7 @@ func (rr *ReservationRepo) GetReservationsByRoom(id string) (ReservationsByRoom,
 	guest_id,guest_username, reservation_date,
 	checkin_date,checkout_date 
 	FROM reservations_by_room
-	 WHERE room_id = ?`,
+	 WHERE room_id = ? and checkout_date >= todate(now())`,
 		id).Iter().Scanner()
 
 	var reservations ReservationsByRoom
