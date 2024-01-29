@@ -44,7 +44,7 @@ func main() {
 	}
 	defer store.CloseSession()
 	store.CreateTables()
-	store.DeletePastReservations()
+	//store.DeletePastReservations()
 
 	reservationController := controllers.NewReservationController(logger, store)
 
