@@ -72,6 +72,8 @@ func (rr *ReservationRepo) CreateTables() {
 			reservation_id UUID,
 			guest_id text,
 			guest_username text,
+			number_of_guests int,
+			price double,
 			reservation_date date,
 			checkin_date date,
 			checkout_date date,
@@ -88,6 +90,8 @@ func (rr *ReservationRepo) CreateTables() {
 		fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s (
 			guest_id text,
 			guest_username text,
+			number_of_guests int,
+			price double,
 			reservation_id UUID,
 			room_id text,
 			reservation_date date,
@@ -115,15 +119,16 @@ func (rr *ReservationRepo) CreateTables() {
 // 		rr.logger.Println("error deleting inactive reservations in reservations_by_guest: ", err)
 // 		rr.logger.Println("Past reservations have been deleted")
 // 	}
-// }
+// } // umesto ovog bi se moglo dodati TTl kad se prave nove rezervacije
 
 func (rr *ReservationRepo) GetReservationsByRoom(id string) (ReservationsByRoom, error) {
 	scanner := rr.session.Query(`SELECT 
 	room_id, reservation_id, 
-	guest_id,guest_username, reservation_date,
-	checkin_date,checkout_date 
+	guest_id, guest_username, 
+	number_of_guests, price, reservation_date,
+	checkin_date, checkout_date 
 	FROM reservations_by_room
-	 WHERE room_id = ? and checkout_date >= todate(now())`,
+	 WHERE room_id = ?`,
 		id).Iter().Scanner()
 
 	var reservations ReservationsByRoom
@@ -131,7 +136,8 @@ func (rr *ReservationRepo) GetReservationsByRoom(id string) (ReservationsByRoom,
 		var reservation ReservationByRoom
 		err := scanner.Scan(
 			&reservation.RoomId, &reservation.ReservationId,
-			&reservation.GuestID, &reservation.GuestUsername, &reservation.ReservationDate,
+			&reservation.GuestID, &reservation.GuestUsername,
+			&reservation.NumberOfGuests, &reservation.Price, &reservation.ReservationDate,
 			&reservation.CheckInDate, &reservation.CheckOutDate)
 		if err != nil {
 			rr.logger.Println(err)
@@ -150,16 +156,22 @@ func (rr *ReservationRepo) GetReservationByIdAndRoom(resId string, roomId string
 	resUuid := rr.ConvertStringToUUID(resId)
 	scanner := rr.session.Query(`SELECT 
 	room_id, reservation_id, 
-	guest_id,guest_username, reservation_date,
-	checkin_date,checkout_date 
+	guest_id, guest_username,
+	number_of_guests, price, reservation_date,
+	checkin_date, checkout_date 
 	FROM reservations_by_room
 	 WHERE reservation_id = ? and room_id = ? `,
 		resUuid, roomId).Iter().Scanner()
 	var reservation ReservationByRoom
 	for scanner.Next() {
 		err := scanner.Scan(
-			&reservation.RoomId, &reservation.ReservationId,
-			&reservation.GuestID, &reservation.GuestUsername, &reservation.ReservationDate,
+			&reservation.RoomId,
+			&reservation.ReservationId,
+			&reservation.GuestID,
+			&reservation.GuestUsername,
+			&reservation.NumberOfGuests,
+			&reservation.Price,
+			&reservation.ReservationDate,
 			&reservation.CheckInDate, &reservation.CheckOutDate)
 		if err != nil {
 			rr.logger.Println(err)
@@ -175,8 +187,8 @@ func (rr *ReservationRepo) GetReservationByIdAndRoom(resId string, roomId string
 
 func (rr *ReservationRepo) GetReservationsByGuest(id string) (ReservationsByGuest, error) {
 	scanner := rr.session.Query(`SELECT 
-	guest_id,guest_username,reservation_id,
-	room_id, 
+	guest_id,guest_username, number_of_guests,
+	price, reservation_id, room_id, 
 	reservation_date,checkin_date,
 	checkout_date 
 	FROM reservations_by_guest
@@ -186,7 +198,11 @@ func (rr *ReservationRepo) GetReservationsByGuest(id string) (ReservationsByGues
 	for scanner.Next() {
 		var reservation ReservationByGuest
 		err := scanner.Scan(
-			&reservation.GuestID, &reservation.GuestUsername, &reservation.ReservationId,
+			&reservation.GuestID,
+			&reservation.GuestUsername,
+			&reservation.NumberOfGuests,
+			&reservation.Price,
+			&reservation.ReservationId,
 			&reservation.RoomId,
 			&reservation.ReservationDate,
 			&reservation.CheckInDate, &reservation.CheckOutDate)
@@ -209,14 +225,16 @@ func (rr *ReservationRepo) InsertReservationByGuest(resRoom *ReservationByGuest)
 	err := rr.session.Query(
 		`INSERT INTO reservations_by_guest (
 			guest_id,
-			guest_username, 
+			guest_username,
+			number_of_guests, 
+			price,
 			reservation_id, 
 			room_id, 
 			reservation_date, 
 			checkin_date, 
 			checkout_date) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)`,
-		resRoom.GuestID, resRoom.GuestUsername, res_id, resRoom.RoomId,
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		resRoom.GuestID, resRoom.GuestUsername, resRoom.NumberOfGuests, resRoom.Price, res_id, resRoom.RoomId,
 		resRoom.ReservationDate, resRoom.CheckInDate, resRoom.CheckOutDate).Exec()
 	if err != nil {
 		rr.logger.Println(err)
@@ -225,14 +243,16 @@ func (rr *ReservationRepo) InsertReservationByGuest(resRoom *ReservationByGuest)
 	err = rr.session.Query(
 		`INSERT INTO reservations_by_room (
 			guest_id, 
-			guest_username, 
+			guest_username,
+			number_of_guests, 
+			price,
 			reservation_id,
 			room_id, 
 			reservation_date, 
 			checkin_date, 
 			checkout_date) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)`,
-		resRoom.GuestID, resRoom.GuestUsername, res_id, resRoom.RoomId,
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		resRoom.GuestID, resRoom.GuestUsername, resRoom.NumberOfGuests, resRoom.Price, res_id, resRoom.RoomId,
 		resRoom.ReservationDate, resRoom.CheckInDate, resRoom.CheckOutDate).Exec()
 	if err != nil {
 		rr.logger.Println(err)
@@ -303,7 +323,7 @@ func (rr *ReservationRepo) GetAllFromByGuest() (ReservationsByGuest, error) {
 	var reservations ReservationsByGuest
 	for scanner.Next() {
 		var reservation ReservationByGuest
-		err := scanner.Scan(&reservation.RoomId, &reservation.ReservationId, &reservation.GuestID, &reservation.ReservationDate, &reservation.CheckInDate, &reservation.CheckOutDate)
+		err := scanner.Scan(&reservation.RoomId, &reservation.ReservationId, &reservation.GuestID, &reservation.NumberOfGuests, &reservation.Price, &reservation.ReservationDate, &reservation.CheckInDate, &reservation.CheckOutDate)
 		if err != nil {
 			rr.logger.Println(err)
 			return nil, err

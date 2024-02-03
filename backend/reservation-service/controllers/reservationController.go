@@ -1,20 +1,23 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"reservation-service/data"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type KeyProduct struct{}
 
 type ReservationController struct {
 	logger *log.Logger
-	// NoSQL: injecting student repository
-	repo *data.ReservationRepo
+	repo   *data.ReservationRepo
 }
 
 func NewReservationController(l *log.Logger, r *data.ReservationRepo) *ReservationController {
@@ -61,7 +64,7 @@ func (r ReservationController) GetReservationByGuest() gin.HandlerFunc {
 	}
 }
 
-func (r ReservationController) IsRoomAvailableForDates(roomID string, checkInDate time.Time, checkOutDate time.Time) bool {
+func (r ReservationController) isRoomReservedForDates(roomID string, checkInDate time.Time, checkOutDate time.Time) bool {
 
 	reservations, err := r.repo.GetReservationsByRoom(roomID)
 	if err != nil {
@@ -88,15 +91,149 @@ func (r ReservationController) IsRoomAvailableForDates(roomID string, checkInDat
 	return true
 }
 
-func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
+type Accommodation struct {
+	Id           primitive.ObjectID     `bson:"_id,omitempty" json:"id"`
+	Name         string                 `json:"name"`
+	Location     string                 `json:"location"`
+	Amenities    []string               `json:"amenities"`
+	MinGuests    int                    `json:"min_guests"`
+	MaxGuests    int                    `json:"max_guests"`
+	Images       []string               `json:"images"`
+	Availability []AvailabilityInterval `json:"availability"`
+	PriceType    string                 `json:"price_type"`
+	HostID       primitive.ObjectID     `bson:"host_id,omitempty" json:"host_id"`
+}
+
+type AvailabilityInterval struct {
+	Start           string  `json:"start"`
+	End             string  `json:"end"`
+	PricePerNight   float64 `json:"price_per_night"`
+	PriceOnWeekends float64 `json:"price_on_weekends"`
+}
+
+func (r ReservationController) isRoomAvailableForDates(roomID string, checkInDate time.Time, checkOutDate time.Time) (bool, error) {
+	reservationURL := fmt.Sprintf("http://accommodation-service:8001/accommodations/%s", roomID)
+
+	accoResponse, err := http.Get(reservationURL)
+	if err != nil {
+		r.logger.Printf("Error making GET request for accommodation: %v", err)
+		return false, fmt.Errorf("error making GET request for accommodation")
+	}
+	defer accoResponse.Body.Close()
+
+	if accoResponse.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(accoResponse.Body)
+		r.logger.Println("error: ", string(body))
+		return false, fmt.Errorf("accommodation service returned error: %s", string(body))
+	}
+	var accommodation Accommodation
+	if err := json.NewDecoder(accoResponse.Body).Decode(&accommodation); err != nil {
+		r.logger.Printf("error parsing accommodation response body: %v\n", err)
+		return false, fmt.Errorf("error parsing accommodation response body")
+	}
+
+	for _, interval := range accommodation.Availability {
+		start, err := time.Parse("2006-01-02", interval.Start)
+		if err != nil {
+			r.logger.Printf("error parsing start date: %v", err)
+			continue
+		}
+		end, err := time.Parse("2006-01-02", interval.End)
+		if err != nil {
+			r.logger.Printf("error parsing end date: %v", err)
+			continue
+		}
+		if (checkInDate.Equal(start) || checkInDate.After(start)) && (checkOutDate.Before(end) || checkOutDate.Equal(end)) {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func countWeekendDays(startDate, endDate time.Time) (int, error) {
+	if startDate.After(endDate) {
+		return 0, fmt.Errorf("start date must be before end date")
+	}
+
+	var weekendDays int
+	for d := startDate; !d.After(endDate); d = d.AddDate(0, 0, 1) {
+		switch d.Weekday() {
+		case time.Saturday, time.Sunday:
+			weekendDays++
+		}
+	}
+
+	return weekendDays, nil
+}
+
+func (r ReservationController) calculatePrice(roomID string, checkInDate, checkOutDate time.Time, number_of_guests int) (float64, error) {
+	reservationURL := fmt.Sprintf("http://accommodation-service:8001/accommodations/%s", roomID)
+
+	accoResponse, err := http.Get(reservationURL)
+	if err != nil {
+		r.logger.Printf("Error making GET request for accommodation: %v", err)
+		return 0, fmt.Errorf("error making GET request for accommodation")
+	}
+	defer accoResponse.Body.Close()
+
+	if accoResponse.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(accoResponse.Body)
+		r.logger.Println("error: ", string(body))
+		return 0, fmt.Errorf("accommodation service returned error: %s", string(body))
+	}
+	var accommodation Accommodation
+	if err := json.NewDecoder(accoResponse.Body).Decode(&accommodation); err != nil {
+		r.logger.Printf("error parsing accommodation response body: %v\n", err)
+		return 0, fmt.Errorf("error parsing accommodation response body")
+	}
+
+	for _, interval := range accommodation.Availability {
+		start, err := time.Parse("2006-01-02", interval.Start)
+		if err != nil {
+			r.logger.Printf("error parsing start date: %v", err)
+			continue
+		}
+		end, err := time.Parse("2006-01-02", interval.End)
+		if err != nil {
+			r.logger.Printf("error parsing end date: %v", err)
+			continue
+		}
+		if (checkInDate.Equal(start) || checkInDate.After(start)) && (checkOutDate.Before(end) || checkOutDate.Equal(end)) {
+			price := 0.0
+			pt := accommodation.PriceType
+			gn := float64(number_of_guests)
+			ppn := interval.PricePerNight
+			pow := interval.PriceOnWeekends
+			weekendDays, err := countWeekendDays(checkInDate, checkOutDate)
+			d := (checkOutDate.Sub(checkInDate).Hours() / 24) - float64(weekendDays)
+
+			if err != nil {
+				return price, err
+			}
+			if pt == "Per_Guest" {
+				price = gn*ppn*d + (pow * gn * float64(weekendDays))
+				r.logger.Printf("\ngn*ppn*d+(pow*gn*weekendDays)\n %f*%f*%f+(%f*%f*%v) = %f", gn, ppn, d, pow, gn, weekendDays, price)
+			} else {
+				price = ppn*d + (pow * float64(weekendDays))
+			}
+			return price, nil
+		}
+	}
+
+	return 0, nil
+}
+func (r ReservationController) InsertReservation() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type FieldsForInsertion struct {
 			RoomId         string `json:"room_id"`
 			GuestID        string `json:"guest_id"`
 			Guest_Username string `json:"guest_username"`
+			NumberOfGuests int    `json:"number_of_guests"`
 			CheckInDate    string `json:"checkin_date"`
 			CheckOutDate   string `json:"checkout_date"`
 		}
+
 		var reservationBG data.ReservationByGuest
 		var fields FieldsForInsertion
 
@@ -125,8 +262,18 @@ func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "You cannot make a reservation in the past"})
 			return
 		}
-		if !r.IsRoomAvailableForDates(fields.RoomId, checkInDate, checkOutDate) {
+
+		if !r.isRoomReservedForDates(fields.RoomId, checkInDate, checkOutDate) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "There is a reservation already for the selected dates"})
+			return
+		}
+		isRoomAvailableForDates, err := r.isRoomAvailableForDates(fields.RoomId, checkInDate, checkOutDate)
+		if !isRoomAvailableForDates {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "The accommodation cannot be reserved for the selected dates"})
+			return
+		}
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -135,6 +282,13 @@ func (r ReservationController) InsertReservationByGuest() gin.HandlerFunc {
 		reservationBG.GuestUsername = fields.Guest_Username
 		reservationBG.CheckInDate = fields.CheckInDate
 		reservationBG.CheckOutDate = fields.CheckOutDate
+		reservationBG.NumberOfGuests = fields.NumberOfGuests
+		price, err := r.calculatePrice(fields.RoomId, checkInDate, checkOutDate, fields.NumberOfGuests)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		reservationBG.Price = price
 
 		res_id, err := r.repo.InsertReservationByGuest(&reservationBG)
 		if err != nil {

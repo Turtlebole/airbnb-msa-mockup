@@ -12,6 +12,8 @@ type ReservationByRoom struct {
 	ReservationId   gocql.UUID `json:"reservation_id"`
 	GuestID         string     `json:"guest_id"`
 	GuestUsername   string     `json:"guest_username"`
+	NumberOfGuests  int        `json:"number_of_guests"`
+	Price           float64    `json:"price"`
 	ReservationDate string     `json:"reservation_date"`
 	CheckInDate     string     `json:"checkin_date"`
 	CheckOutDate    string     `json:"checkout_date"`
@@ -22,6 +24,8 @@ type ReservationByGuest struct {
 	ReservationId   gocql.UUID `json:"reservation_id"`
 	GuestID         string     `json:"guest_id"`
 	GuestUsername   string     `json:"guest_username"`
+	NumberOfGuests  int        `json:"number_of_guests"`
+	Price           float64    `json:"price"`
 	ReservationDate string     `json:"reservation_date"`
 	CheckInDate     string     `json:"checkin_date"`
 	CheckOutDate    string     `json:"checkout_date"`

@@ -5,14 +5,15 @@ import (
 	"accommodation-service/models"
 	"context"
 	"fmt"
+	"log"
+	"os"
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"log"
-	"os"
-	"time"
 )
 
 // NoSQL: AccommodationRepo struct encapsulating Mongo api client
@@ -107,26 +108,22 @@ func (ar *AccommodationRepo) Insert(accommodation *models.Accommodation) error {
 func (ar *AccommodationRepo) Update(id string, accommodation *models.Accommodation) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
 	defer cancel()
-	//accommodationsCollection := ar.getCollection()
 
 	var accommodationsCollection *mongo.Collection = database.OpenCollection(database.Client, "accommodations")
-
-	// Convert string ID to ObjectID
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 
 	filter := bson.M{"_id": objID}
-	// filter := bson.M{"name": "sadradimozda"}
 	update := bson.M{
 		"$set": bson.M{
-			"name":          accommodation.Name,
-			"minguests":     accommodation.MinGuests,
-			"maxguests":     accommodation.MaxGuests,
-			"location":      accommodation.Location,
-			"amenities":     accommodation.Amenities,
-			"pricepernight": accommodation.PricePerNight,
+			"name":         accommodation.Name,
+			"minguests":    accommodation.MinGuests,
+			"maxguests":    accommodation.MaxGuests,
+			"location":     accommodation.Location,
+			"amenities":    accommodation.Amenities,
+			"availability": accommodation.Availability,
 		},
 	}
 

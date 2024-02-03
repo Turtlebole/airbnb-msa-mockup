@@ -13,6 +13,8 @@ func AccommodationRoutes(router *gin.Engine) {
 	router.PUT("/accommodations/:_id", controllers.UpdateAccommodation())
 	router.GET("/accommodations/:_id", controllers.GetAccommodation())
 	router.GET("/accommodations", controllers.GetAllAccommodations())
+	router.GET("/accommodations/available", controllers.GetAllAvailableAccommodations())
+	router.GET("/accommodations/availability/:id", controllers.GetAvailableDates())
 	router.GET("/accommodations/host/:host_id", controllers.GetAllAccommodationsByHost())
 	router.DELETE("/accommodations/delete/:_id", controllers.DeleteAccommodation())
 	router.DELETE("/accommodations/delete/host/:_id", controllers.DeleteAccommodationsByHost())
