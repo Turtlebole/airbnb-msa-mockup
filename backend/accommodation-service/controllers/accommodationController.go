@@ -94,7 +94,7 @@ func CreateAccommodation() gin.HandlerFunc {
 					c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 					return
 				}
-				if !overlap {
+				if overlap {
 					c.JSON(http.StatusBadRequest, gin.H{"error": "Availability intervals cannot be overlapping."})
 					return
 				}
@@ -155,7 +155,6 @@ func UpdateAccommodation() gin.HandlerFunc {
 				overlapFound := false
 				for j := i + 1; j < len(intervals); j++ {
 					overlap, err := isAWithinB(reservations[i].CheckInDate, reservations[i].CheckOutDate, intervals[j].Start, intervals[j].End)
-					l.Printf("\naccommodation is available: %v - %v\n it is reserved for: %v - %v", intervals[j].Start, intervals[j].End, reservations[i].CheckInDate, reservations[i].CheckOutDate)
 					if err != nil {
 						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 						return
@@ -456,6 +455,7 @@ func DeleteAccommodation() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		} else if hasReservations {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "you cannot delete an accommodation that has active reservations present"})
+			return
 		}
 
 		if err := accommodationRepo.Delete(accID); err != nil {

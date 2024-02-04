@@ -213,7 +213,6 @@ func (r ReservationController) calculatePrice(roomID string, checkInDate, checkO
 			}
 			if pt == "Per_Guest" {
 				price = gn*ppn*d + (pow * gn * float64(weekendDays))
-				r.logger.Printf("\ngn*ppn*d+(pow*gn*weekendDays)\n %f*%f*%f+(%f*%f*%v) = %f", gn, ppn, d, pow, gn, weekendDays, price)
 			} else {
 				price = ppn*d + (pow * float64(weekendDays))
 			}
