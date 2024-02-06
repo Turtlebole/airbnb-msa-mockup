@@ -12,11 +12,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class AccommodationCreateComponent implements OnInit {
   form: FormGroup;
-  token: string | null;
+  token = localStorage.getItem('token');
   httpOptions: any;
   sanitizedContent!: SafeHtml;
   user_id: string | null;
-  
+
 
   constructor(
     private formBuilder: FormBuilder,

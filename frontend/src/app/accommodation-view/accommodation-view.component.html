@@ -59,7 +59,9 @@
     <h4 class="card-text">
       Guests: {{ accommodation.min_guests }} - {{ accommodation.max_guests }}
     </h4>
-    <h4 class="card-text">Price: ${{ accommodation.price_per_night }}</h4>
+    <h4 class="card-text">Price: ${{ accommodation.availability[0].price_per_night }}</h4>
+    <h4 class="card-text">Price on weekends: ${{ accommodation.availability[0].price_on_weekends }}</h4>
+    <h4 class="card-text">Available from: {{ accommodation.availability[0].start }} until: {{accommodation.availability[0].end}} </h4>
     <hr />
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. A tempora

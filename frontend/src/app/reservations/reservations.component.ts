@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,12 +11,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ReservationsComponent implements OnInit {
 
   form: FormGroup;
-
+  httpOptions: any;
+  token = localStorage.getItem('token');
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute
+
   ) {
     this.form = this.formBuilder.group({
       room_id: [''],
@@ -26,6 +28,13 @@ export class ReservationsComponent implements OnInit {
       checkout_date: [''],
       number_of_guests: ['', [Validators.required, Validators.min(1)]]
     });
+  }
+  getUserData(token: string): void {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+    };
   }
 
   ngOnInit(): void {
@@ -39,13 +48,19 @@ export class ReservationsComponent implements OnInit {
         guest_id: user_id
       });
     });
+    if (this.token) {
+      this.getUserData(this.token);
+    } else {
+      console.log('No token found. Please log in.');
+    }
   }
+
 
   onSubmit(): void {
     if (this.form.invalid) {
       const requestData = this.form.getRawValue();
       const totalPrice = this.calculatePrice(requestData);
-      console.log('Total Price:', totalPrice); 
+      console.log('Total Price:', totalPrice);
   }
 
     const requestData = this.form.getRawValue();
@@ -53,7 +68,12 @@ export class ReservationsComponent implements OnInit {
     requestData.guest_username = this.sanitizeInput(requestData.guest_username);
     requestData.guest_id = this.sanitizeInput(requestData.guest_id);
 
-    this.http.post<any>('http://localhost:8002/reservations/by_guest/insert', requestData, { withCredentials: true })
+    this.http
+    .post<any>(
+      'http://localhost:8002/reservations/by_guest/insert',
+      requestData,
+      this.httpOptions
+      )
       .subscribe(
         (res: any) => {
           this.router.navigate(['/']).then(() => {
@@ -78,22 +98,22 @@ export class ReservationsComponent implements OnInit {
     const checkinDate = new Date(formValue.checkin_date);
     const checkoutDate = new Date(formValue.checkout_date);
     const days = Math.floor((checkoutDate.getTime() - checkinDate.getTime()) / (1000 * 60 * 60 * 24));
-  
+
     const weekendDays = this.countWeekendDays(checkinDate, checkoutDate);
-  
-    const guestNum = formValue.number_of_guests || 1; 
-  
+
+    const guestNum = formValue.number_of_guests || 1;
+
     if (formValue.price_type === 'Whole') {
       return formValue.price_per_night * days + (formValue.price_on_weekends * weekendDays);
     } else {
       return guestNum * formValue.price_per_night * days + (formValue.price_on_weekends * guestNum * weekendDays);
     }
   }
-  
+
   countWeekendDays(startDate: Date, endDate: Date): number {
     let weekendDays = 0;
     const currentDate = new Date(startDate);
-  
+
     while (currentDate <= endDate) {
       const dayOfWeek = currentDate.getDay();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -101,7 +121,7 @@ export class ReservationsComponent implements OnInit {
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
+
     return weekendDays;
   }
 }

@@ -9,8 +9,15 @@ interface AccommodationWithRating {
   min_guests: number;
   max_guests: number;
   amenities?: string[];
-  price_per_night: number;
   averageRating?: number;
+  availability: AvailabilityInterval[];
+}
+
+interface AvailabilityInterval {
+  start: string;
+  end: string;
+  price_per_night: number;
+  priceOnWeekends: number;
 }
 
 @Component({
@@ -105,8 +112,8 @@ export class AccommodationsComponent implements OnInit {
           this.priceFilter.from > 0
         ) {
           passPriceFilter =
-            accommodation.price_per_night >= this.priceFilter.from &&
-            accommodation.price_per_night <= this.priceFilter.to;
+            accommodation.availability[0].price_per_night >= this.priceFilter.from &&
+            accommodation.availability[0].price_per_night <= this.priceFilter.to;
         }
 
         if (

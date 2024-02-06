@@ -26,6 +26,7 @@ export class AccommodationViewComponent implements OnInit {
     // Fetch accommodation details based on the obtained ID
     this.getAccommodationDetails();
     this.getReviewsByAccommodation();
+
   }
 
   getAccommodationDetails(): void {
@@ -36,6 +37,7 @@ export class AccommodationViewComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.accommodation = response;
+          console.log(this.accommodation)
         },
         (error) => {
           console.error('Error fetching accommodation details:', error);
