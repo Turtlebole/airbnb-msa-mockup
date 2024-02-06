@@ -32,44 +32,31 @@ export class AccommodationUpdateComponent implements OnInit {
       location: '',
       min_guests: '',
       max_guests: '',
+      amenities: this.formBuilder.array([]),
+      availability_start: '',
+      availability_end: '',
       price_per_night: '',
-      amenities: this.formBuilder.array([])
+      price_on_weekends: ''
     });
     this.accommodationId = this.route.snapshot.params['id'];
   }
 
   ngOnInit(): void {
     this.getAccommodationDetails();
-    this.form = this.formBuilder.group({
-      name: '',
-      location: '',
-      amenities: [],
-      min_guests: '',
-      max_guests: '',
-      availability: 'available',
-      price_per_night: '',
-      wifi: '',
-      pool: '',
-      gym: '',
-      wellness: '',
-      restaurant: '',
-      allInclusive: '',
-    });
   }
 
+  updateAmenities(): void {
+    const amenitiesArray = this.form.get('amenities') as FormArray;
 
- updateAmenities(): void {
-  const amenitiesArray = this.form.get('amenities') as FormArray;
-
-  if (amenitiesArray) {
-    this.amenitiesList.forEach((amenity) => {
-      const isChecked = this.accommodation.amenities.includes(amenity.value);
-      if (isChecked) {
-        amenitiesArray.push(this.formBuilder.control(amenity.value));
-      }
-    });
+    if (amenitiesArray) {
+      this.amenitiesList.forEach((amenity) => {
+        const isChecked = this.accommodation.amenities.includes(amenity.value);
+        if (isChecked) {
+          amenitiesArray.push(this.formBuilder.control(amenity.value));
+        }
+      });
+    }
   }
-}
 
   isAmenityChecked(amenityValue: string): boolean {
     const amenitiesArray = this.form.get('amenities')?.value || [];
@@ -94,7 +81,10 @@ export class AccommodationUpdateComponent implements OnInit {
       location: this.accommodation.location,
       min_guests: this.accommodation.min_guests,
       max_guests: this.accommodation.max_guests,
+      availability_start: this.accommodation.availability_start,
+      availability_end: this.accommodation.availability_end,
       price_per_night: this.accommodation.price_per_night,
+      price_on_weekends: this.accommodation.price_on_weekends
     });
 
     const amenitiesArray = this.form.get('amenities') as FormArray;

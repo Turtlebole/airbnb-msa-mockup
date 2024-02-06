@@ -51,44 +51,30 @@
       </div>
     </div>
     <div class="form-floating">
-      <input formControlName="host_id" type="text" class="form-control" id="floatingInput">
-      <label for="floatingInput">Host ID</label>
-    </div>
-    <div class="form-floating">
       <select formControlName="price_type" class="form-select" id="floatingSelect">
         <option value="Whole">Whole</option>
         <option value="Per guest">Per guest</option>
       </select>
       <label for="floatingSelect">Price Type</label>
     </div>
- <div formArrayName="availability">
-      <div *ngFor="let availability of availabilityArray.controls; let i=index;">
-        <div class="form-group">
-          <label for="startDate{{i}}">Start Date</label>
-          <input formControlName="{{i}}.start" type="date" class="form-control" id="startDate{{i}}">
-        </div>
-        <div class="form-group">
-          <label for="endDate{{i}}">End Date</label>
-          <input formControlName="{{i}}.end" type="date" class="form-control" id="endDate{{i}}">
-        </div>
-        <div class="form-group">
-          <label for="pricePerNight{{i}}">Price Per Night</label>
-          <input formControlName="{{i}}.price_per_night" type="number" class="form-control" id="pricePerNight{{i}}">
-        </div>
-        <div class="form-group">
-          <label for="priceOnWeekends{{i}}">Price On Weekends</label>
-          <input formControlName="{{i}}.price_on_weekends" type="number" class="form-control"
-            id="priceOnWeekends{{i}}">
-        </div>
-        <button type="button" class="btn btn-danger" (click)="removeAvailability(i)">Remove</button>
-      </div>
+    <div class="form-floating">
+      <input formControlName="availability_start" type="date" class="form-control" id="availabilityStart">
+      <label for="availabilityStart">Availability Start Date</label>
     </div>
+    <div class="form-floating">
+      <input formControlName="availability_end" type="date" class="form-control" id="availabilityEnd">
+      <label for="availabilityEnd">Availability End Date</label>
+    </div>
+    <div class="form-floating">
+      <input formControlName="price_per_night" type="number" class="form-control" id="pricePerNight">
+      <label for="pricePerNight">Price Per Night</label>
+    </div>
+    <div class="form-floating">
+      <input formControlName="price_on_weekends" type="number" class="form-control" id="priceOnWeekends">
+      <label for="priceOnWeekends">Price On Weekends</label>
+    </div>
+    
     <div class="btn-group" role="group" aria-label="Profile actions">
-      <div class="mx-1">
-        <button type="button" class="btn btn-success" (click)="addAvailability()">
-          Add Availability
-        </button>
-      </div>
       <div class="mx-1">
         <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
       </div>

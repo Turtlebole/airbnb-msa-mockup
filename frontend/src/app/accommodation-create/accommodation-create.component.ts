@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emitters } from '../emitters/emitters';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -11,11 +11,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./accommodation-create.component.css'],
 })
 export class AccommodationCreateComponent implements OnInit {
-  form: FormGroup = new FormGroup({});
-  token: string | null = localStorage.getItem('token');
+  form: FormGroup;
+  token: string | null;
   httpOptions: any;
   sanitizedContent!: SafeHtml;
   user_id: string | null;
+  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,7 +24,20 @@ export class AccommodationCreateComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {
-    this.user_id = null;
+    this.form = this.formBuilder.group({
+      name: '',
+      location: '',
+      amenities: [],
+      min_guests: '',
+      max_guests: '',
+      availability_start: '',
+      availability_end: '',
+      price_per_night: '',
+      price_on_weekends: '',
+      price_type: ''
+    });
+    this.token = localStorage.getItem('token');
+    this.user_id = localStorage.getItem('user_id');
   }
 
   sanitizeInput(input: any): any {
@@ -35,22 +49,9 @@ export class AccommodationCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user_id = localStorage.getItem('user_id');
     if (this.user_id == null) {
       this.router.navigate(['/login']);
     }
-
-    this.form = this.formBuilder.group({
-      name: '',
-      location: '',
-      amenities: [],
-      min_guests: '',
-      max_guests: '',
-      availability: this.formBuilder.array([]), 
-      host_id: this.user_id,
-      price_type: ''
-      
-    });
 
     if (this.token) {
       this.getUserData(this.token);
@@ -81,27 +82,6 @@ export class AccommodationCreateComponent implements OnInit {
     }
 
     this.form.patchValue({ amenities: amenitiesArray });
-  }
-
-  get availabilityArray() : any {
-    return this.form.get('availability') as FormArray;
-  }
-
-  createAvailability(): FormGroup {
-    return this.formBuilder.group({
-      start: '',
-      end: '',
-      price_per_night: '',
-      price_on_weekends: '',
-    });
-  }
-
-  addAvailability(): void {
-    this.availabilityArray.push(this.createAvailability());
-  }
-
-  removeAvailability(index: number): void {   
-    this.availabilityArray.removeAt(index);
   }
 
   submit(): void {
