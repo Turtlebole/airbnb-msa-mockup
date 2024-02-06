@@ -97,6 +97,7 @@ export class AccommodationUpdateComponent implements OnInit {
   }
 
   submit(): void {
+    console.log(this.accommodation)
     const updatedData = this.form.value;
     this.http
       .put(`https://localhost/api/accommodations/accommodations/${this.accommodationId}`, updatedData)
