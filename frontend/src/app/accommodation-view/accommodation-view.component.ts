@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { AccommodationService } from 'src/app/accommodation.service';
 
 @Component({
@@ -12,42 +11,60 @@ export class AccommodationViewComponent implements OnInit {
   accommodationId: string = '';
   accommodation: any;
   reviews: any[] = [];
+  hostReviews: any[] = [];
 
   constructor(
-    private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
     private accommodationService: AccommodationService
   ) {}
 
   ngOnInit(): void {
-    // Retrieve the accommodation ID from the route parameters
-    this.accommodationId = this.route.snapshot.params['id'];
-    // Fetch accommodation details based on the obtained ID
-    this.getAccommodationDetails();
-    this.getReviewsByAccommodation();
+    this.route.params.subscribe((params) => {
+      this.accommodationId = params['id'];
+      this.fetchAccommodationDetails();
+      this.fetchReviews();
+      this.fetchHostReviews();
+    });
+  }
+  fetchHostReviews(): void {
+    this.accommodationService
+      .getHostReviewsByAccommodation(this.accommodationId)
+      .subscribe(
+        (hostReviews: any) => {
+          console.log('Host Reviews:', hostReviews);
+          this.hostReviews = hostReviews;
+        },
+        (error) => {
+          console.error('Error fetching host reviews:', error);
+        }
+      );
   }
 
-  getAccommodationDetails(): void {
-    this.http
-      .get(
-        `https://localhost/api/accommodations/accommodations/${this.accommodationId}`
-      )
+  fetchAccommodationDetails(): void {
+    this.accommodationService
+      .getAccommodationById(this.accommodationId)
       .subscribe(
-        (response: any) => {
-          this.accommodation = response;
+        (accommodation: any) => {
+          this.accommodation = accommodation;
         },
         (error) => {
           console.error('Error fetching accommodation details:', error);
         }
       );
   }
-  getReviewsByAccommodation(): void {
+
+  fetchReviews(): void {
     this.accommodationService
-      .getReviewsByAccommodation(this.accommodationId)
+      .getAccommodationReviews(this.accommodationId)
       .subscribe(
         (reviews: any) => {
           this.reviews = reviews;
+          // Filter host reviews based on conditions
+          this.hostReviews = reviews.filter(
+            (review: any) =>
+              review.host_comment !== '' && review.host_rating !== 0
+          );
         },
         (error) => {
           console.error('Error fetching reviews:', error);

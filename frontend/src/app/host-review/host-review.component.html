@@ -1,0 +1,41 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mb-4">Review Host</h2>
+
+      <!-- Host Review Form -->
+      <form [formGroup]="form" (submit)="submitHostReview()">
+        <!-- Host Rating -->
+        <div class="mb-3">
+          <label for="hostRating" class="form-label">Rating:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="hostRating"
+            formControlName="hostRating"
+            required
+            min="1"
+            max="5"
+          />
+        </div>
+
+        <!-- Host Comment -->
+        <div class="mb-3">
+          <label for="hostComment" class="form-label">Comment:</label>
+          <textarea
+            class="form-control"
+            id="hostComment"
+            formControlName="hostComment"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">
+          Submit Host Review
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

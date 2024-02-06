@@ -15,4 +15,5 @@ func MainRoutes(routes *gin.Engine, reservationController controllers.Reservatio
 	routes.GET("/reservations/all-guest-ids", reservationController.GetAllGuestIDs())
 	routes.GET("/reservations/all-reservation-ids", reservationController.GetAllReservationIDs())
 	routes.GET("/reservations/all-res-guest", reservationController.GetAllFromByGuest())
+	routes.GET("/reservations/:reservationID/accommodation-id", reservationController.GetAccommodationByReservation())
 }

@@ -9,6 +9,7 @@ export class UserService {
   user$ = this.userSource.asObservable();
 
   updateUser(user: any): void {
+    console.log('User updated:', user);
     this.userSource.next(user);
   }
 }

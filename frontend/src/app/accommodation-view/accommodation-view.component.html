@@ -67,13 +67,39 @@
       impedit?
     </p>
   </div>
-  <div *ngIf="reviews.length > 0">
+  <div *ngIf="reviews.length > 0 || hostReviews.length > 0">
     <h3>Reviews</h3>
     <ul>
       <li *ngFor="let review of reviews">
         <p>Rating: {{ review.rating }}</p>
         <p>Comment: {{ review.comment }}</p>
         <p>User: {{ review.user_name }}</p>
+      </li>
+    </ul>
+    <h3>Host Reviews</h3>
+    <ul>
+      <li *ngFor="let review of hostReviews">
+        <p *ngIf="review.host_rating !== 0">
+          <strong>User: {{ review.user_name }}</strong>
+          <br />
+          Rating: {{ review.host_rating }}
+        </p>
+        <p *ngIf="review.host_comment !== '' && review.host_rating !== 0">
+          Comment: {{ review.host_comment }}
+        </p>
+        <p
+          *ngIf="
+            review.created_at && review.created_at !== '0001-01-01T00:00:00Z'
+          "
+        >
+          Date: {{ review.created_at | date : "yyyy-MM-dd HH:mm:ss" }}
+        </p>
+        <hr
+          *ngIf="
+            review.host_rating !== 0 &&
+            review.created_at !== '0001-01-01T00:00:00Z'
+          "
+        />
       </li>
     </ul>
   </div>

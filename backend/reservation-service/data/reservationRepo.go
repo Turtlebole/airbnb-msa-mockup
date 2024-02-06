@@ -316,3 +316,48 @@ func (rr *ReservationRepo) GetAllFromByGuest() (ReservationsByGuest, error) {
 	}
 	return reservations, nil
 }
+func (rr *ReservationRepo) GetAccommodationIDByReservation(reservationID string) (string, error) {
+	resUUID := rr.ConvertStringToUUID(reservationID)
+
+	query := rr.session.Query(
+		`SELECT room_id FROM reservations_by_room
+		WHERE reservation_id = ?`,
+		resUUID)
+
+	var roomID string
+	if err := query.Scan(&roomID); err != nil {
+		rr.logger.Println(err)
+		return "", err
+	}
+
+	// Replace the following line with the actual logic to get the accommodation ID
+	// For now, let's assume roomID itself is the accommodation ID
+	accommodationID := roomID
+
+	return accommodationID, nil
+}
+
+/*func (rr *ReservationRepo) HasStayedInAccommodation(ctx context.Context, userID, accommodationID string) (bool, error) {
+	// Convert string user and accommodation IDs to UUIDs
+	userUUID := rr.ConvertStringToUUID(userID)
+	accommodationUUID := rr.ConvertStringToUUID(accommodationID)
+
+	// Query reservations_by_guest to check if the user has an active reservation
+	query := rr.session.Query(
+		`SELECT COUNT(*) FROM reservations_by_guest
+		WHERE guest_id = ?
+		AND reservation_id IN
+			(SELECT reservation_id FROM reservations_by_room
+			WHERE room_id = ? AND checkout_date >= todate(now()))`,
+		userUUID, accommodationUUID)
+
+	var count int
+	if err := query.Scan(&count); err != nil {
+		rr.logger.Println(err)
+		return false, err
+	}
+
+	// If count is greater than 0, the user has an active reservation for the accommodation
+	return count > 0, nil
+}
+*/
