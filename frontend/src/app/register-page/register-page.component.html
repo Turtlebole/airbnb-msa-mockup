@@ -47,6 +47,14 @@
                     <label for="floatingInput">Address</label>
                   </div>
                   <div class="form-floating">
+                    <select name="user_type" formControlName="user_type" type="text" class="form-control" id="floatingInput">
+                      <option value="User" selected>Select your role...</option>
+                      <option value="Guest">Guest</option>
+                      <option value="Host">Host</option>
+                      </select>
+                    <label for="floatingInput">Role</label>
+                  </div>
+                  <div class="form-floating">
                     <input formControlName="phone" type="text" class="form-control" id="floatingInput" placeholder="069696969">
                     <label for="floatingInput">Phone</label>
                   </div>

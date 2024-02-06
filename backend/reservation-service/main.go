@@ -29,7 +29,7 @@ func main() {
 	router.Use(cors.Middleware(cors.Config{
 		Origins:         "https://localhost:4200, *",
 		Methods:         "GET, PUT, POST, DELETE, OPTIONS",
-		RequestHeaders:  "Origin, Content-Type",
+		RequestHeaders:  "Origin, Content-Type,Authorization",
 		ExposedHeaders:  "",
 		MaxAge:          50 * time.Second,
 		Credentials:     true,

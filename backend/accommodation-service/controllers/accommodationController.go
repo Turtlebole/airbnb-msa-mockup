@@ -10,7 +10,9 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"reflect"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,6 +20,7 @@ import (
 	"accommodation-service/database"
 	"accommodation-service/models"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/gocql/gocql"
 	"go.mongodb.org/mongo-driver/bson"
@@ -80,7 +83,34 @@ func isAWithinB(start1, end1, start2, end2 string) (bool, error) {
 
 func CreateAccommodation() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		claims, err := getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		userID, ok := claims["Uid"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found in token"})
+			return
+		}
+		userIDObj, err := primitive.ObjectIDFromHex(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error converting user id"})
+			return
+		}
+
+		if userType != "Host" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only hosts can access this page"})
+			return
+		}
+
 		var accommodation models.Accommodation
+		accommodation.HostID = userIDObj
 		if err := c.BindJSON(&accommodation); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -113,24 +143,39 @@ func CreateAccommodation() gin.HandlerFunc {
 
 func UpdateAccommodation() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		claims, err := getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		if userType != "Host" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only hosts can access this page"})
+			return
+		}
+		userID, ok := claims["Uid"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		userIDObj, err := primitive.ObjectIDFromHex(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error converting user id"})
+			return
+		}
+		var existingAccommodation models.Accommodation
 		id := c.Param("_id")
 
 		l := log.New(gin.DefaultWriter, "Accommodation controller: ", log.LstdFlags)
-		// Convert string ID to ObjectID
 		objID, err := primitive.ObjectIDFromHex(id)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
 			return
 		}
-
-		var newAccommodation models.Accommodation
-		if err := c.ShouldBindJSON(&newAccommodation); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		// Fetch existing accommodation from MongoDB
-		var existingAccommodation models.Accommodation
 		err = accommodationCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&existingAccommodation)
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
@@ -138,6 +183,16 @@ func UpdateAccommodation() gin.HandlerFunc {
 			} else {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch existing accommodation"})
 			}
+			return
+		}
+		if existingAccommodation.HostID != userIDObj {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only the user who created the accommodation can access this page"})
+			return
+		}
+
+		var newAccommodation models.Accommodation
+		if err := c.ShouldBindJSON(&newAccommodation); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		availabilityUpdated := !reflect.DeepEqual(existingAccommodation.Availability, newAccommodation.Availability)
@@ -443,6 +498,20 @@ func GetReservations(accID string) ([]ReservationByRoom, error) {
 
 func DeleteAccommodation() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		claims, err := getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		if userType != "Host" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only hosts can access this page"})
+		}
+
 		accID := c.Param("_id")
 		l := log.New(gin.DefaultWriter, "Accommodation controller: ", log.LstdFlags)
 
@@ -512,6 +581,35 @@ func DeleteAccommodationsByHost() gin.HandlerFunc {
 			return
 		}
 
+		claims, err := getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		if userType != "Host" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only hosts can access this page"})
+			return
+		}
+		userID, ok := claims["Uid"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		userIDObj, err := primitive.ObjectIDFromHex(userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error converting user id"})
+			return
+		}
+
+		if hostID != userIDObj {
+			c.JSON(http.StatusForbidden, gin.H{"error": "you cannot access this page"})
+			return
+		}
+
 		accs, err := GetAllAccommodationsByHostLocal(hostID)
 		if err != nil {
 			if err.Error() == "no accommodations found" {
@@ -558,4 +656,35 @@ func GetAvailableDates() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, accommodation.Availability)
 	}
+}
+
+func getUserInfoFromToken(authHeader []string) (jwt.MapClaims, error) {
+
+	if len(authHeader) == 0 {
+		return nil, fmt.Errorf("no header")
+	}
+	authString := strings.Join(authHeader, "")
+	tokenString := strings.Split(authString, "Bearer ")[1]
+
+	if len(tokenString) == 0 {
+		return nil, fmt.Errorf("token empty")
+	}
+
+	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("invalid signing method")
+		}
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("invalid token: %v", err.Error())
+	}
+	return claims, nil
 }

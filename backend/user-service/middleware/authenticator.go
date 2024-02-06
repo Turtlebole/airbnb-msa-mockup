@@ -13,7 +13,6 @@ import (
 // Validates token
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//clientToken := c.Request.Header.Get("token")
 		clientToken := c.Request.Header.Get("Authorization")
 		clientToken = strings.Replace(clientToken, "Bearer ", "", 1)
 		if clientToken == "" {

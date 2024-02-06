@@ -304,8 +304,6 @@ func Register() gin.HandlerFunc {
 		defer cancel()
 	}
 }
-
-// Login is the api used to tget a single user
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fmt.Println("Request headers:", c.Errors)
@@ -314,8 +312,6 @@ func Login() gin.HandlerFunc {
 		var foundUser models.User
 
 		if err := c.BindJSON(&user); err != nil {
-			// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
 			c.JSON(http.StatusBadRequest, gin.H{"error": ""})
 			fmt.Println("I am here")
 			return
@@ -324,8 +320,6 @@ func Login() gin.HandlerFunc {
 		err := userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
 		defer cancel()
 		if err != nil {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": "login or passowrd is incorrect"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -333,17 +327,11 @@ func Login() gin.HandlerFunc {
 		passwordIsValid, _ := VerifyPassword(*user.Password, *foundUser.Password)
 		defer cancel()
 		if passwordIsValid != true {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Incorrect password"})
 
 			return
-
 		}
-
 		if foundUser.Email == nil {
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
 			c.JSON(http.StatusBadRequest, gin.H{"error": "User not found"})
 			return
 		}
@@ -353,10 +341,8 @@ func Login() gin.HandlerFunc {
 		err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -372,7 +358,7 @@ func Logout() gin.HandlerFunc {
 		refreshToken := helper.ExtractRefreshToken(c)
 		l.Println("primljen je: ", c.GetString("Authorization"))
 		if refreshToken == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "TEST LOL"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "no refersh token found"})
 		} else {
 
 			c.JSON(http.StatusOK, gin.H{"message": "User logged out successfully"})
@@ -694,6 +680,14 @@ func DeleteUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		authHeader := c.Request.Header["Authorization"]
+		if len(authHeader) == 0 {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "no auth header provided"})
+			return
+		}
+		authString := strings.Join(authHeader, "")
+		tokenString := strings.Split(authString, "Bearer ")[1]
+		req.Header.Add("Authorization", "Bearer "+tokenString)
 
 		res, err := httpClient.Do(req)
 		if err != nil {

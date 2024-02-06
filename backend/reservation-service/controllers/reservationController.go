@@ -6,9 +6,12 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"reservation-service/data"
+	"strings"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -226,8 +229,6 @@ func (r ReservationController) InsertReservation() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type FieldsForInsertion struct {
 			RoomId         string `json:"room_id"`
-			GuestID        string `json:"guest_id"`
-			Guest_Username string `json:"guest_username"`
 			NumberOfGuests int    `json:"number_of_guests"`
 			CheckInDate    string `json:"checkin_date"`
 			CheckOutDate   string `json:"checkout_date"`
@@ -235,6 +236,32 @@ func (r ReservationController) InsertReservation() gin.HandlerFunc {
 
 		var reservationBG data.ReservationByGuest
 		var fields FieldsForInsertion
+
+		claims, err := r.getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		userID, ok := claims["Uid"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user id not found in token"})
+			return
+		}
+		username, ok := claims["First_name"].(string) //should be username
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "username not found in token"})
+			return
+		}
+
+		if userType != "Guest" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only users that are guests can access this page"})
+			return
+		}
 
 		if err := c.BindJSON(&fields); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"Data you provided causes an error": err.Error()})
@@ -276,9 +303,9 @@ func (r ReservationController) InsertReservation() gin.HandlerFunc {
 			return
 		}
 
-		reservationBG.GuestID = fields.GuestID
+		reservationBG.GuestID = userID
 		reservationBG.RoomId = fields.RoomId
-		reservationBG.GuestUsername = fields.Guest_Username
+		reservationBG.GuestUsername = username
 		reservationBG.CheckInDate = fields.CheckInDate
 		reservationBG.CheckOutDate = fields.CheckOutDate
 		reservationBG.NumberOfGuests = fields.NumberOfGuests
@@ -306,6 +333,19 @@ func (r ReservationController) CancelReservation() gin.HandlerFunc {
 		type CancelInfo struct {
 			RoomId        string `json:"room_id"`
 			ReservationId string `json:"reservation_id"`
+		}
+
+		claims, err := r.getUserInfoFromToken(c.Request.Header["Authorization"])
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		userType, ok := claims["User_type"].(string)
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
+			return
+		}
+		if userType != "Guest" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "only users that are guests can access this page"})
 		}
 
 		var cancelInfo CancelInfo
@@ -403,4 +443,34 @@ func (r ReservationController) GetAllFromByGuest() gin.HandlerFunc {
 		}
 		c.JSON(http.StatusOK, reservationsByGuest)
 	}
+}
+func (r ReservationController) getUserInfoFromToken(authHeader []string) (jwt.MapClaims, error) {
+
+	if len(authHeader) == 0 {
+		return nil, fmt.Errorf("no header")
+	}
+	authString := strings.Join(authHeader, "")
+	tokenString := strings.Split(authString, "Bearer ")[1]
+
+	if len(tokenString) == 0 {
+		return nil, fmt.Errorf("token empty")
+	}
+
+	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("invalid signing method")
+		}
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fmt.Errorf("invalid token")
+	}
+	return claims, nil
 }
