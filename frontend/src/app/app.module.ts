@@ -19,6 +19,7 @@ import { environment } from 'src/enviroments/enviroment';
 import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { AccommodationViewComponent } from './accommodation-view/accommodation-view.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AccommodationViewComponent } from './accommodation-view/accommodation-v
     AccommodationUpdateComponent,
     ReservationsComponent,
     AccommodationViewComponent,
+    ProfileEditComponent,
   ],
   imports: [
     BrowserModule,

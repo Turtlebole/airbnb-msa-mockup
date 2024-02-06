@@ -135,6 +135,10 @@ export class ProfileComponent implements OnInit {
       alert('You must cancel your reservations first');
     }
   }
+  editProfile(): void {
+    this.router.navigate(['/edit-profile',this.userID]);
+  }
+
   //   updateReview(reviewId: string, updatedReview: any): void {
   //     this.accommodationService.updateReview(reviewId, updatedReview).subscribe(
   //       (response) => {
@@ -160,3 +164,7 @@ export class ProfileComponent implements OnInit {
   //     );
   //   }
 }
+function editProfile() {
+  throw new Error('Function not implemented.');
+}
+

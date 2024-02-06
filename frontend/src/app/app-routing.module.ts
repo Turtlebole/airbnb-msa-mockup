@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { AccommodationViewComponent } from './accommodation-view/accommodation-view.component';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'sign-up', component: RegisterPageComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'edit/:id', component: AccommodationUpdateComponent},
   { path: 'profile', component: ProfileComponent },
   { path: 'reservation/:id',  component:ReservationsComponent},
-  { path: 'accommodation/:id', component:AccommodationViewComponent}
+  { path: 'accommodation/:id', component:AccommodationViewComponent},
+  { path: 'edit-profile/:id', component:ProfileEditComponent}
 ];
 @NgModule({
   imports: [CommonModule, RouterModule.forRoot(routes)],
