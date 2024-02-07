@@ -335,18 +335,7 @@ func (r ReservationController) CancelReservation() gin.HandlerFunc {
 			ReservationId string `json:"reservation_id"`
 		}
 
-		claims, err := r.getUserInfoFromToken(c.Request.Header["Authorization"])
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
-		userType, ok := claims["User_type"].(string)
-		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
-			return
-		}
-		if userType != "Guest" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "only users that are guests can access this page"})
-		}
+		// No user_type check
 
 		var cancelInfo CancelInfo
 

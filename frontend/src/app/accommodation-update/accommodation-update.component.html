@@ -15,23 +15,29 @@
   <form [formGroup]="form" (submit)="submit()">
     <h1 class="h3 mb-3 fw-normal">Update accommodation</h1>
 
-    <div class="form-floating">
+    <div class="form-floating mb-3">
       <input formControlName="name" type="text" class="form-control" id="name" [value]="accommodation?.name">
       <label for="name">Name</label>
     </div>
-    <div class="form-floating">
+    <div class="form-floating mb-3">
       <input formControlName="location" type="text" class="form-control" id="location" [value]="accommodation?.location">
       <label for="location">Location</label>
     </div>
-    <div class="form-floating">
-      <input formControlName="min_guests" type="number" class="form-control" id="min_guests" [value]="accommodation?.min_guests">
-      <label for="min_guests">Minimum Guests</label>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="min_guests" type="number" class="form-control" id="min_guests" [value]="accommodation?.min_guests">
+          <label for="min_guests">Minimum Guests</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="max_guests" type="number" class="form-control" id="max_guests" [value]="accommodation?.max_guests">
+          <label for="max_guests">Maximum Guests</label>
+        </div>
+      </div>
     </div>
-    <div class="form-floating">
-      <input formControlName="max_guests" type="number" class="form-control" id="max_guests" [value]="accommodation?.max_guests">
-      <label for="max_guests">Maximum Guests</label>
-    </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="amenitiesList">Amenities</label>
       <div class="row">
         <div class="col-md-6">
@@ -48,23 +54,35 @@
         </div>
       </div>
     </div>
-    <div class="form-floating">
-      <input formControlName="availability_start" type="date" class="form-control" id="availabilityStart" [value]="accommodation?.availability_start">
-      <label for="availabilityStart">Availability Start Date</label>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="availability_start" type="date" class="form-control" id="availabilityStart" [value]="accommodation?.availability_start">
+          <label for="availabilityStart">Availability Start Date</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="availability_end" type="date" class="form-control" id="availabilityEnd" [value]="accommodation?.availability_end">
+          <label for="availabilityEnd">Availability End Date</label>
+        </div>
+      </div>
     </div>
-    <div class="form-floating">
-      <input formControlName="availability_end" type="date" class="form-control" id="availabilityEnd" [value]="accommodation?.availability_end">
-      <label for="availabilityEnd">Availability End Date</label>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="price_per_night" type="number" class="form-control" id="pricePerNight" [value]="accommodation?.price_per_night">
+          <label for="pricePerNight">Price Per Night</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating">
+          <input formControlName="price_on_weekends" type="number" class="form-control" id="priceOnWeekends" [value]="accommodation?.price_on_weekends">
+          <label for="priceOnWeekends">Price On Weekends</label>
+        </div>
+      </div>
     </div>
-    <div class="form-floating">
-      <input formControlName="price_per_night" type="number" class="form-control" id="pricePerNight" [value]="accommodation?.price_per_night">
-      <label for="pricePerNight">Price Per Night</label>
-    </div>
-    <div class="form-floating">
-      <input formControlName="price_on_weekends" type="number" class="form-control" id="priceOnWeekends" [value]="accommodation?.price_on_weekends">
-      <label for="priceOnWeekends">Price On Weekends</label>
-    </div>
-    
+
     <div class="btn-group" role="group" aria-label="Profile actions">
       <div class="mx-1">
         <button class="btn btn-primary w-100 py-2" type="submit">Update</button>

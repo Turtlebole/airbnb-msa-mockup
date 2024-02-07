@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccommodationService } from 'src/app/accommodation.service';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface AccommodationWithRating {
   id: string;
@@ -29,6 +30,7 @@ export class AccommodationsComponent implements OnInit {
   accommodations: AccommodationWithRating[] = [];
   filteredAccommodations: AccommodationWithRating[] = [];
   locationFilter: string = '';
+  token = localStorage.getItem('token');
   guestsFilter: number | null = null;
   averageRatings: { [key: string]: number | undefined } = {};
   ratingFilter: boolean | undefined = false;
@@ -40,7 +42,8 @@ export class AccommodationsComponent implements OnInit {
 
   constructor(
     private accommodationService: AccommodationService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient // Inject HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -148,5 +151,26 @@ export class AccommodationsComponent implements OnInit {
 
   makeReservation(accommodationId: string): void {
     this.router.navigate(['/reservation', accommodationId]);
+  }
+
+  deleteAccommodation(accommodationId: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + this.token,
+      }),
+      withCredentials: true,
+    };
+    const endpoint = `http://localhost:8001/accommodations/delete/${accommodationId}`;
+
+    this.http.delete<any>(endpoint, httpOptions).subscribe(
+      () => {
+        console.log('Accommodation deleted successfully');
+        // Refresh the list of accommodations after deletion
+        this.loadAccommodations();
+      },
+      (error) => {
+        console.error('Error deleting accommodation:', error.error);
+      }
+    );
   }
 }

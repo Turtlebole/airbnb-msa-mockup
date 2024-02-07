@@ -60,7 +60,7 @@ export class AccommodationService {
         })
       );
   }
-  updateReview(reviewId: string, updatedReview: any): Observable<any> {
+ updateReview(reviewId: string, updatedReview: any): Observable<any> {
     if (!reviewId) {
       console.error('Invalid reviewId:', reviewId);
       return throwError('Invalid reviewId');
@@ -74,8 +74,11 @@ export class AccommodationService {
       console.error('Error converting payload to JSON:', error);
     }
 
-    // Update the field names in the payload
+    // Update the field names in the payload based on the type of review
     const updatedPayload = {
+      ...(updatedReview.comment || updatedReview.rating
+        ? { comment: updatedReview.comment, rating: updatedReview.rating }
+        : {}),
       host_comment: updatedReview.host_comment,
       host_rating: updatedReview.host_rating,
       // Add other fields as needed
