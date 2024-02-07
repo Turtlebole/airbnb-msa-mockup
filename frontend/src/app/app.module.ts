@@ -13,13 +13,22 @@ import { AccommodationCreateComponent } from './accommodation-create/accommodati
 import { ProfileComponent } from './profile/profile.component';
 import { UserService } from './user.service';
 
-import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+import {
+  RECAPTCHA_SETTINGS,
+  RecaptchaFormsModule,
+  RecaptchaModule,
+  RecaptchaSettings,
+} from 'ng-recaptcha';
 
 import { environment } from 'src/enviroments/enviroment';
 import { AccommodationUpdateComponent } from './accommodation-update/accommodation-update.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { AccommodationViewComponent } from './accommodation-view/accommodation-view.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { AccommodationReviewComponent } from './accommodation-review/accommodation-review.component';
+import { HostReviewComponent } from './host-review/host-review.component';
+import { UpdateReviewComponent } from './update-review/update-review.component';
+import { HostReviewUpdateComponent } from './hostreview-update/hostreview-update.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +43,10 @@ import { ProfileEditComponent } from './profile-edit/profile-edit.component';
     ReservationsComponent,
     AccommodationViewComponent,
     ProfileEditComponent,
+    AccommodationReviewComponent,
+    HostReviewComponent,
+    UpdateReviewComponent,
+    HostReviewUpdateComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,12 +57,15 @@ import { ProfileEditComponent } from './profile-edit/profile-edit.component';
     RecaptchaModule,
     RecaptchaFormsModule,
   ],
-  providers: [UserService,  {
-    provide: RECAPTCHA_SETTINGS,
-    useValue: {
-      siteKey: environment.recaptcha.siteKey,
-    } as RecaptchaSettings,
-  }],
+  providers: [
+    UserService,
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="mb-4">Update Review</h2>
+
+      <!-- Update Review Form -->
+      <form [formGroup]="form" (submit)="updateReview()">
+        <!-- Rating -->
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="rating"
+            formControlName="rating"
+            required
+            min="1"
+            max="5"
+          />
+        </div>
+
+        <!-- Comment -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">Comment:</label>
+          <textarea
+            class="form-control"
+            id="comment"
+            formControlName="comment"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Update Review</button>
+      </form>
+    </div>
+  </div>
+</div>

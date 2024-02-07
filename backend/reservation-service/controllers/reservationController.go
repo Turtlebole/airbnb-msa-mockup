@@ -474,3 +474,19 @@ func (r ReservationController) getUserInfoFromToken(authHeader []string) (jwt.Ma
 	}
 	return claims, nil
 }
+func (r ReservationController) GetAccommodationByReservation() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		reservationID := c.Param("reservationID")
+
+		// Implement logic to retrieve accommodation ID based on reservation ID
+		accommodationID, err := r.repo.GetAccommodationIDByReservation(reservationID)
+		if err != nil {
+			r.logger.Printf("Failed to get accommodation ID: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get accommodation ID"})
+			return
+		}
+
+		// Respond with the accommodation ID
+		c.JSON(http.StatusOK, accommodationID)
+	}
+}

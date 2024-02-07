@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"encoding/json"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"io"
@@ -14,6 +15,10 @@ type Review struct {
 	AccommodationID primitive.ObjectID `bson:"accommodation_id,omitempty" json:"accommodation_id"`
 	Rating          int                `json:"rating"`
 	Comment         string             `json:"comment"`
+	HostID          primitive.ObjectID `bson:"host_id,omitempty" json:"host_id"`
+	HostComment     string             `json:"host_comment"`
+	HostRating      int                `json:"host_rating"`
+	CreatedAt       time.Time          `json:"created_at"`
 }
 
 func (r *Review) ToJSON(w io.Writer) error {
