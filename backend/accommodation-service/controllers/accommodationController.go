@@ -585,15 +585,7 @@ func DeleteAccommodationsByHost() gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
-		userType, ok := claims["User_type"].(string)
-		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
-			return
-		}
-		if userType != "Host" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "only hosts can access this page"})
-			return
-		}
+	
 		userID, ok := claims["Uid"].(string)
 		if !ok {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})

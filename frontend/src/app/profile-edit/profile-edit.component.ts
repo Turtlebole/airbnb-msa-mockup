@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-edit',
@@ -9,42 +9,60 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProfileEditComponent implements OnInit {
   profile: any = {};
+  token = localStorage.getItem('token');
+  userID: string | undefined;
 
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    const profileId = this.route.snapshot.paramMap.get('id');
-    this.getProfileById(profileId);
+    // Extract user ID from the route parameters
+    this.route.params.subscribe(params => {
+      const userId = params['id'];
+      if (userId) {
+        this.getProfileById(userId);
+        this.userID = userId; // Set userID when receiving profile data
+      } else {
+        // Handle error or redirection if ID is not available
+      }
+    });
   }
 
-  getProfileById(id: string | null): void {
-    if (id) {
-      this.http.get<any>(`http://localhost:8088/profiles/${id}`).subscribe(
-        (res: any) => {
-          this.profile = res;
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
+  getProfileById(id: string): void {
+    this.http.get<any>(`http://localhost:8088/profiles/${id}`).subscribe(
+      (res: any) => {
+        this.profile = res;
+        console.log(this.profile.id);
+        // Set userID property when receiving profile data
+        this.userID = this.profile.id;
+      },
+      (error) => {
+        console.error('Error fetching profile:', error);
+      }
+    );
   }
 
   updateProfile(): void {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        Authorization: 'Bearer ' + localStorage.getItem('token'), // Retrieve token from local storage
       })
     };
-    this.http.put<any>(`http://localhost:8088/profiles/${this.profile._id}`, this.profile, httpOptions).subscribe(
-      (response: any) => {
-        console.log('Profile updated successfully:', response);
+    // Use this.userID instead of id
+    const id = this.userID;
+    console.log(id);
+    this.http.put<any>(`http://localhost:8088/profiles/${id}`, this.profile, httpOptions).subscribe(
+      (res: any) => {
+        console.log('Profile updated successfully:', res);
+        // Redirect to profile page or handle success
+        this.router.navigate(['/profile']);
       },
       (error) => {
         console.error('Error updating profile:', error);
+        // Handle error response
       }
     );
   }

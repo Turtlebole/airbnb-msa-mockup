@@ -55,9 +55,11 @@ export class LoginPageComponent {
         const token = res.token;
         const id = res.ID
         const first_name = res.first_name
+        const user_type = res.user_type
         localStorage.setItem('token', token);
         localStorage.setItem('user_id',id)
         localStorage.setItem('user_first_name',first_name)
+        localStorage.setItem('user_user_type', user_type)
         this.router.navigate(['/']).then(() => {
           window.location.reload();
         });

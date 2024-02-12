@@ -11,6 +11,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AccommodationUpdateComponent implements OnInit {
   form: FormGroup;
   accommodationId: string;
+  token: string | null;
+  user_id: string | null;
+  httpOptions: any;
   accommodation: any;
   amenitiesList: any[] = [
     { value: 'wifi', label: 'Wi-Fi' },
@@ -39,9 +42,29 @@ export class AccommodationUpdateComponent implements OnInit {
       price_on_weekends: ''
     });
     this.accommodationId = this.route.snapshot.params['id'];
+    this.token = localStorage.getItem('token');
+    this.user_id = localStorage.getItem('user_id');
+  }
+
+  getUserData(token: string): void {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + token,
+      }),
+    };
   }
 
   ngOnInit(): void {
+    if (this.user_id == null) {
+      this.router.navigate(['/login']);
+    }
+
+    if (this.token) {
+      this.getUserData(this.token);
+    } else {
+      console.log('No token found. Please log in.');
+    }
+
     this.getAccommodationDetails();
   }
 
@@ -97,10 +120,10 @@ export class AccommodationUpdateComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.accommodation)
     const updatedData = this.form.value;
     this.http
-      .put(`https://localhost/api/accommodations/accommodations/${this.accommodationId}`, updatedData)
+      .put(`https://localhost/api/accommodations/accommodations/${this.accommodationId}`, updatedData,         this.httpOptions,
+      )
       .subscribe(
         () => {
           console.log('Accommodation updated');

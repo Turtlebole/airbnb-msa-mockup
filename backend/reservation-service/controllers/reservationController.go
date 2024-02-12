@@ -335,18 +335,7 @@ func (r ReservationController) CancelReservation() gin.HandlerFunc {
 			ReservationId string `json:"reservation_id"`
 		}
 
-		claims, err := r.getUserInfoFromToken(c.Request.Header["Authorization"])
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
-		userType, ok := claims["User_type"].(string)
-		if !ok {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "user role not found in token"})
-			return
-		}
-		if userType != "Guest" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "only users that are guests can access this page"})
-		}
+		// No user_type check
 
 		var cancelInfo CancelInfo
 
@@ -473,4 +462,20 @@ func (r ReservationController) getUserInfoFromToken(authHeader []string) (jwt.Ma
 		return nil, fmt.Errorf("invalid token")
 	}
 	return claims, nil
+}
+func (r ReservationController) GetAccommodationByReservation() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		reservationID := c.Param("reservationID")
+
+		// Implement logic to retrieve accommodation ID based on reservation ID
+		accommodationID, err := r.repo.GetAccommodationIDByReservation(reservationID)
+		if err != nil {
+			r.logger.Printf("Failed to get accommodation ID: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get accommodation ID"})
+			return
+		}
+
+		// Respond with the accommodation ID
+		c.JSON(http.StatusOK, accommodationID)
+	}
 }

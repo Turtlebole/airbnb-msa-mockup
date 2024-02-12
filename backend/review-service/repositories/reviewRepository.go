@@ -124,7 +124,7 @@ func (rr *ReviewRepo) UpdateReview(ctx context.Context, reviewID string, updated
 	_, err = reviewCollection.UpdateOne(
 		ctx,
 		bson.M{"_id": objID},
-		bson.M{"$set": bson.M{"comment": updatedReview.Comment, "rating": updatedReview.Rating}},
+		bson.M{"$set": bson.M{"comment": updatedReview.Comment, "rating": updatedReview.Rating, "host_comment": updatedReview.HostComment, "host_rating": updatedReview.HostRating}},
 	)
 	if err != nil {
 		return err
@@ -155,4 +155,123 @@ func (rr *ReviewRepo) getCollection(ctx context.Context) *mongo.Collection {
 	reviewDatabase := rr.cli.Database("reviews")
 	reviewCollection := reviewDatabase.Collection("reviews")
 	return reviewCollection
+}
+func (rr *ReviewRepo) CreateHostReview(ctx context.Context, review *Review) error {
+	// Set AccommodationID to zero as it's not applicable for host reviews
+	review.AccommodationID = primitive.NilObjectID
+
+	reviewCollection := rr.getCollection(ctx)
+
+	result, err := reviewCollection.InsertOne(ctx, review)
+	if err != nil {
+		return err
+	}
+
+	review.ID = result.InsertedID.(primitive.ObjectID)
+	return nil
+}
+func (rr *ReviewRepo) GetReviewsByUserAndHosts(ctx context.Context, userID string) ([]*Review, error) {
+	reviewCollection := rr.getCollection(ctx)
+
+	// Convert string userID to ObjectId
+	objID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Query the collection
+	cursor, err := reviewCollection.Find(ctx, bson.M{"user_id": objID})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	// Decode the results into a slice of Review
+	var reviews []*Review
+	if err := cursor.All(ctx, &reviews); err != nil {
+		return nil, err
+	}
+
+	return reviews, nil
+}
+func (rr *ReviewRepo) GetHostReviews(ctx context.Context, hostID string) ([]*Review, error) {
+	reviewCollection := rr.getCollection(ctx)
+
+	// Convert string hostID to ObjectId
+	objID, err := primitive.ObjectIDFromHex(hostID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Query the collection
+	cursor, err := reviewCollection.Find(ctx, bson.M{"host_id": objID})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	// Decode the results into a slice of Review
+	var reviews []*Review
+	if err := cursor.All(ctx, &reviews); err != nil {
+		return nil, err
+	}
+
+	return reviews, nil
+}
+func GetReviewsByAccommodationAndHost(client *mongo.Client, accommodationID string, hostID string) ([]Review, error) {
+	collection := client.Database("reviews").Collection("reviews")
+
+	filter := bson.M{
+		"accommodationID": accommodationID,
+		"hostID":          hostID,
+	}
+
+	var reviews []Review
+	cursor, err := collection.Find(context.Background(), filter)
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(context.Background())
+
+	if err := cursor.All(context.Background(), &reviews); err != nil {
+		return nil, err
+	}
+
+	return reviews, nil
+}
+func (rr *ReviewRepo) GetAllReviews(ctx context.Context) ([]*Review, error) {
+	reviewCollection := rr.getCollection(ctx)
+
+	// Query the collection to get all reviews
+	cursor, err := reviewCollection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	// Decode the results into a slice of Review
+	var reviews []*Review
+	if err := cursor.All(ctx, &reviews); err != nil {
+		return nil, err
+	}
+
+	return reviews, nil
+}
+func (rr *ReviewRepo) GetReviewByID(ctx context.Context, reviewID string) (*Review, error) {
+	collection := rr.getCollection(ctx)
+
+	// Convert string reviewID to ObjectId
+	objID, err := primitive.ObjectIDFromHex(reviewID)
+	if err != nil {
+		return nil, err
+	}
+
+	var review Review
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&review)
+	if err != nil {
+		return nil, err
+	}
+
+	return &review, nil
 }
